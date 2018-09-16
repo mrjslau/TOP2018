@@ -15,4 +15,4 @@ Visual Studio 2017/2017 Preview
 - List relevance: the shopping list would be updated as the user would pickup products.
 - Shopping drafts: it would be possible to save certain shopping lists as drafts to be used for future shoppings.
 - Energy consumption minimization: while the app is running it would not use a lot of battery power in order to last through a whole shopping session.
-- Product price recognition: the app would recognise the price of a product if it is visible with the product itself in the picture.
+- Product price recognition: the app would recognise the price of a product if it is visible with the product itself.
