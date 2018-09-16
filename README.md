@@ -16,3 +16,6 @@ Visual Studio 2017/2017 Preview
 - Energy consumption minimization: while the app is running it would not use a lot of battery power in order to last through a whole shopping session.
 - Product price recognition: the app would recognise the price of a product if it is visible with the product itself.
 - Aisle recognition: the app would also be able to tell the user where he/she is in the shop.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
