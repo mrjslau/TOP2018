@@ -197,6 +197,35 @@
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
+      "tensorflow-batteries-linux-x64-cpu/1.10.0.1": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/linux/native/libtensorflow.so": {
+            "assetType": "native",
+            "rid": "linux"
+          },
+          "runtimes/linux/native/libtensorflow_framework.so": {
+            "assetType": "native",
+            "rid": "linux"
+          }
+        }
+      },
+      "tensorflow-batteries-windows-x64-cpu/1.10.0.1": {
+        "type": "package",
+        "build": {
+          "build/tensorflow-batteries-windows-x64-cpu.props": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/libtensorflow.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/python36.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      },
       "TensorFlowSharp.Core/2.0.0": {
         "type": "package",
         "compile": {
@@ -666,6 +695,31 @@
         "netstandard.library.nuspec"
       ]
     },
+    "tensorflow-batteries-linux-x64-cpu/1.10.0.1": {
+      "sha512": "6ZWOMcu8Wq0a2TerzgO5UlkpuAwgRuIKwSmXKgUFK4RbWJkl3G8x8l2SxvAZuqi9vj0JunyuNFfVptK3cwO+Xg==",
+      "type": "package",
+      "path": "tensorflow-batteries-linux-x64-cpu/1.10.0.1",
+      "files": [
+        ".signature.p7s",
+        "runtimes/linux/native/libtensorflow.so",
+        "runtimes/linux/native/libtensorflow_framework.so",
+        "tensorflow-batteries-linux-x64-cpu.1.10.0.1.nupkg.sha512",
+        "tensorflow-batteries-linux-x64-cpu.nuspec"
+      ]
+    },
+    "tensorflow-batteries-windows-x64-cpu/1.10.0.1": {
+      "sha512": "OboIRB5GLCYbm48840ioXKU63iC2jE8CgJBiLiMjMqiUfYOdGWrHyYglp77XlPCpAn5w4ESWcO7KNm86ToUdag==",
+      "type": "package",
+      "path": "tensorflow-batteries-windows-x64-cpu/1.10.0.1",
+      "files": [
+        ".signature.p7s",
+        "build/tensorflow-batteries-windows-x64-cpu.props",
+        "runtimes/win-x64/native/libtensorflow.dll",
+        "runtimes/win-x64/native/python36.dll",
+        "tensorflow-batteries-windows-x64-cpu.1.10.0.1.nupkg.sha512",
+        "tensorflow-batteries-windows-x64-cpu.nuspec"
+      ]
+    },
     "TensorFlowSharp.Core/2.0.0": {
       "sha512": "1aj7Topo5afGpAiAN3xvwvL2qv0eA4Q+t4ZbvMQxqPpUQNWe8xFgM29a+rz9KG4y6exw5jQEtSkb8mNg4s1Qjw==",
       "type": "package",
@@ -680,7 +734,9 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Microsoft.NETCore.App >= 2.0.0",
-      "TensorFlowSharp.Core >= 2.0.0"
+      "TensorFlowSharp.Core >= 2.0.0",
+      "tensorflow-batteries-linux-x64-cpu >= 1.10.0.1",
+      "tensorflow-batteries-windows-x64-cpu >= 1.10.0.1"
     ]
   },
   "packageFolders": {
@@ -736,6 +792,14 @@
           "TensorFlowSharp.Core": {
             "target": "Package",
             "version": "[2.0.0, )"
+          },
+          "tensorflow-batteries-linux-x64-cpu": {
+            "target": "Package",
+            "version": "[1.10.0.1, )"
+          },
+          "tensorflow-batteries-windows-x64-cpu": {
+            "target": "Package",
+            "version": "[1.10.0.1, )"
           }
         },
         "imports": [
