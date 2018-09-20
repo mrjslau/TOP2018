@@ -10,13 +10,13 @@ namespace ImageRecognition
     class Program
     {
         public static string TestImageFilePath { get; private set; } =
-            "C:\\Users\\Edvard\\RiderProjects\\TOP2018\\ShopLens\\ImageRecognition\\resources\\train\\tomato\\1.jpg";
+            "resources\\test\\2.jpg";
 
         public static string TensorFlowLabelsFilePath { get; private set; } =
-            "C:\\Users\\Edvard\\RiderProjects\\TOP2018\\ShopLens\\ImageRecognition\\resources\\model\\labels.txt";
+            "resources\\model\\labels.txt";
 
         public static string TensorFlowModelFilePath { get; private set; } =
-            "C:\\Users\\Edvard\\RiderProjects\\TOP2018\\ShopLens\\ImageRecognition\\resources\\model\\model.pb";
+            "resources\\model\\model.pb";
         
         static void Main(string[] args)
         {
@@ -28,8 +28,6 @@ namespace ImageRecognition
             var labels = File.ReadAllLines(TensorFlowLabelsFilePath);
 
             graph.Import(model);
-
-            var best = 0.0f;
 
             Dictionary<string, float> classificationResults;
             using (var session = new TFSession(graph))
@@ -68,15 +66,8 @@ namespace ImageRecognition
                 var output = runner.Run();
                 var result = output[0];
 
-                // Choose most probable class 
+                // Results
                 var probabilities = ((float[][]) result.GetValue(jagged: true))[0];
-                for (var i = 0; i < probabilities.Length; i++)
-                {
-                    if (probabilities[i] > best)
-                    {
-                        best = probabilities[i];
-                    }
-                }
 
                 classificationResults =
                     probabilities
