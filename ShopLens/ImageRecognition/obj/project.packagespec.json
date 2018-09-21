@@ -36,6 +36,14 @@
         "TensorFlowSharp.Core": {
           "target": "Package",
           "version": "[2.0.0, )"
+        },
+        "tensorflow-batteries-linux-x64-cpu": {
+          "target": "Package",
+          "version": "[1.10.0.1, )"
+        },
+        "tensorflow-batteries-windows-x64-cpu": {
+          "target": "Package",
+          "version": "[1.10.0.1, )"
         }
       },
       "imports": [
