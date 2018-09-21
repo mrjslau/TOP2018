@@ -24,5 +24,20 @@
       <PackageReference Include="tensorflow-batteries-windows-x64-cpu" Version="1.10.0.1" />
       <PackageReference Include="TensorFlowSharp.Core" Version="2.0.0" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Content Update="resources\model\model.pb">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="resources\test\1.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="resources\test\2.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
 </Project>

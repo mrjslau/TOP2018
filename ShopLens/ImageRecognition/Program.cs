@@ -10,7 +10,7 @@ namespace ImageRecognition
     class Program
     {
         public static string TestImageFilePath { get; private set; } =
-            "resources\\test\\2.jpg";
+            "resources\\test\\1.jpg";
 
         public static string TensorFlowLabelsFilePath { get; private set; } =
             "resources\\model\\labels.txt";
