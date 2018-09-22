@@ -1,0 +1,12 @@
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csprojAssemblyReference.cache
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.Properties.Resources.resources
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.GenerateResource.cache
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.CoreCompileInputs.cache
+C:\GitProjects\TOP2018\ShopLens\VoicedText\bin\Debug\VoicedText.exe.config
+C:\GitProjects\TOP2018\ShopLens\VoicedText\bin\Debug\VoicedText.exe
+C:\GitProjects\TOP2018\ShopLens\VoicedText\bin\Debug\VoicedText.pdb
+C:\GitProjects\TOP2018\ShopLens\VoicedText\bin\Debug\System.Speech.dll
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.CopyComplete
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.exe
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.pdb
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.VoicedTextTest.resources
