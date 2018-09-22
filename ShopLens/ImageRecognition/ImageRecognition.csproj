@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -8,13 +8,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Target Name="CopyDependencies" AfterTargets="AfterBuild">
-    <!--<Copy SourceFiles="resources\runtimes\win7-x64\native\libtensorflow.dll" DestinationFolder="$(OutDir)" />-->
-    <!--<Copy SourceFiles="resources\runtimes\osx\native\libtensorflow.dylib" DestinationFolder="$(OutDir)" />-->
-    <!--<Copy SourceFiles="resources\runtimes\osx\native\libtensorflow_framework.dylib" DestinationFolder="$(OutDir)" />-->
-    <!--<Copy SourceFiles="resources\runtimes\linux\native\libtensorflow.so" DestinationFolder="$(OutDir)" />-->
-    <!--<Copy SourceFiles="resources\runtimes\linux\native\libtensorflow_framework.so" DestinationFolder="$(OutDir)" />-->
-  </Target>
   <ItemGroup>
     <PackageReference Include="tensorflow-batteries-linux-x64-cpu" Version="1.10.0.1" />
     <PackageReference Include="tensorflow-batteries-windows-x64-cpu" Version="1.10.0.1" />
