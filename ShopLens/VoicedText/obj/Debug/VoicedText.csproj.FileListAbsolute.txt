@@ -9,3 +9,4 @@ C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.CopyCompl
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.exe
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.pdb
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.VoicedTextTest.resources
+C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csprojAssemblyReference.cache

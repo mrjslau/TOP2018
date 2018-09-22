@@ -26,46 +26,46 @@ namespace VoicedText
         private void VoicedTextTest_Load(object sender, EventArgs e)
         {
             //Text voicer speed is set to normal by default.
-            radioButton1.Checked = true;
+            NormalSpdRadBtn.Checked = true;
         }
 
-        //This method is called after the form has been loaded.
+        //This method is called after the form has been loaded and shown to the user.
         private void VoicedTextTest_Shown(object sender, EventArgs e)
         {
-            //Text voicer says hello and mentions ability to choose voice.
-            textVoicer.SayMessage(textVoicer.GetHelloMessage());
-            textVoicer.SayMessage(textVoicer.GetChooseMessageSpeed());
+            //Text voicer says hello and mentions the ability to choose voice.
+            textVoicer.SayMessage(textVoicer.HelloMessageText);
+            textVoicer.SayMessage(textVoicer.ChooseMessageSpeedText);
         }
 
-        private void TextBox1_TextChanged(object sender, EventArgs e)
+        private void InputTextBox_TextChanged(object sender, EventArgs e)
         {
-            inputMessage = textBox1.Text;
+            inputMessage = InputTextBox.Text;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void CommenceVoiceBtn_Click(object sender, EventArgs e)
         {
-            if (radioButton1.Checked) //Normal voicer speed.
+            if (NormalSpdRadBtn.Checked) //Normal voicer speed.
             {
-                textVoicer.SetSpeedOfVoicer(0);
+                textVoicer.SpeedOfVoicer = 0;
 
-            } else if (radioButton2.Checked) //Slow voicer speed.
+            }
+            else if (SlowSpdRadBtn.Checked) //Slow voicer speed.
             {
-                        textVoicer.SetSpeedOfVoicer(-1);
+                textVoicer.SpeedOfVoicer = -1;
 
-                    } else if(radioButton3.Checked) //Fast voicer speed.
-                            {
-                                textVoicer.SetSpeedOfVoicer(1);
-                            }
+            }
+            else if (FastSpdRadBtn.Checked) //Fast voicer speed.
+            {
+                textVoicer.SpeedOfVoicer = 1;
+            }
 
-
-
-                if (!String.IsNullOrEmpty(inputMessage))
+            if (!String.IsNullOrEmpty(inputMessage))
                 {
                     textVoicer.SayMessage(inputMessage);
                 }
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
+        private void VoiceSpeedGrpBox_Enter(object sender, EventArgs e)
         {
 
         }
