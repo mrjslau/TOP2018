@@ -7,10 +7,10 @@ using System.Speech.Synthesis;
 
 namespace VoicedText
 {
-    class TextVoicer
+    public class TextVoicer
     {
-        private SpeechSynthesizer textVoicer = new SpeechSynthesizer();
-        private PromptBuilder messageBuilder = new PromptBuilder(); //Used to form a sequence of sentences in various speeds, voices.
+        private SpeechSynthesizer textVoicer;
+        private PromptBuilder messageBuilder; //Used to form a sequence of sentences in various speeds, voices.
 
         private const string helloMessage = "Hello, I am a text voicer. Please, write something nice in the input field for me to say.";
         private const string chooseMessageSpeed = "You can also choose the speed at which I voice text.";
@@ -21,6 +21,8 @@ namespace VoicedText
 
         public TextVoicer()
         {
+            textVoicer = new SpeechSynthesizer();
+            messageBuilder = new PromptBuilder();
         }
 
         //Voices any message at a desired speed.

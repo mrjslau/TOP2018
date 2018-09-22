@@ -1,4 +1,3 @@
-C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csprojAssemblyReference.cache
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.Properties.Resources.resources
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.GenerateResource.cache
 C:\GitProjects\TOP2018\ShopLens\VoicedText\obj\Debug\VoicedText.csproj.CoreCompileInputs.cache
