@@ -20,18 +20,19 @@ namespace WindowsFormsApp
 
         private void ShopLens_Load(object sender, EventArgs e)
         {
-            CaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach(FilterInfo Device in CaptureDevices)
-            {
-                comboBox1.Items.Add(Device.Name);
-            }
-            comboBox1.SelectedIndex = 0;
-            videoSource = new VideoCaptureDevice();
+            
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
         {
             MainWindow.Visible = true;
+            CaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo Device in CaptureDevices)
+            {
+                comboBox1.Items.Add(Device.Name);
+            }
+            comboBox1.SelectedIndex = 0;
+            videoSource = new VideoCaptureDevice();
         }
 
         private void START_Click(object sender, EventArgs e)
