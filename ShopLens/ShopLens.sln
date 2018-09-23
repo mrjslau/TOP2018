@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognition", "ImageRecognition\ImageRecognition.csproj", "{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognition", "ImageRecognition\ImageRecognition.csproj", "{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "..\..\New folder\TOP2018\WindowsFormsApp\WindowsFormsApp\WindowsFormsApp.csproj", "{C2D87334-B8CD-4FDC-A290-C3F33F706FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D87334-B8CD-4FDC-A290-C3F33F706FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D87334-B8CD-4FDC-A290-C3F33F706FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D87334-B8CD-4FDC-A290-C3F33F706FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D87334-B8CD-4FDC-A290-C3F33F706FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB7F30D7-78CF-4F25-890E-A89E5397B461}
 	EndGlobalSection
 EndGlobal
