@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Speech.Recognition;
-using System.Speech.Synthesis;
-using System.Threading;
+﻿using System.Speech.Recognition;
 
 namespace VoiceRecognition
 {
@@ -13,6 +6,7 @@ namespace VoiceRecognition
     {
         private SpeechRecognitionEngine speechRecognizer;  //The voice recognizer.
 
+        public VoiceRecognitionTest VoiceRecForm { get; set; }  //A reference to a specific form.
 
         public VoiceRecognizer()
         {
@@ -23,22 +17,22 @@ namespace VoiceRecognition
         public void StartVoiceRecognition()
         {
             //Adds an event handler for when a phrase is recognized.
-            speechRecognizer.SpeechRecognized += SpeechRecognizer_SpeechRecognized;
+            //The method inside the Form class will be called, so the form can 
+            //interpret commands independently from the voice recognizer.
+            speechRecognizer.SpeechRecognized += VoiceRecForm.SpeechRecognizer_SpeechRecognized;
 
             speechRecognizer.SetInputToDefaultAudioDevice(); //Sets the input of the recognizer to the microphone (if it exists).
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple); //Recognizes speech one statement at a time, asynchronously.
 
         }
 
-        private void SpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        public void StopVoiceRecognition()
         {
-            if (e.Result.Text == "Moo") //Does something
-            {
-
-            }
+            //Stop recognizing phrases.
+            speechRecognizer.RecognizeAsyncStop();
+            //Remove the recognition event handler.
+            speechRecognizer.SpeechRecognized -= VoiceRecForm.SpeechRecognizer_SpeechRecognized;
         }
-
-
 
         //Adds a new grammar to the speech recognizer engine.
         public void AddCommands(string [] commands)

@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.recognitionGroup = new System.Windows.Forms.GroupBox();
-            this.StartRecognitionBtn = new System.Windows.Forms.Button();
-            this.CommandOutputBox = new System.Windows.Forms.RichTextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.CommandLbl = new System.Windows.Forms.Label();
             this.EngineOutputLbl = new System.Windows.Forms.Label();
+            this.CommandLbl = new System.Windows.Forms.Label();
+            this.CommandTextBox = new System.Windows.Forms.RichTextBox();
+            this.CommandOutputBox = new System.Windows.Forms.RichTextBox();
+            this.StartRecognitionBtn = new System.Windows.Forms.Button();
             this.recognitionGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +41,7 @@
             // 
             this.recognitionGroup.Controls.Add(this.EngineOutputLbl);
             this.recognitionGroup.Controls.Add(this.CommandLbl);
-            this.recognitionGroup.Controls.Add(this.richTextBox1);
+            this.recognitionGroup.Controls.Add(this.CommandTextBox);
             this.recognitionGroup.Controls.Add(this.CommandOutputBox);
             this.recognitionGroup.Controls.Add(this.StartRecognitionBtn);
             this.recognitionGroup.Location = new System.Drawing.Point(12, 12);
@@ -50,32 +50,17 @@
             this.recognitionGroup.TabIndex = 0;
             this.recognitionGroup.TabStop = false;
             this.recognitionGroup.Text = "Recognize voice";
-            this.recognitionGroup.Enter += new System.EventHandler(this.GroupBox1_Enter);
+            this.recognitionGroup.Enter += new System.EventHandler(this.VoiceRecognitionBox_Enter);
             // 
-            // StartRecognitionBtn
+            // EngineOutputLbl
             // 
-            this.StartRecognitionBtn.Location = new System.Drawing.Point(359, 226);
-            this.StartRecognitionBtn.Name = "StartRecognitionBtn";
-            this.StartRecognitionBtn.Size = new System.Drawing.Size(159, 26);
-            this.StartRecognitionBtn.TabIndex = 3;
-            this.StartRecognitionBtn.Text = "Start voice recognition";
-            this.StartRecognitionBtn.UseVisualStyleBackColor = true;
-            // 
-            // CommandOutputBox
-            // 
-            this.CommandOutputBox.Location = new System.Drawing.Point(144, 53);
-            this.CommandOutputBox.Name = "CommandOutputBox";
-            this.CommandOutputBox.Size = new System.Drawing.Size(384, 167);
-            this.CommandOutputBox.TabIndex = 4;
-            this.CommandOutputBox.Text = "";
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(9, 53);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(102, 167);
-            this.richTextBox1.TabIndex = 5;
-            this.richTextBox1.Text = "";
+            this.EngineOutputLbl.AutoSize = true;
+            this.EngineOutputLbl.Location = new System.Drawing.Point(273, 30);
+            this.EngineOutputLbl.Name = "EngineOutputLbl";
+            this.EngineOutputLbl.Size = new System.Drawing.Size(135, 13);
+            this.EngineOutputLbl.TabIndex = 7;
+            this.EngineOutputLbl.Text = "Recognition Engine Output";
+            this.EngineOutputLbl.Click += new System.EventHandler(this.EngineOutputLbl_Click);
             // 
             // CommandLbl
             // 
@@ -86,14 +71,34 @@
             this.CommandLbl.TabIndex = 6;
             this.CommandLbl.Text = "Available Commands";
             // 
-            // EngineOutputLbl
+            // CommandTextBox
             // 
-            this.EngineOutputLbl.AutoSize = true;
-            this.EngineOutputLbl.Location = new System.Drawing.Point(273, 30);
-            this.EngineOutputLbl.Name = "EngineOutputLbl";
-            this.EngineOutputLbl.Size = new System.Drawing.Size(135, 13);
-            this.EngineOutputLbl.TabIndex = 7;
-            this.EngineOutputLbl.Text = "Recognition Engine Output";
+            this.CommandTextBox.Location = new System.Drawing.Point(0, 53);
+            this.CommandTextBox.Name = "CommandTextBox";
+            this.CommandTextBox.Size = new System.Drawing.Size(160, 167);
+            this.CommandTextBox.TabIndex = 5;
+            this.CommandTextBox.Text = "-Hello\n-What is love?\n-How are you doing today?\n-Show me something\n-Say something" +
+    " stupid\n-What is the meaning of life?\n-I love you\n-Stop voice recognition";
+            this.CommandTextBox.TextChanged += new System.EventHandler(this.CommandTextBox_TextChanged);
+            // 
+            // CommandOutputBox
+            // 
+            this.CommandOutputBox.Location = new System.Drawing.Point(179, 53);
+            this.CommandOutputBox.Name = "CommandOutputBox";
+            this.CommandOutputBox.Size = new System.Drawing.Size(349, 167);
+            this.CommandOutputBox.TabIndex = 4;
+            this.CommandOutputBox.Text = "-Output Log-";
+            this.CommandOutputBox.TextChanged += new System.EventHandler(this.CommandOutputBox_TextChanged);
+            // 
+            // StartRecognitionBtn
+            // 
+            this.StartRecognitionBtn.Location = new System.Drawing.Point(359, 226);
+            this.StartRecognitionBtn.Name = "StartRecognitionBtn";
+            this.StartRecognitionBtn.Size = new System.Drawing.Size(159, 26);
+            this.StartRecognitionBtn.TabIndex = 3;
+            this.StartRecognitionBtn.Text = "Start voice recognition";
+            this.StartRecognitionBtn.UseVisualStyleBackColor = true;
+            this.StartRecognitionBtn.Click += new System.EventHandler(this.StartRecognitionBtn_Click);
             // 
             // VoiceRecognitionTest
             // 
@@ -103,6 +108,8 @@
             this.Controls.Add(this.recognitionGroup);
             this.Name = "VoiceRecognitionTest";
             this.Text = "VoiceRecognitionTest";
+            this.Load += new System.EventHandler(this.VoiceRecognitionTest_Load);
+            this.Shown += new System.EventHandler(this.VoiceRecognitionTest_Shown);
             this.recognitionGroup.ResumeLayout(false);
             this.recognitionGroup.PerformLayout();
             this.ResumeLayout(false);
@@ -116,7 +123,7 @@
         private System.Windows.Forms.RichTextBox CommandOutputBox;
         private System.Windows.Forms.Label EngineOutputLbl;
         private System.Windows.Forms.Label CommandLbl;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox CommandTextBox;
     }
 }
 
