@@ -29,7 +29,7 @@ namespace WindowsFormsApp
             CaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo Device in CaptureDevices)
             {
-                comboBox1.Items.Add(Device.Name);
+                webcam_combobox.Items.Add(Device.Name);
             }
             //comboBox1.SelectedIndex = 0;
             videoSource = new VideoCaptureDevice();
@@ -37,23 +37,23 @@ namespace WindowsFormsApp
 
         private void START_Click(object sender, EventArgs e)
         {
-            videoSource = new VideoCaptureDevice(CaptureDevices[comboBox1.SelectedIndex].MonikerString);
+            videoSource = new VideoCaptureDevice(CaptureDevices[webcam_combobox.SelectedIndex].MonikerString);
             videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
             videoSource.Start();
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
+            live_video.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
         private void RESET_Click(object sender, EventArgs e)
         {
             videoSource.Stop();
-            pictureBox1.Image = null;
-            pictureBox1.Invalidate();
-            pictureBox2.Image = null;
-            pictureBox2.Invalidate();
+            live_video.Image = null;
+            live_video.Invalidate();
+            capture_picture.Image = null;
+            capture_picture.Invalidate();
         }
 
         private void PAUSE_Click(object sender, EventArgs e)
@@ -63,7 +63,7 @@ namespace WindowsFormsApp
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = (Bitmap)pictureBox1.Image.Clone();
+            capture_picture.Image = (Bitmap)live_video.Image.Clone();
         }
 
         private void EXIT_Click(object sender, EventArgs e)

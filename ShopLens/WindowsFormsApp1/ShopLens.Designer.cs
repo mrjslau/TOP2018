@@ -36,21 +36,21 @@ namespace WindowsFormsApp
             this.PRESS_ENTER_TO_START = new System.Windows.Forms.Label();
             this.Intro = new System.Windows.Forms.Panel();
             this.MainWindow = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.EXIT = new System.Windows.Forms.Button();
-            this.CAPTURE = new System.Windows.Forms.Button();
-            this.PAUSE = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.RESET = new System.Windows.Forms.Button();
-            this.START = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictures_panel = new System.Windows.Forms.TableLayoutPanel();
+            this.live_video = new System.Windows.Forms.PictureBox();
+            this.capture_picture = new System.Windows.Forms.PictureBox();
+            this.exit_btn = new System.Windows.Forms.Button();
+            this.capture_btn = new System.Windows.Forms.Button();
+            this.pause_btn = new System.Windows.Forms.Button();
+            this.webcam_combobox = new System.Windows.Forms.ComboBox();
+            this.reset_btn = new System.Windows.Forms.Button();
+            this.start_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.Intro.SuspendLayout();
             this.MainWindow.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictures_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.live_video)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.capture_picture)).BeginInit();
             this.SuspendLayout();
             // 
             // WELCOME_TO
@@ -97,13 +97,13 @@ namespace WindowsFormsApp
             // 
             // MainWindow
             // 
-            this.MainWindow.Controls.Add(this.tableLayoutPanel1);
-            this.MainWindow.Controls.Add(this.EXIT);
-            this.MainWindow.Controls.Add(this.CAPTURE);
-            this.MainWindow.Controls.Add(this.PAUSE);
-            this.MainWindow.Controls.Add(this.comboBox1);
-            this.MainWindow.Controls.Add(this.RESET);
-            this.MainWindow.Controls.Add(this.START);
+            this.MainWindow.Controls.Add(this.pictures_panel);
+            this.MainWindow.Controls.Add(this.exit_btn);
+            this.MainWindow.Controls.Add(this.capture_btn);
+            this.MainWindow.Controls.Add(this.pause_btn);
+            this.MainWindow.Controls.Add(this.webcam_combobox);
+            this.MainWindow.Controls.Add(this.reset_btn);
+            this.MainWindow.Controls.Add(this.start_btn);
             this.MainWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainWindow.Location = new System.Drawing.Point(0, 0);
             this.MainWindow.Name = "MainWindow";
@@ -112,98 +112,98 @@ namespace WindowsFormsApp
             this.MainWindow.Visible = false;
             this.MainWindow.Paint += new System.Windows.Forms.PaintEventHandler(this.MainWindow_Paint);
             // 
-            // tableLayoutPanel1
+            // pictures_panel
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox2, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 63);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(741, 343);
-            this.tableLayoutPanel1.TabIndex = 6;
+            this.pictures_panel.ColumnCount = 2;
+            this.pictures_panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pictures_panel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pictures_panel.Controls.Add(this.live_video, 0, 0);
+            this.pictures_panel.Controls.Add(this.capture_picture, 1, 0);
+            this.pictures_panel.Location = new System.Drawing.Point(13, 63);
+            this.pictures_panel.Name = "pictures_panel";
+            this.pictures_panel.RowCount = 1;
+            this.pictures_panel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pictures_panel.Size = new System.Drawing.Size(741, 343);
+            this.pictures_panel.TabIndex = 6;
             // 
-            // pictureBox2
+            // live_video
             // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(373, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(365, 337);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
+            this.live_video.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.live_video.Location = new System.Drawing.Point(3, 3);
+            this.live_video.Name = "live_video";
+            this.live_video.Size = new System.Drawing.Size(364, 337);
+            this.live_video.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.live_video.TabIndex = 2;
+            this.live_video.TabStop = false;
+            this.live_video.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // EXIT
+            // capture_picture
             // 
-            this.EXIT.Location = new System.Drawing.Point(676, 12);
-            this.EXIT.Name = "EXIT";
-            this.EXIT.Size = new System.Drawing.Size(75, 23);
-            this.EXIT.TabIndex = 5;
-            this.EXIT.Text = "EXIT";
-            this.EXIT.UseVisualStyleBackColor = true;
-            this.EXIT.Click += new System.EventHandler(this.EXIT_Click);
+            this.capture_picture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.capture_picture.Location = new System.Drawing.Point(373, 3);
+            this.capture_picture.Name = "capture_picture";
+            this.capture_picture.Size = new System.Drawing.Size(365, 337);
+            this.capture_picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.capture_picture.TabIndex = 1;
+            this.capture_picture.TabStop = false;
             // 
-            // CAPTURE
+            // exit_btn
             // 
-            this.CAPTURE.Location = new System.Drawing.Point(447, 14);
-            this.CAPTURE.Name = "CAPTURE";
-            this.CAPTURE.Size = new System.Drawing.Size(75, 23);
-            this.CAPTURE.TabIndex = 4;
-            this.CAPTURE.Text = "CAPTURE";
-            this.CAPTURE.UseVisualStyleBackColor = true;
-            this.CAPTURE.Click += new System.EventHandler(this.CAPTURE_Click);
+            this.exit_btn.Location = new System.Drawing.Point(676, 12);
+            this.exit_btn.Name = "exit_btn";
+            this.exit_btn.Size = new System.Drawing.Size(75, 23);
+            this.exit_btn.TabIndex = 5;
+            this.exit_btn.Text = "EXIT";
+            this.exit_btn.UseVisualStyleBackColor = true;
+            this.exit_btn.Click += new System.EventHandler(this.EXIT_Click);
             // 
-            // PAUSE
+            // capture_btn
             // 
-            this.PAUSE.Location = new System.Drawing.Point(366, 12);
-            this.PAUSE.Name = "PAUSE";
-            this.PAUSE.Size = new System.Drawing.Size(75, 23);
-            this.PAUSE.TabIndex = 3;
-            this.PAUSE.Text = "PAUSE";
-            this.PAUSE.UseVisualStyleBackColor = true;
-            this.PAUSE.Click += new System.EventHandler(this.PAUSE_Click);
+            this.capture_btn.Location = new System.Drawing.Point(447, 14);
+            this.capture_btn.Name = "capture_btn";
+            this.capture_btn.Size = new System.Drawing.Size(75, 23);
+            this.capture_btn.TabIndex = 4;
+            this.capture_btn.Text = "CAPTURE";
+            this.capture_btn.UseVisualStyleBackColor = true;
+            this.capture_btn.Click += new System.EventHandler(this.CAPTURE_Click);
             // 
-            // comboBox1
+            // pause_btn
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(96, 14);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(157, 21);
-            this.comboBox1.TabIndex = 2;
+            this.pause_btn.Location = new System.Drawing.Point(366, 12);
+            this.pause_btn.Name = "pause_btn";
+            this.pause_btn.Size = new System.Drawing.Size(75, 23);
+            this.pause_btn.TabIndex = 3;
+            this.pause_btn.Text = "PAUSE";
+            this.pause_btn.UseVisualStyleBackColor = true;
+            this.pause_btn.Click += new System.EventHandler(this.PAUSE_Click);
             // 
-            // RESET
+            // webcam_combobox
             // 
-            this.RESET.Location = new System.Drawing.Point(285, 12);
-            this.RESET.Name = "RESET";
-            this.RESET.Size = new System.Drawing.Size(75, 23);
-            this.RESET.TabIndex = 1;
-            this.RESET.Text = "RESET";
-            this.RESET.UseVisualStyleBackColor = true;
-            this.RESET.Click += new System.EventHandler(this.RESET_Click);
+            this.webcam_combobox.FormattingEnabled = true;
+            this.webcam_combobox.Location = new System.Drawing.Point(96, 14);
+            this.webcam_combobox.Name = "webcam_combobox";
+            this.webcam_combobox.Size = new System.Drawing.Size(157, 21);
+            this.webcam_combobox.TabIndex = 2;
             // 
-            // START
+            // reset_btn
             // 
-            this.START.Location = new System.Drawing.Point(13, 13);
-            this.START.Name = "START";
-            this.START.Size = new System.Drawing.Size(75, 23);
-            this.START.TabIndex = 0;
-            this.START.Text = "START";
-            this.START.UseVisualStyleBackColor = true;
-            this.START.Click += new System.EventHandler(this.START_Click);
+            this.reset_btn.Location = new System.Drawing.Point(285, 12);
+            this.reset_btn.Name = "reset_btn";
+            this.reset_btn.Size = new System.Drawing.Size(75, 23);
+            this.reset_btn.TabIndex = 1;
+            this.reset_btn.Text = "RESET";
+            this.reset_btn.UseVisualStyleBackColor = true;
+            this.reset_btn.Click += new System.EventHandler(this.RESET_Click);
             // 
-            // pictureBox1
+            // start_btn
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(364, 337);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.start_btn.Location = new System.Drawing.Point(13, 13);
+            this.start_btn.Name = "start_btn";
+            this.start_btn.Size = new System.Drawing.Size(75, 23);
+            this.start_btn.TabIndex = 0;
+            this.start_btn.Text = "START";
+            this.start_btn.UseVisualStyleBackColor = true;
+            this.start_btn.Click += new System.EventHandler(this.START_Click);
             // 
             // ShopLens
             // 
@@ -217,9 +217,9 @@ namespace WindowsFormsApp
             this.Intro.ResumeLayout(false);
             this.Intro.PerformLayout();
             this.MainWindow.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.pictures_panel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.live_video)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.capture_picture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -236,15 +236,15 @@ namespace WindowsFormsApp
         private System.Windows.Forms.Label PRESS_ENTER_TO_START;
         private System.Windows.Forms.Panel Intro;
         private System.Windows.Forms.Panel MainWindow;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button EXIT;
-        private System.Windows.Forms.Button CAPTURE;
-        private System.Windows.Forms.Button PAUSE;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button RESET;
-        private System.Windows.Forms.Button START;
-        private PictureBox pictureBox1;
+        private System.Windows.Forms.TableLayoutPanel pictures_panel;
+        private System.Windows.Forms.PictureBox capture_picture;
+        private System.Windows.Forms.Button exit_btn;
+        private System.Windows.Forms.Button capture_btn;
+        private System.Windows.Forms.Button pause_btn;
+        private System.Windows.Forms.ComboBox webcam_combobox;
+        private System.Windows.Forms.Button reset_btn;
+        private System.Windows.Forms.Button start_btn;
+        private PictureBox live_video;
     }
 }
 
