@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using VoicedText;
 
 namespace WindowsFormsApp
 {
@@ -15,12 +15,23 @@ namespace WindowsFormsApp
 
         }
 
+        private TextVoicer textVoicer = new TextVoicer();
         private FilterInfoCollection CaptureDevices;
         private VideoCaptureDevice videoSource;
 
+        //Messages that the text voicer says.
+        private const string helloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
+        private const string seeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
+
         private void ShopLens_Load(object sender, EventArgs e)
         {
-            
+        }
+
+        //This method is called when the Form is shown to the user.
+        private void ShopLens_Shown(object sender, EventArgs e)
+        {
+            //Greet the user.
+            textVoicer.SayMessage(helloMessage);
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
@@ -40,6 +51,7 @@ namespace WindowsFormsApp
             videoSource = new VideoCaptureDevice(CaptureDevices[webcam_combobox.SelectedIndex].MonikerString);
             videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
             videoSource.Start();
+            textVoicer.SayMessage(seeMessage);
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -75,7 +87,7 @@ namespace WindowsFormsApp
             Application.Exit(null);
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void PictureBox1_Click(object sender, EventArgs e)
         {
 
         }

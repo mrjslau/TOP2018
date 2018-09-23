@@ -52,6 +52,9 @@ namespace WindowsFormsApp
             ((System.ComponentModel.ISupportInitialize)(this.live_video)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.capture_picture)).BeginInit();
             this.SuspendLayout();
+
+            //An event handler for when the form is shown to the user.
+            this.Shown += new System.EventHandler(this.ShopLens_Shown);
             // 
             // WELCOME_TO
             // 
@@ -135,7 +138,7 @@ namespace WindowsFormsApp
             this.live_video.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.live_video.TabIndex = 2;
             this.live_video.TabStop = false;
-            this.live_video.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.live_video.Click += new System.EventHandler(this.PictureBox1_Click);
             // 
             // capture_picture
             // 
@@ -212,6 +215,7 @@ namespace WindowsFormsApp
             this.ClientSize = new System.Drawing.Size(766, 418);
             this.Controls.Add(this.Intro);
             this.Name = "ShopLens";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShopLens";
             this.Load += new System.EventHandler(this.ShopLens_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();

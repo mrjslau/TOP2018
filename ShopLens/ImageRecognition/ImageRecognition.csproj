@@ -14,6 +14,12 @@
     <PackageReference Include="TensorFlowSharp.Core" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System.Speech">
+      <HintPath>..\..\..\..\Windows\WinSxS\msil_system.speech_31bf3856ad364e35_4.0.15671.0_none_a73313f37b889742\System.Speech.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Update="resources\model\model.pb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
