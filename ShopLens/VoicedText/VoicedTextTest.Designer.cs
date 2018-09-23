@@ -58,6 +58,7 @@
             this.VoiceTextGrpBox.TabIndex = 1;
             this.VoiceTextGrpBox.TabStop = false;
             this.VoiceTextGrpBox.Text = "Voice text";
+            this.VoiceTextGrpBox.Enter += new System.EventHandler(this.VoiceTextGrpBox_Enter);
             // 
             // InputTextLbl
             // 
