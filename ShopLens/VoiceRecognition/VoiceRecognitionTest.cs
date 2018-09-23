@@ -15,8 +15,22 @@ namespace VoiceRecognition
     {
         private VoiceRecognizer voiceRecognizer = new VoiceRecognizer(); //A voice recognizer.
 
-        private string[] voiceCommands = { "hello", "What is love", "Show me something", "Say something stupid",
-            "how are you doing today", "what is the meaning of life", "stop voice recognition", "I love you"};
+        //Closing and opening statements of the voice recognizer.
+        private const string openingStatement = "\nTalk to me now, please.\n";
+        private const string closingStatement = "I will go to sleep now.\n";
+
+        //Available user voice commands.
+        private const string helloCmd = "Hello";
+        private const string whatIsLuvCmd = "What is love";
+        private const string somethingShowCmd = "Show me something";
+        private const string sayStupidCmd = "Say something stupid";
+        private const string howUDoingCmd = "How are you doing today";
+        private const string meaningLifeCmd = "What is the meaning of life";
+        private const string iLuvUCmd = "I love you";
+        private const string stopRecognitionCmd = "Stop voice recognition";
+
+        private string[] voiceCommands = { helloCmd, whatIsLuvCmd, somethingShowCmd, sayStupidCmd,
+            howUDoingCmd, meaningLifeCmd, iLuvUCmd, stopRecognitionCmd};
 
         public VoiceRecognitionTest()
         {
@@ -41,7 +55,7 @@ namespace VoiceRecognition
         {
             voiceRecognizer.StartVoiceRecognition();
             StartRecognitionBtn.Enabled = false;
-            CommandOutputBox.Text += "\nTalk to me now, please\n";
+            CommandOutputBox.Text += openingStatement;
         }
 
         //The speech recognizer would call this method, when it would recognize a particular command.
@@ -49,39 +63,39 @@ namespace VoiceRecognition
         {
             string speechResult = e.Result.Text;
 
-            if (speechResult == "hello")
+            if (speechResult == helloCmd)
             {
                 CommandOutputBox.Text += "Hello, I am a voice recognizer.\n";
             }
-            else if(speechResult == "What is love")
+            else if(speechResult == whatIsLuvCmd)
             {
-                CommandOutputBox.Text += "\"Baby, don't hurt me, don't hurt me no more\".\n";
+                CommandOutputBox.Text += "\"Baby, don't hurt me, don't hurt me, no more\".\n";
             }
-            else if (speechResult == "Show me something")
+            else if (speechResult == somethingShowCmd)
             {
                 CommandOutputBox.Text += "Here you go.\n";
                 MessageBox.Show("Something");
             }
-            else if (speechResult == "Say something stupid")
+            else if (speechResult == sayStupidCmd)
             {
                 CommandOutputBox.Text += "Something stupid.\n";
             }
-            else if (speechResult == "how are you doing today")
+            else if (speechResult == howUDoingCmd)
             {
                 CommandOutputBox.Text += "I am doing today, yes, it's pretty simple.\n";
             }
-            else if (speechResult == "what is the meaning of life")
+            else if (speechResult == meaningLifeCmd)
             {
                 CommandOutputBox.Text += "Everything in life has meaning, that's the meaning of life.\n";
             }
-            else if (speechResult == "I love you")
+            else if (speechResult == iLuvUCmd)
             {
                 CommandOutputBox.Text += "I love you too.\n";
             }
-            else if (speechResult == "stop voice recognition")
+            else if (speechResult == stopRecognitionCmd)
             {
                 voiceRecognizer.StopVoiceRecognition();
-                CommandOutputBox.Text += "I will go to sleep now.\n";
+                CommandOutputBox.Text += closingStatement;
                 StartRecognitionBtn.Enabled = true;
             }
         }
