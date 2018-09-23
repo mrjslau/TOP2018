@@ -29,7 +29,7 @@ namespace VoicedText
         {
             if (SpeedOfVoicer == 0) //Normal speed.
             {
-                textVoicer.Speak(message);
+                textVoicer.SpeakAsync(message); //The voicer will speak asynchronously so that it wouldn't "hang" the main Thread.
 
             }
             else if (SpeedOfVoicer == -1) //Slow speed.
@@ -37,14 +37,14 @@ namespace VoicedText
                 messageBuilder.StartStyle(new PromptStyle(PromptRate.ExtraSlow));
                 messageBuilder.AppendText(message);
                 messageBuilder.EndStyle();
-                textVoicer.Speak(messageBuilder);
+                textVoicer.SpeakAsync(messageBuilder);
             }
             else if (SpeedOfVoicer == 1) //Fast speed.
             {
                 messageBuilder.StartStyle(new PromptStyle(PromptRate.Fast));
                 messageBuilder.AppendText(message);
                 messageBuilder.EndStyle();
-                textVoicer.Speak(messageBuilder);
+                textVoicer.SpeakAsync(messageBuilder);
             }
             
                 messageBuilder.ClearContent(); //Removes sentences that have already been appended.
