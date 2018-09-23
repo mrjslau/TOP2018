@@ -213,6 +213,7 @@ namespace WindowsFormsApp
             this.Controls.Add(this.Intro);
             this.Name = "ShopLens";
             this.Text = "ShopLens";
+            this.Load += new System.EventHandler(this.ShopLens_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             this.Intro.ResumeLayout(false);
             this.Intro.PerformLayout();

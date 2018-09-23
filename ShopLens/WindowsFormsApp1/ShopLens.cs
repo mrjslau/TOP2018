@@ -79,5 +79,10 @@ namespace WindowsFormsApp
         {
 
         }
+
+        private void ShopLens_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
