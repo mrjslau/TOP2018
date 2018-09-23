@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TensorFlowSharpCore;
+using TensorFlow;
 
 namespace ImageRecognition
 {
-    public class Classificator
+    public static class Classificator
     {
         public static Dictionary<string, float> ClassifyTensor(TFTensor tensor, byte[] model, IReadOnlyList<string> labels)
         {

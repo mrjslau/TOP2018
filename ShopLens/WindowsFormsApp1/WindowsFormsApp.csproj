@@ -93,5 +93,11 @@
   <ItemGroup>
     <None Include="Resources\shopLensLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageRecognition\ImageRecognition.csproj">
+      <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
+      <Name>ImageRecognition</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

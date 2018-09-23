@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using ImageRecognition;
 
 namespace WindowsFormsApp
 {
@@ -63,7 +65,14 @@ namespace WindowsFormsApp
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = (Bitmap)pictureBox1.Image.Clone();
+            var image = (Bitmap) pictureBox1.Image.Clone();
+            pictureBox2.Image = image;
+            
+            var ms = new MemoryStream();
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            TfImageUtil.TensorFromBytes(ms.ToArray());
+            //Classificator.ClassifyTensor();
         }
 
         private void EXIT_Click(object sender, EventArgs e)
