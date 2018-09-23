@@ -32,23 +32,26 @@ namespace VoiceRecognition
 
         private void SpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            if(e.Result.Text == "Moo") //Does something
+            if (e.Result.Text == "Moo") //Does something
             {
 
             }
         }
 
-        //Adds a new grammar to the speech recognizer engine.
-        public void AddNewGrammar(string grammarMessage, string grammarName)
-        {
-            //A Grammar is an object that defines what the speech recognition engine
-            //can recognize as meaningful input.
-            Grammar newGrammar = new Grammar(new GrammarBuilder(grammarMessage)) //Building a grammar with the specified phrase.
-            {
-                Name = grammarName  //Giving the grammar a name.
-            };  
 
-            speechRecognizer.LoadGrammar(newGrammar);
+
+        //Adds a new grammar to the speech recognizer engine.
+        public void AddCommands(string [] commands)
+        {
+            //Adds a string of phrases to be distinguished by the voice recognizer.
+            Choices commandChoices = new Choices();
+            commandChoices.Add(commands);
+
+            GrammarBuilder grammarBuilder = new GrammarBuilder();
+            grammarBuilder.Append(commandChoices);
+            Grammar newGrammar = new Grammar(grammarBuilder);
+
+            speechRecognizer.LoadGrammarAsync(newGrammar); //Loads the phrases asynchronously.
         }
     }
 }
