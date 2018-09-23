@@ -746,11 +746,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
+      "projectUniqueName": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP2018\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
       "projectName": "ImageRecognition",
-      "projectPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
+      "projectPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP2018\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
       "packagesPath": "C:\\Users\\Tomas pc\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\obj\\",
+      "outputPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP2018\\ShopLens\\ImageRecognition\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
