@@ -2,5 +2,4 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/ShopLens/WindowsFormsApp1/obj/Debug
-/ShopLens/.vs/ShopLens
+/ShopLens/.vs/ShopLens/v15
