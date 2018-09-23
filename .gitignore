@@ -3,3 +3,7 @@
 ################################################################################
 
 /ShopLens/.vs/ShopLens/v15
+/ShopLens/ImageRecognition/obj
+/ShopLens/ImageRecognition/bin
+/ShopLens/VoicedText/obj
+/ShopLens/VoicedText/bin
