@@ -4,7 +4,7 @@
 
 /ShopLens/.vs/ShopLens/v15
 /ShopLens/ImageRecognition/obj
-/ShopLens/ImageRecognition/obj
+/ShopLens/ImageRecognition/bin
 /ShopLens/VoiceRecognition/obj
 /ShopLens/VoiceRecognition/bin
 /ShopLens/VoicedText/obj
@@ -12,5 +12,5 @@
 /.idea/.idea.TOP2018
 /ShopLens/.idea
 /ShopLens/ImageRecognition/resources/train
-/ShopLens/WindowsFormsApp1/bin/Debug
-/ShopLens/WindowsFormsApp1/obj/Debug
+/ShopLens/WindowsFormsApp1/bin
+/ShopLens/WindowsFormsApp1/obj

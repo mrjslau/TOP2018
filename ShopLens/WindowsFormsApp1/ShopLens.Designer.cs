@@ -159,7 +159,7 @@ namespace WindowsFormsApp
             // 
             // capture_btn
             // 
-            this.capture_btn.Location = new System.Drawing.Point(447, 14);
+            this.capture_btn.Location = new System.Drawing.Point(447, 12);
             this.capture_btn.Name = "capture_btn";
             this.capture_btn.Size = new System.Drawing.Size(75, 23);
             this.capture_btn.TabIndex = 4;
