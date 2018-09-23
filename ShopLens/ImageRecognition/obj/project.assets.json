@@ -740,23 +740,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mjay\\.nuget\\packages\\": {},
+    "C:\\Users\\Tomas pc\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\GitProjects\\TOP2018\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
+      "projectUniqueName": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
       "projectName": "ImageRecognition",
-      "projectPath": "C:\\GitProjects\\TOP2018\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
-      "packagesPath": "C:\\Users\\Mjay\\.nuget\\packages\\",
-      "outputPath": "C:\\GitProjects\\TOP2018\\ShopLens\\ImageRecognition\\obj\\",
+      "projectPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\ImageRecognition.csproj",
+      "packagesPath": "C:\\Users\\Tomas pc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Tomas pc\\Source\\Repos\\TOP20182\\ShopLens\\ImageRecognition\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Mjay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tomas pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
