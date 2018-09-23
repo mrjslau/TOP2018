@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognition", "ImageRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoicedText", "VoicedText\VoicedText.csproj", "{C1F25CAA-7525-40CE-8F97-16C511C3C43E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "WindowsFormsApp1\WindowsFormsApp.csproj", "{0EF9942F-C7DF-4650-8201-767949EF852F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
