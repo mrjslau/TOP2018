@@ -71,8 +71,7 @@ namespace WindowsFormsApp
             var ms = new MemoryStream();
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            TfImageUtil.TensorFromBytes(ms.ToArray());
-            //Classificator.ClassifyTensor();
+            var classificationResults = Classificator.ClassifyImage(ms.ToArray());
         }
 
         private void EXIT_Click(object sender, EventArgs e)

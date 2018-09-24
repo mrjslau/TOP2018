@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TensorFlow;
 
@@ -29,6 +30,17 @@ namespace ImageRecognition
             }
 
             return classificationResults;
+        }
+
+        public static Dictionary<string, float> ClassifyImage(byte[] image)
+        {
+            var tensor = TfImageUtil.CreateTensorFromBytes(image);
+            
+            // Use default settings for now
+            var model = File.ReadAllBytes(Program.TensorFlowModelFilePath);
+            var labels = File.ReadAllLines(Program.TensorFlowLabelsFilePath);
+
+            return ClassifyTensor(tensor, model, labels);
         }
     }
 }
