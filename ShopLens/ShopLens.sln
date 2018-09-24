@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognition", "ImageRecognition\ImageRecognition.csproj", "{3B726F99-F999-40F3-AAC4-4CA6AC69B2FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceRecognition", "VoiceRecognition\VoiceRecognition.csproj", "{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoicedText", "VoicedText\VoicedText.csproj", "{C1F25CAA-7525-40CE-8F97-16C511C3C43E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLensApp", "WindowsFormsApp1\ShopLensApp.csproj", "{0EF9942F-C7DF-4650-8201-767949EF852F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,11 +24,19 @@ Global
 		{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1F25CAA-7525-40CE-8F97-16C511C3C43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF9942F-C7DF-4650-8201-767949EF852F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {80852F3F-0059-4AB5-ADB6-DC904C796445}
+		SolutionGuid = {F7A414DF-6DB9-4938-B8EC-E78429622DB1}
 	EndGlobalSection
 EndGlobal
