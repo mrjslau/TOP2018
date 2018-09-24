@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Speech.Recognition;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using VoicedText;
 
 namespace VoiceRecognition
 {
     public partial class VoiceRecognitionTest : Form
     {
         private VoiceRecognizer voiceRecognizer = new VoiceRecognizer(); //A voice recognizer.
+        private TextVoicer textVoicer = new TextVoicer(); //A text voicer.
 
         //Closing and opening statements of the voice recognizer.
         private const string openingStatement = "\nTalk to me now, please.\n";
@@ -28,6 +23,16 @@ namespace VoiceRecognition
         private const string meaningLifeCmd = "What is the meaning of life";
         private const string iLuvUCmd = "I love you";
         private const string stopRecognitionCmd = "Stop voice recognition";
+
+        //Text voicer responses.
+        private const string helloRsp = "Hello, I am a voice recognizer.\n";
+        private const string whatIsLuvRsp = "\"Baby, don't hurt me, don't hurt me, no more.\"\n";
+        private const string somethingShowRsp = "Here you go.\n";
+        private const string sayStupidRsp = "Something stupid.\n";
+        private const string howUDoingRsp = "I am doing today, yes, it's pretty simple.\n";
+        private const string meaningLifeRsp = "Everything in life has meaning, that's the meaning of life.\n";
+        private const string iLuvRsp = "I love you, too.\n";
+        private const string stopRecognitionRsp = closingStatement;
 
         private string[] voiceCommands = { helloCmd, whatIsLuvCmd, somethingShowCmd, sayStupidCmd,
             howUDoingCmd, meaningLifeCmd, iLuvUCmd, stopRecognitionCmd};
@@ -55,6 +60,7 @@ namespace VoiceRecognition
         {
             voiceRecognizer.StartVoiceRecognition();
             StartRecognitionBtn.Enabled = false;
+            textVoicer.SayMessage(openingStatement);
             CommandOutputBox.Text += openingStatement;
         }
 
@@ -65,37 +71,45 @@ namespace VoiceRecognition
 
             if (speechResult == helloCmd)
             {
-                CommandOutputBox.Text += "Hello, I am a voice recognizer.\n";
+                CommandOutputBox.Text += helloRsp;
+                textVoicer.SayMessage(helloRsp);
             }
             else if(speechResult == whatIsLuvCmd)
             {
-                CommandOutputBox.Text += "\"Baby, don't hurt me, don't hurt me, no more\".\n";
+                CommandOutputBox.Text += whatIsLuvRsp;
+                textVoicer.SayMessage(whatIsLuvRsp);
             }
             else if (speechResult == somethingShowCmd)
             {
-                CommandOutputBox.Text += "Here you go.\n";
+                CommandOutputBox.Text += somethingShowRsp;
+                textVoicer.SayMessage(somethingShowRsp);
                 MessageBox.Show("Something");
             }
             else if (speechResult == sayStupidCmd)
             {
-                CommandOutputBox.Text += "Something stupid.\n";
+                CommandOutputBox.Text += sayStupidRsp;
+                textVoicer.SayMessage(sayStupidRsp);
             }
             else if (speechResult == howUDoingCmd)
             {
-                CommandOutputBox.Text += "I am doing today, yes, it's pretty simple.\n";
+                CommandOutputBox.Text += howUDoingRsp;
+                textVoicer.SayMessage(howUDoingRsp);
             }
             else if (speechResult == meaningLifeCmd)
             {
-                CommandOutputBox.Text += "Everything in life has meaning, that's the meaning of life.\n";
+                CommandOutputBox.Text += meaningLifeRsp;
+                textVoicer.SayMessage(meaningLifeRsp);
             }
             else if (speechResult == iLuvUCmd)
             {
-                CommandOutputBox.Text += "I love you too.\n";
+                CommandOutputBox.Text += iLuvRsp;
+                textVoicer.SayMessage(iLuvRsp);
             }
             else if (speechResult == stopRecognitionCmd)
             {
                 voiceRecognizer.StopVoiceRecognition();
                 CommandOutputBox.Text += closingStatement;
+                textVoicer.SayMessage(closingStatement);
                 StartRecognitionBtn.Enabled = true;
             }
         }
