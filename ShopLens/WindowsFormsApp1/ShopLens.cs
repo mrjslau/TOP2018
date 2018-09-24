@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using ImageRecognition;
+using VoicedText;
 
 namespace WindowsFormsApp
 {
@@ -72,6 +75,15 @@ namespace WindowsFormsApp
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
             var classificationResults = Classificator.ClassifyImage(ms.ToArray());
+
+            var textVoicer = new TextVoicer();
+            var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value*100)} percent.");
+            textVoicer.SayMessage("My estimates on the image are: ");
+            foreach (var result in resultStrings)
+            {
+                textVoicer.SayMessage(result);
+                Thread.Sleep(500);
+            }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
