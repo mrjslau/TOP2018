@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoiceRecognitionWithTextVoi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoicedText", "VoicedText\VoicedText.csproj", "{C1F25CAA-7525-40CE-8F97-16C511C3C43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLensApp", "WindowsFormsApp1\ShopLensApp.csproj", "{0EF9942F-C7DF-4650-8201-767949EF852F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLensApp", "ShopLensForms\ShopLensApp.csproj", "{0EF9942F-C7DF-4650-8201-767949EF852F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

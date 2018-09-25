@@ -3,7 +3,7 @@
 
 using System.IO;
 using System.Net;
-using TensorFlowSharpCore;
+using TensorFlow;
 
 namespace ImageRecognition
 {
@@ -15,7 +15,7 @@ namespace ImageRecognition
             {
                 var imageBytes = webClient.DownloadData(url);
                 
-                return TensorFromBytes(imageBytes, destinationDataType);
+                return CreateTensorFromBytes(imageBytes, destinationDataType);
             }
         }
 
@@ -24,10 +24,10 @@ namespace ImageRecognition
         {
             var contents = File.ReadAllBytes(file);
 
-            return TensorFromBytes(contents, destinationDataType);
+            return CreateTensorFromBytes(contents, destinationDataType);
         }
 
-        private static TFTensor TensorFromBytes(byte[] contents, TFDataType destinationDataType)
+        public static TFTensor CreateTensorFromBytes(byte[] contents, TFDataType destinationDataType = TFDataType.Float)
         {
             // DecodeJpeg uses a scalar String-valued tensor as input.
             var tensor = TFTensor.CreateString(contents);

@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using VoicedText;
+using ImageRecognition;
 
-namespace WindowsFormsApp
+namespace ShopLensForms
 {
     public partial class ShopLens : Form
     {
         public ShopLens()
         {
             InitializeComponent();
-
         }
 
         private TextVoicer textVoicer = new TextVoicer();
@@ -75,7 +78,22 @@ namespace WindowsFormsApp
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            capture_picture.Image = (Bitmap)live_video.Image.Clone();
+            var image = (Bitmap) live_video.Image.Clone();
+            capture_picture.Image = image;
+            
+            var ms = new MemoryStream();
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            var classificationResults = Classificator.ClassifyImage(ms.ToArray());
+
+            var textVoicer = new TextVoicer();
+            var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value*100)} percent.");
+            textVoicer.SayMessage("My estimates on the image are: ");
+            foreach (var result in resultStrings)
+            {
+                textVoicer.SayMessage(result);
+                Thread.Sleep(500);
+            }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
