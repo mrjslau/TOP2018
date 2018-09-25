@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TextVoicer.cs" />
     <Compile Include="VoiceRecognizer.cs" />
     <Compile Include="VoiceRecognitionTest.cs">
       <SubType>Form</SubType>
