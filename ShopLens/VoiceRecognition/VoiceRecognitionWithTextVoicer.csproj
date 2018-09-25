@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0EF9942F-C7DF-4650-8201-767949EF852F}</ProjectGuid>
+    <ProjectGuid>{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>VoiceRecognition</RootNamespace>
     <AssemblyName>VoiceRecognition</AssemblyName>
