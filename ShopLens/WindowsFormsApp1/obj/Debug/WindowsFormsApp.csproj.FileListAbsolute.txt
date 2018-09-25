@@ -1,4 +1,0 @@
-C:\Users\Tomas pc\Source\Repos\TOP2018\ShopLens\WindowsFormsApp1\obj\Debug\WindowsFormsApp.csprojAssemblyReference.cache
-C:\Users\Tomas pc\Source\Repos\TOP2018\ShopLens\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
-C:\Users\Tomas pc\Source\Repos\TOP2018\ShopLens\WindowsFormsApp1\obj\Debug\WindowsFormsApp.csproj.GenerateResource.cache
-C:\Users\Tomas pc\Source\Repos\TOP2018\ShopLens\WindowsFormsApp1\obj\Debug\WindowsFormsApp.csproj.CoreCompileInputs.cache

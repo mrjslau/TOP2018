@@ -68,9 +68,6 @@
     </Compile>
     <Compile Include="LaunchTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ShopLens.resx">
-      <DependentUpon>ShopLens.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -84,7 +81,6 @@
     <EmbeddedResource Include="VoiceRecognitionTest.resx">
       <DependentUpon>VoiceRecognitionTest.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -97,9 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shopLensLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImageRecognition\ImageRecognition.csproj">

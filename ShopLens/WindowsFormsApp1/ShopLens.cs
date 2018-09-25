@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using AForge;
-using AForge.Video;
-using AForge.Video.DirectShow;
-using ImageRecognition;
 using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
