@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -96,6 +96,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shopLensLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageRecognition\ImageRecognition.csproj">
+      <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
+      <Name>ImageRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoicedText\VoicedText.csproj">
+      <Project>{C1F25CAA-7525-40CE-8F97-16C511C3C43E}</Project>
+      <Name>VoicedText</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
