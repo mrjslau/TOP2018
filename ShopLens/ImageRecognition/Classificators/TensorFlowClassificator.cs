@@ -3,11 +3,17 @@ using System.IO;
 using System.Linq;
 using TensorFlow;
 
-namespace ImageRecognition
+namespace ImageRecognition.Classificators
 {
-    public static class Classificator
+    public class TensorFlowClassificator : IImageClassifying
     {
-        public static Dictionary<string, float> ClassifyTensor(TFTensor tensor, byte[] model, IReadOnlyList<string> labels)
+        private static string TensorFlowLabelsFilePath { get; } =
+            Path.Combine("resources", "model", "labels.txt");
+
+        private static string TensorFlowModelFilePath { get; } =
+            Path.Combine("resources", "model", "model.pb");
+        
+        private Dictionary<string, float> ClassifyTensor(TFTensor tensor, byte[] model, IReadOnlyList<string> labels)
         {
             var graph = new TFGraph();
             graph.Import(model);
@@ -32,13 +38,13 @@ namespace ImageRecognition
             return classificationResults;
         }
 
-        public static Dictionary<string, float> ClassifyImage(byte[] image)
+        public Dictionary<string, float> ClassifyImage(byte[] image)
         {
             var tensor = TfImageUtil.CreateTensorFromBytes(image);
             
             // Use default settings for now
-            var model = File.ReadAllBytes(Program.TensorFlowModelFilePath);
-            var labels = File.ReadAllLines(Program.TensorFlowLabelsFilePath);
+            var model = File.ReadAllBytes(TensorFlowModelFilePath);
+            var labels = File.ReadAllLines(TensorFlowLabelsFilePath);
 
             return ClassifyTensor(tensor, model, labels);
         }

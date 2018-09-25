@@ -8,6 +8,7 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using VoicedText;
 using ImageRecognition;
+using ImageRecognition.Classificators;
 
 namespace ShopLensForms
 {
@@ -18,13 +19,14 @@ namespace ShopLensForms
             InitializeComponent();
         }
 
-        private TextVoicer textVoicer = new TextVoicer();
-        private FilterInfoCollection CaptureDevices;
-        private VideoCaptureDevice videoSource;
+        private TextVoicer _textVoicer = new TextVoicer();
+        private FilterInfoCollection _captureDevices;
+        private VideoCaptureDevice _videoSource;
+        private IImageClassifying _imageClassifying = new TensorFlowClassificator();
 
         //Messages that the text voicer says.
-        private const string helloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
-        private const string seeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
+        private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
+        private const string SeeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
 
         private void ShopLens_Load(object sender, EventArgs e)
         {
@@ -34,27 +36,27 @@ namespace ShopLensForms
         private void ShopLens_Shown(object sender, EventArgs e)
         {
             //Greet the user.
-            textVoicer.SayMessage(helloMessage);
+            _textVoicer.SayMessage(HelloMessage);
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
         {
             MainWindow.Visible = true;
-            CaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo Device in CaptureDevices)
+            _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo device in _captureDevices)
             {
-                webcam_combobox.Items.Add(Device.Name);
+                webcam_combobox.Items.Add(device.Name);
             }
             //comboBox1.SelectedIndex = 0;
-            videoSource = new VideoCaptureDevice();
+            _videoSource = new VideoCaptureDevice();
         }
 
         private void START_Click(object sender, EventArgs e)
         {
-            videoSource = new VideoCaptureDevice(CaptureDevices[webcam_combobox.SelectedIndex].MonikerString);
-            videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
-            videoSource.Start();
-            textVoicer.SayMessage(seeMessage);
+            _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
+            _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
+            _videoSource.Start();
+            _textVoicer.SayMessage(SeeMessage);
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -64,7 +66,7 @@ namespace ShopLensForms
 
         private void RESET_Click(object sender, EventArgs e)
         {
-            videoSource.Stop();
+            _videoSource.Stop();
             live_video.Image = null;
             live_video.Invalidate();
             capture_picture.Image = null;
@@ -73,7 +75,7 @@ namespace ShopLensForms
 
         private void PAUSE_Click(object sender, EventArgs e)
         {
-            videoSource.Stop();
+            _videoSource.Stop();
         }
 
         private void CAPTURE_Click(object sender, EventArgs e)
@@ -84,23 +86,22 @@ namespace ShopLensForms
             var ms = new MemoryStream();
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            var classificationResults = Classificator.ClassifyImage(ms.ToArray());
+            var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
 
-            var textVoicer = new TextVoicer();
             var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value*100)} percent.");
-            textVoicer.SayMessage("My estimates on the image are: ");
+            _textVoicer.SayMessage("My estimates on the image are: ");
             foreach (var result in resultStrings)
             {
-                textVoicer.SayMessage(result);
+                _textVoicer.SayMessage(result);
                 Thread.Sleep(500);
             }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
         {
-            if(videoSource.IsRunning == true)
+            if(_videoSource.IsRunning == true)
             {
-                videoSource.Stop();
+                _videoSource.Stop();
             }
             Application.Exit(null);
         }

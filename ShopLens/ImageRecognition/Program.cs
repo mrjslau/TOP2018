@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using ImageRecognition.Classificators;
 using TensorFlow;
 
 namespace ImageRecognition
@@ -10,29 +12,21 @@ namespace ImageRecognition
     {
         public static string TestImageFilePath { get; private set; } =
             Path.Combine("resources", "test", "1.jpg");
-
-        public static string TensorFlowLabelsFilePath { get; private set; } =
-            Path.Combine("resources", "model", "labels.txt");
-
-        public static string TensorFlowModelFilePath { get; private set; } =
-            Path.Combine("resources", "model", "model.pb");
         
         static void Main(string[] args)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var model = File.ReadAllBytes(TensorFlowModelFilePath);
-            var labels = File.ReadAllLines(TensorFlowLabelsFilePath);
-
             // Handle input arguments
-            TFTensor tensor;
+            byte[] image;
+            
             if (args.Length == 0)
             {
                 Console.WriteLine($"Using file: {TestImageFilePath}");                 
                 try
                 {
-                    tensor = TfImageUtil.CreateTensorFromImageFile(TestImageFilePath);
+                    image = File.ReadAllBytes(TestImageFilePath);
                 }
                 catch (Exception e)
                 {
@@ -46,7 +40,10 @@ namespace ImageRecognition
                 Console.WriteLine($"Using url from args: {possibleUrl}");
                 try
                 {
-                    tensor = TfImageUtil.CreateTensorFromImageUrl(possibleUrl);
+                    using (var webClient = new WebClient())
+                    {
+                        image = webClient.DownloadData(possibleUrl);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -55,8 +52,8 @@ namespace ImageRecognition
                 }
             }
 
-            
-            var classificationResults = Classificator.ClassifyTensor(tensor, model, labels);
+            // Classify
+            var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
 
             // Print
             stopwatch.Stop();
