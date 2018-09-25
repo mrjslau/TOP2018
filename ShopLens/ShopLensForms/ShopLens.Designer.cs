@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp
+namespace ShopLensForms
 {
     partial class ShopLens
     {
@@ -68,7 +68,7 @@ namespace WindowsFormsApp
             // 
             // Logo
             // 
-            this.Logo.Image = global::WindowsFormsApp.Properties.Resources.shopLensLogo;
+            this.Logo.Image = global::ShopLensForms.Properties.Resources.shopLensLogo;
             this.Logo.Location = new System.Drawing.Point(203, 63);
             this.Logo.Name = "Logo";
             this.Logo.Size = new System.Drawing.Size(344, 284);

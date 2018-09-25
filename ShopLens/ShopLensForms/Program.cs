@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp
+namespace ShopLensForms
 {
     static class Program
     {

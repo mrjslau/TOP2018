@@ -8,16 +8,14 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using VoicedText;
 using ImageRecognition;
-using VoicedText;
 
-namespace WindowsFormsApp
+namespace ShopLensForms
 {
     public partial class ShopLens : Form
     {
         public ShopLens()
         {
             InitializeComponent();
-
         }
 
         private TextVoicer textVoicer = new TextVoicer();
