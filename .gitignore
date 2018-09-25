@@ -2,7 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/ShopLens/.vs/ShopLens/v15
+/ShopLens/.vs
 /ShopLens/ImageRecognition/obj
 /ShopLens/ImageRecognition/bin
 /ShopLens/VoiceRecognition/obj
@@ -12,5 +12,6 @@
 /.idea/.idea.TOP2018
 /ShopLens/.idea
 /ShopLens/ImageRecognition/resources/train
+/ShopLens/WindowsFormsApp1/.vs
 /ShopLens/WindowsFormsApp1/bin
 /ShopLens/WindowsFormsApp1/obj
