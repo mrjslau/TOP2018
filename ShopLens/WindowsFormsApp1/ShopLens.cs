@@ -6,6 +6,10 @@ using AForge;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using ImageRecognition;
+using System.Windows.Forms;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using VoicedText;
 
 namespace WindowsFormsApp
 {
@@ -17,12 +21,23 @@ namespace WindowsFormsApp
 
         }
 
+        private TextVoicer textVoicer = new TextVoicer();
         private FilterInfoCollection CaptureDevices;
         private VideoCaptureDevice videoSource;
 
+        //Messages that the text voicer says.
+        private const string helloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
+        private const string seeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
+
         private void ShopLens_Load(object sender, EventArgs e)
         {
-            
+        }
+
+        //This method is called when the Form is shown to the user.
+        private void ShopLens_Shown(object sender, EventArgs e)
+        {
+            //Greet the user.
+            textVoicer.SayMessage(helloMessage);
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
@@ -31,7 +46,7 @@ namespace WindowsFormsApp
             CaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo Device in CaptureDevices)
             {
-                comboBox1.Items.Add(Device.Name);
+                webcam_combobox.Items.Add(Device.Name);
             }
             //comboBox1.SelectedIndex = 0;
             videoSource = new VideoCaptureDevice();
@@ -39,23 +54,24 @@ namespace WindowsFormsApp
 
         private void START_Click(object sender, EventArgs e)
         {
-            videoSource = new VideoCaptureDevice(CaptureDevices[comboBox1.SelectedIndex].MonikerString);
+            videoSource = new VideoCaptureDevice(CaptureDevices[webcam_combobox.SelectedIndex].MonikerString);
             videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
             videoSource.Start();
+            textVoicer.SayMessage(seeMessage);
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
+            live_video.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
         private void RESET_Click(object sender, EventArgs e)
         {
             videoSource.Stop();
-            pictureBox1.Image = null;
-            pictureBox1.Invalidate();
-            pictureBox2.Image = null;
-            pictureBox2.Invalidate();
+            live_video.Image = null;
+            live_video.Invalidate();
+            capture_picture.Image = null;
+            capture_picture.Invalidate();
         }
 
         private void PAUSE_Click(object sender, EventArgs e)
@@ -65,13 +81,7 @@ namespace WindowsFormsApp
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            var image = (Bitmap) pictureBox1.Image.Clone();
-            pictureBox2.Image = image;
-            
-            var ms = new MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-            var classificationResults = Classificator.ClassifyImage(ms.ToArray());
+            capture_picture.Image = (Bitmap)live_video.Image.Clone();
         }
 
         private void EXIT_Click(object sender, EventArgs e)
@@ -83,7 +93,12 @@ namespace WindowsFormsApp
             Application.Exit(null);
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void PictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ShopLens_Load_1(object sender, EventArgs e)
         {
 
         }
