@@ -53,10 +53,17 @@ namespace ShopLensForms
 
         private void START_Click(object sender, EventArgs e)
         {
-            _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
-            _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
-            _videoSource.Start();
-            _textVoicer.SayMessage(SeeMessage);
+            if (webcam_combobox.SelectedItem != null)
+            {
+                _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
+                _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
+                _videoSource.Start();
+                _textVoicer.SayMessage(SeeMessage);
+            }
+            else
+            {
+                MessageBox.Show("Please choose the webcam!");
+            }
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
@@ -80,20 +87,27 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            var image = (Bitmap) live_video.Image.Clone();
-            capture_picture.Image = image;
-            
-            var ms = new MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-            var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-            var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value*100)} percent.");
-            _textVoicer.SayMessage("My estimates on the image are: ");
-            foreach (var result in resultStrings)
+            if (live_video.Image != null)
             {
-                _textVoicer.SayMessage(result);
-                Thread.Sleep(500);
+                var image = (Bitmap)live_video.Image.Clone();
+                capture_picture.Image = image;
+
+                var ms = new MemoryStream();
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
+                _textVoicer.SayMessage("My estimates on the image are: ");
+                foreach (var result in resultStrings)
+                {
+                    _textVoicer.SayMessage(result);
+                    Thread.Sleep(500);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The webcam is turned off!");
             }
         }
 
