@@ -57,27 +57,21 @@ namespace ShopLensForms
         {
             if (live_video.Image != null)
             {
-                lock (this)  //I wrote this line and it worked one time, but then on the next try it stopped working.
+                Bitmap image = (Bitmap)live_video.Image.Clone();
+                capture_picture.Image = (Bitmap)live_video.Image.Clone();
+
+                var ms = new MemoryStream();
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
+                _textVoicer.SayMessage("My estimates on the image are: ");
+                foreach (var result in resultStrings)
                 {
-                    var image = (Bitmap)live_video.Image.Clone();
-                    //TO DO: this line produces an error, it needs fixing:
-                    //https://trello.com/c/Ggnk0d5e/28-bug-investigate-threading-issues
-                    //capture_picture.Image = image;
-
-                    var ms = new MemoryStream();
-                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                    var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-                    var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                    _textVoicer.SayMessage("My estimates on the image are: ");
-                    foreach (var result in resultStrings)
-                    {
-                        _textVoicer.SayMessage(result);
-                        Thread.Sleep(500);
-                    }
+                    _textVoicer.SayMessage(result);
+                    Thread.Sleep(500);
                 }
-
             }
             else
             {
@@ -133,7 +127,7 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void EXIT_Click(object sender, EventArgs e)
