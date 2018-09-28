@@ -1,4 +1,5 @@
 ﻿using ShopLensForms;
+using System;
 using System.Speech.Recognition;
 using WindowsFormsApp.VoiceRecognizers;
 
@@ -29,7 +30,7 @@ namespace VoiceRecognition
         //Adds a new grammar to the speech recognizer engine
         //and returns a command's grammar object so that it could be possible
         //to add a specific event for this command.
-        public object AddCommand(string command)
+        public void AddCommand(string command, Action<object, EventArgs> CommandRecognized_WhatIsThis)
         {
             //Adds a string of phrases to be distinguished by the voice recognizer.
             Choices commandChoices = new Choices();
@@ -38,10 +39,9 @@ namespace VoiceRecognition
             GrammarBuilder grammarBuilder = new GrammarBuilder();
             grammarBuilder.Append(commandChoices);
             Grammar newGrammar = new Grammar(grammarBuilder);
+            newGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_WhatIsThis);
 
             speechRecognizer.LoadGrammarAsync(newGrammar); //Loads the phrases asynchronously.
-
-            return newGrammar;
         }
     }
 }

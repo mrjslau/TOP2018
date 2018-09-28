@@ -28,7 +28,6 @@ namespace ShopLensForms
 
         //Commands and their respective grammar objects.
         private const string whatIsThisCmd = "What is this";
-        private Grammar whatIsThisGrammar;
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
@@ -44,15 +43,16 @@ namespace ShopLensForms
         {
             //Register commands to voice recognizer and register grammar events to methods
             //while the form loads.
-            whatIsThisGrammar = (Grammar)_voiceRecognizer.AddCommand(whatIsThisCmd);
-            whatIsThisGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_WhatIsThis);
+            _voiceRecognizer.AddCommand(whatIsThisCmd, CommandRecognized_WhatIsThis);
             _voiceRecognizer.StartVoiceRecognition();
 
             //Greet the user.
             _textVoicer.SayMessage(HelloMessage);
         }
 
+
         //Calls method when someons says "what is this".
+        [STAThread]
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
             if (live_video.Image != null)
@@ -60,7 +60,9 @@ namespace ShopLensForms
                 lock (this)  //I wrote this line and it worked one time, but then on the next try it stopped working.
                 {
                     var image = (Bitmap)live_video.Image.Clone();
-                    capture_picture.Image = image;
+                    //TO DO: this line produces an error, it needs fixing:
+                    //
+                    //capture_picture.Image = image;
 
                     var ms = new MemoryStream();
                     image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -131,7 +133,7 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void EXIT_Click(object sender, EventArgs e)
