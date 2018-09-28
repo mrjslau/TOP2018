@@ -32,9 +32,9 @@ namespace ShopLensForms
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
-        private const string SeeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
+        private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
 
-        
+
         private void ShopLens_Load(object sender, EventArgs e)
         {
         }
@@ -57,21 +57,25 @@ namespace ShopLensForms
         {
             if (live_video.Image != null)
             {
-                var image = (Bitmap)live_video.Image.Clone();
-                capture_picture.Image = image;
-
-                var ms = new MemoryStream();
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                _textVoicer.SayMessage("My estimates on the image are: ");
-                foreach (var result in resultStrings)
+                lock (this)  //I wrote this line and it worked one time, but then on the next try it stopped working.
                 {
-                    _textVoicer.SayMessage(result);
-                    Thread.Sleep(500);
+                    var image = (Bitmap)live_video.Image.Clone();
+                    capture_picture.Image = image;
+
+                    var ms = new MemoryStream();
+                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                    var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                    var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
+                    _textVoicer.SayMessage("My estimates on the image are: ");
+                    foreach (var result in resultStrings)
+                    {
+                        _textVoicer.SayMessage(result);
+                        Thread.Sleep(500);
+                    }
                 }
+
             }
             else
             {
@@ -132,7 +136,7 @@ namespace ShopLensForms
 
         private void EXIT_Click(object sender, EventArgs e)
         {
-            if(_videoSource.IsRunning == true)
+            if (_videoSource.IsRunning == true)
             {
                 _videoSource.Stop();
             }

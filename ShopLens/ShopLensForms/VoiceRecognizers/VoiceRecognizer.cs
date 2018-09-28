@@ -1,9 +1,10 @@
 ﻿using ShopLensForms;
 using System.Speech.Recognition;
+using WindowsFormsApp.VoiceRecognizers;
 
 namespace VoiceRecognition
 {
-    class VoiceRecognizer
+    class VoiceRecognizer : IRecognizer
     {
         private SpeechRecognitionEngine speechRecognizer;  //The voice recognizer.
 
