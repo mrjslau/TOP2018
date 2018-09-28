@@ -31,7 +31,7 @@ namespace VoiceRecognition
         private const string sayStupidRsp = "Something stupid.\n";
         private const string howUDoingRsp = "I am doing today, yes, it's pretty simple.\n";
         private const string meaningLifeRsp = "Everything in life has meaning, that's the meaning of life.\n";
-        private const string iLuvRsp = "I love you, too.\n";
+        private const string iLuvURsp = "I love you, too.\n";
         private const string stopRecognitionRsp = closingStatement;
 
         private string[] voiceCommands = { helloCmd, whatIsLuvCmd, somethingShowCmd, sayStupidCmd,
@@ -68,48 +68,49 @@ namespace VoiceRecognition
         public void SpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             string speechResult = e.Result.Text;
+            string voicedResponse = "";
 
-            if (speechResult == helloCmd)
+            switch (speechResult)
             {
-                CommandOutputBox.Text += helloRsp;
-                textVoicer.SayMessage(helloRsp);
+                case (helloCmd):
+                    voicedResponse = helloRsp;
+                    break;
+
+                case (whatIsLuvCmd):
+                    voicedResponse = whatIsLuvRsp;
+                    break;
+
+                case (somethingShowCmd):
+                    voicedResponse = somethingShowRsp;
+                    break;
+
+                case (sayStupidCmd):
+                    voicedResponse = sayStupidRsp;
+                    break;
+
+                case (howUDoingCmd):
+                    voicedResponse = howUDoingRsp;
+                    break;
+
+                case (meaningLifeCmd):
+                    voicedResponse = meaningLifeRsp;
+                    break;
+
+                case (iLuvUCmd):
+                    voicedResponse = iLuvURsp;
+                    break;
+
+                case (stopRecognitionCmd):
+                    voicedResponse = closingStatement;
+                    break;
             }
-            else if(speechResult == whatIsLuvCmd)
-            {
-                CommandOutputBox.Text += whatIsLuvRsp;
-                textVoicer.SayMessage(whatIsLuvRsp);
-            }
-            else if (speechResult == somethingShowCmd)
-            {
-                CommandOutputBox.Text += somethingShowRsp;
-                textVoicer.SayMessage(somethingShowRsp);
-                MessageBox.Show("Something");
-            }
-            else if (speechResult == sayStupidCmd)
-            {
-                CommandOutputBox.Text += sayStupidRsp;
-                textVoicer.SayMessage(sayStupidRsp);
-            }
-            else if (speechResult == howUDoingCmd)
-            {
-                CommandOutputBox.Text += howUDoingRsp;
-                textVoicer.SayMessage(howUDoingRsp);
-            }
-            else if (speechResult == meaningLifeCmd)
-            {
-                CommandOutputBox.Text += meaningLifeRsp;
-                textVoicer.SayMessage(meaningLifeRsp);
-            }
-            else if (speechResult == iLuvUCmd)
-            {
-                CommandOutputBox.Text += iLuvRsp;
-                textVoicer.SayMessage(iLuvRsp);
-            }
-            else if (speechResult == stopRecognitionCmd)
+
+            CommandOutputBox.Text += voicedResponse;  //Write the response and voice it to the user.
+            textVoicer.SayMessage(voicedResponse);
+  
+            if (speechResult == stopRecognitionCmd)  //Need to stop asynchronous voice recognition.
             {
                 voiceRecognizer.StopVoiceRecognition();
-                CommandOutputBox.Text += closingStatement;
-                textVoicer.SayMessage(closingStatement);
                 StartRecognitionBtn.Enabled = true;
             }
         }

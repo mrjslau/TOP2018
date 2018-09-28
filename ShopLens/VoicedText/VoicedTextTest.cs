@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using VoicedText.TextVoicers;
 
 namespace VoicedText
 {
@@ -26,6 +27,7 @@ namespace VoicedText
         private void VoicedTextTest_Shown(object sender, EventArgs e)
         {
             //Text voicer says hello and mentions the ability to choose voice.
+            textVoicer.SetVolume(textVoicer.MaxVolumeValue);
             textVoicer.SayMessage(textVoicer.HelloMessageText);
             textVoicer.SayMessage(textVoicer.ChooseMessageSpeedText);
         }
@@ -53,9 +55,9 @@ namespace VoicedText
             }
 
             if (!String.IsNullOrEmpty(inputMessage))
-                {
-                    textVoicer.SayMessage(inputMessage);
-                }
+            {
+                textVoicer.SayMessage(inputMessage);
+            }
         }
 
         private void VoiceSpeedGrpBox_Enter(object sender, EventArgs e)
