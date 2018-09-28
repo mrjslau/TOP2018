@@ -6,8 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
-using VoicedText;
-using ImageRecognition;
+using VoicedText.TextVoicers;
 using ImageRecognition.Classificators;
 
 namespace ShopLensForms
