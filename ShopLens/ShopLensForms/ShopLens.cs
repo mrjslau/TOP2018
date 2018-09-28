@@ -61,7 +61,7 @@ namespace ShopLensForms
                 {
                     var image = (Bitmap)live_video.Image.Clone();
                     //TO DO: this line produces an error, it needs fixing:
-                    //
+                    //https://trello.com/c/Ggnk0d5e/28-bug-investigate-threading-issues
                     //capture_picture.Image = image;
 
                     var ms = new MemoryStream();
