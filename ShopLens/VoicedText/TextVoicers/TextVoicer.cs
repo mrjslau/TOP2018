@@ -6,22 +6,14 @@ namespace VoicedText.TextVoicers
     {
         private SpeechSynthesizer textVoicer;
         private PromptBuilder messageBuilder; //Used to form a sequence of sentences in various speeds, voices.
+        private PromptStyle voicerSpeed;
 
         public string HelloMessageText { get; private set; }
         public string ChooseMessageSpeedText { get; private set; }
 
         //The speed at which the voicer says things.
         //By default the speed is normal.
-        private int speedOfVoicer;
-        public int SpeedOfVoicer
-        {
-            get { return speedOfVoicer; }
-            set { speedOfVoicer = value; }
-        }
-
-        //Should we use auto properties instead (the IDE suggests to do so, 
-        //but that first capital letter naming convention, man)?
-        //public int SpeedOfVoicer { get; set; }
+        public int SpeedOfVoicer { get; set; }
 
         public int MaxVolumeValue { get; set; }
 
@@ -34,7 +26,7 @@ namespace VoicedText.TextVoicers
 
             HelloMessageText = "Hello, I am a text voicer. Please, write something nice in the input field for me to say.";
             ChooseMessageSpeedText = "You can also choose the speed at which I talk.";
-            speedOfVoicer = 0; //Default voice speed.
+            SpeedOfVoicer = 0; //Default voice speed.
         }
 
         public void SetVolume(int newVolume)
@@ -42,30 +34,36 @@ namespace VoicedText.TextVoicers
             textVoicer.Volume = newVolume;
         }
 
+        public void SetSpeed(int speedOfVoicer)
+        {
+            switch (speedOfVoicer)
+            {
+                case -1: //Slow speed.
+                    voicerSpeed = (new PromptStyle(PromptRate.ExtraSlow));
+                    break;
+
+                case 0: //Normal speed.
+                    voicerSpeed = (new PromptStyle(PromptRate.Medium));
+                    break;
+
+                case 1: //Fast speed.
+                    voicerSpeed = (new PromptStyle(PromptRate.ExtraFast));
+                    break;
+            }
+
+        }
+
         //Voices any message at a desired speed.
         public void SayMessage(string message)
         {
-            if (SpeedOfVoicer == 0) //Normal speed.
-            {
-                textVoicer.SpeakAsync(message); //The voicer will speak asynchronously so that it wouldn't "hang" the main Thread.
+            SetSpeed(SpeedOfVoicer);
 
-            }
-            else if (SpeedOfVoicer == -1) //Slow speed.
-            {
-                messageBuilder.StartStyle(new PromptStyle(PromptRate.ExtraSlow));
-                messageBuilder.AppendText(message);
-                messageBuilder.EndStyle();
-                textVoicer.SpeakAsync(messageBuilder);
-            }
-            else if (SpeedOfVoicer == 1) //Fast speed.
-            {
-                messageBuilder.StartStyle(new PromptStyle(PromptRate.Fast));
-                messageBuilder.AppendText(message);
-                messageBuilder.EndStyle();
-                textVoicer.SpeakAsync(messageBuilder);
-            }
-            
-                messageBuilder.ClearContent(); //Removes sentences that have already been appended.
+            messageBuilder.StartStyle(voicerSpeed);
+            messageBuilder.AppendText(message);
+            messageBuilder.EndStyle();
+            textVoicer.SpeakAsync(messageBuilder);
+
+            messageBuilder.ClearContent(); //Removes sentences that have already been appended.
         }
 
     }

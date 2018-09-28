@@ -55,9 +55,9 @@ namespace VoicedText
             }
 
             if (!String.IsNullOrEmpty(inputMessage))
-                {
-                    textVoicer.SayMessage(inputMessage);
-                }
+            {
+                textVoicer.SayMessage(inputMessage);
+            }
         }
 
         private void VoiceSpeedGrpBox_Enter(object sender, EventArgs e)
