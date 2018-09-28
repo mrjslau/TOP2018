@@ -8,6 +8,8 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using VoicedText.TextVoicers;
 using ImageRecognition.Classificators;
+using System.Speech.Recognition;
+using VoiceRecognition;
 
 namespace ShopLensForms
 {
@@ -19,14 +21,20 @@ namespace ShopLensForms
         }
 
         private TextVoicer _textVoicer = new TextVoicer();
+        private VoiceRecognizer _voiceRecognizer = new VoiceRecognizer();
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
         private IImageClassifying _imageClassifying = new TensorFlowClassificator();
+
+        //Commands and their respective grammar objects.
+        private const string whatIsThisCmd = "What is this";
+        private Grammar whatIsThisGrammar;
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "I can see your world now. Show me an item and say: what is this. I will identify the item for you.";
 
+        
         private void ShopLens_Load(object sender, EventArgs e)
         {
         }
@@ -34,8 +42,41 @@ namespace ShopLensForms
         //This method is called when the Form is shown to the user.
         private void ShopLens_Shown(object sender, EventArgs e)
         {
+            //Register commands to voice recognizer and register grammar events to methods
+            //while the form loads.
+            whatIsThisGrammar = (Grammar)_voiceRecognizer.AddCommand(whatIsThisCmd);
+            whatIsThisGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_WhatIsThis);
+            _voiceRecognizer.StartVoiceRecognition();
+
             //Greet the user.
             _textVoicer.SayMessage(HelloMessage);
+        }
+
+        //Calls method when someons says "what is this".
+        private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
+        {
+            if (live_video.Image != null)
+            {
+                var image = (Bitmap)live_video.Image.Clone();
+                capture_picture.Image = image;
+
+                var ms = new MemoryStream();
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
+                _textVoicer.SayMessage("My estimates on the image are: ");
+                foreach (var result in resultStrings)
+                {
+                    _textVoicer.SayMessage(result);
+                    Thread.Sleep(500);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The webcam is turned off!");
+            }
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
@@ -86,28 +127,7 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
-            if (live_video.Image != null)
-            {
-                var image = (Bitmap)live_video.Image.Clone();
-                capture_picture.Image = image;
 
-                var ms = new MemoryStream();
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                _textVoicer.SayMessage("My estimates on the image are: ");
-                foreach (var result in resultStrings)
-                {
-                    _textVoicer.SayMessage(result);
-                    Thread.Sleep(500);
-                }
-            }
-            else
-            {
-                MessageBox.Show("The webcam is turned off!");
-            }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
