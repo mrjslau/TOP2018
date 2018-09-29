@@ -122,9 +122,7 @@ namespace ShopLensForms
             {
                 //This line of code causes trouble when trying to identify items multiple times.
                 var image = (Image)live_video.Image.Clone();
-
-                //This line of code also causes trouble! Uncomment at your own risk!
-                //capture_picture.Image = image;
+                capture_picture.Image = image;
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -144,8 +142,6 @@ namespace ShopLensForms
                 {
                     _textVoicer.SayMessage(mostConfidentResult);
                 }
-
-                Thread.Sleep(500);  //Why is this here?
             }
             else
             {
