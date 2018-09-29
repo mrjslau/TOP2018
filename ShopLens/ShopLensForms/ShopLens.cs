@@ -57,8 +57,8 @@ namespace ShopLensForms
         {
             if (live_video.Image != null)
             {
-                Bitmap image = (Bitmap)live_video.Image.Clone();
-                capture_picture.Image = (Bitmap)live_video.Image.Clone();
+                var image = (Image)live_video.Image.Clone();
+                capture_picture.Image = image;
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -66,12 +66,17 @@ namespace ShopLensForms
                 var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
 
                 var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                _textVoicer.SayMessage("My estimates on the image are: ");
-                foreach (var result in resultStrings)
-                {
-                    _textVoicer.SayMessage(result);
-                    Thread.Sleep(500);
-                }
+                _textVoicer.SayMessage("This is");
+
+                //Order by probability values and take the first label name.
+                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().ToString();
+
+                //Format string so only the name of the product is said.
+                string[] results = mostConfidentResult.Split(',');
+
+                _textVoicer.SayMessage(results[0]);
+
+                Thread.Sleep(500);
             }
             else
             {
@@ -127,7 +132,33 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
+            if (live_video.Image != null)
+            {
+                var image = (Image)live_video.Image.Clone();
+                capture_picture.Image = image;
 
+                var ms = new MemoryStream();
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
+                _textVoicer.SayMessage("This is");
+
+                //Order by probability values and take the first label name.
+                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().ToString();
+
+                //Format string so only the name of the product is said.
+                string[] results = mostConfidentResult.Split(',');
+
+                _textVoicer.SayMessage(results[0]);
+
+                Thread.Sleep(500);
+            }
+            else
+            {
+                MessageBox.Show("The webcam is turned off!");
+            }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
