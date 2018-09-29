@@ -32,6 +32,7 @@ namespace ShopLensForms
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
+        private const string noLblError = "ERROR: no label names provided to product recognition model.";
 
 
         private void ShopLens_Load(object sender, EventArgs e)
@@ -51,32 +52,21 @@ namespace ShopLensForms
         }
 
 
-        //Calls method when someons says "what is this".
+        /// <summary> Calls method when someons says "what is this" </summary>
+        /// <remarks>
+        /// This if statement makes sure the <see cref="CAPTURE_Click"/>
+        /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699
+        /// </remarks>
+        [STAThread]
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            if (live_video.Image != null)
+            if (InvokeRequired)
             {
-                Bitmap image = (Bitmap)live_video.Image.Clone();
-                capture_picture.Invoke((MethodInvoker) delegate{ capture_picture.Image = image; });
-
-                var ms = new MemoryStream();
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                image.Dispose();
-
-                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                _textVoicer.SayMessage("My estimates on the image are: ");
-                foreach (var result in resultStrings)
-                {
-                    _textVoicer.SayMessage(result);
-                    Thread.Sleep(500);
-                }
+                BeginInvoke(new MethodInvoker(() => CAPTURE_Click(sender, e)));
             }
             else
             {
-                MessageBox.Show("The webcam is turned off!");
+                CAPTURE_Click(sender, e);
             }
         }
 
@@ -128,7 +118,35 @@ namespace ShopLensForms
 
         private void CAPTURE_Click(object sender, EventArgs e)
         {
+            if (live_video.Image != null)
+            {
+                //This line of code causes trouble when trying to identify items multiple times.
+                var image = (Image)live_video.Image.Clone();
+                capture_picture.Image = image;
 
+                var ms = new MemoryStream();
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+
+                _textVoicer.SayMessage("This is");
+
+                //Order by probability values and take the first label name.
+                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+
+                if (mostConfidentResult == null) 
+                {
+                    _textVoicer.SayMessage(noLblError);
+                }
+                else
+                {
+                    _textVoicer.SayMessage(mostConfidentResult);
+                }
+            }
+            else
+            {
+                MessageBox.Show("The webcam is turned off!");
+            }
         }
 
         private void EXIT_Click(object sender, EventArgs e)
