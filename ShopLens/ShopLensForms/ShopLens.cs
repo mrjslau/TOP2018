@@ -52,16 +52,17 @@ namespace ShopLensForms
 
 
         //Calls method when someons says "what is this".
-        [STAThread]
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
             if (live_video.Image != null)
             {
                 Bitmap image = (Bitmap)live_video.Image.Clone();
-                capture_picture.Image = (Bitmap)live_video.Image.Clone();
+                capture_picture.Invoke((MethodInvoker) delegate{ capture_picture.Image = image; });
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                image.Dispose();
 
                 var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
 
