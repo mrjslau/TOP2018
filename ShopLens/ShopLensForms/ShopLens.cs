@@ -32,6 +32,7 @@ namespace ShopLensForms
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
+        private const string noLblError = "ERROR: no label names provided to product recognition model.";
 
 
         private void ShopLens_Load(object sender, EventArgs e)
@@ -55,33 +56,7 @@ namespace ShopLensForms
         [STAThread]
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            if (live_video.Image != null)
-            {
-                var image = (Image)live_video.Image.Clone();
-                capture_picture.Image = image;
-
-                var ms = new MemoryStream();
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
-
-                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
-                _textVoicer.SayMessage("This is");
-
-                //Order by probability values and take the first label name.
-                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().ToString();
-
-                //Format string so only the name of the product is said.
-                string[] results = mostConfidentResult.Split(',');
-
-                _textVoicer.SayMessage(results[0]);
-
-                Thread.Sleep(500);
-            }
-            else
-            {
-                MessageBox.Show("The webcam is turned off!");
-            }
+            CAPTURE_Click(sender, e);
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
@@ -134,26 +109,32 @@ namespace ShopLensForms
         {
             if (live_video.Image != null)
             {
+                //This line of code causes trouble when trying to identify items multiple times.
                 var image = (Image)live_video.Image.Clone();
-                capture_picture.Image = image;
+
+                //This line of code also causes trouble! Uncomment at your own risk!
+                //capture_picture.Image = image;
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
                 var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
 
-                var resultStrings = classificationResults.Select(pair => $"{pair.Key} - {(int)(pair.Value * 100)} percent.");
                 _textVoicer.SayMessage("This is");
 
                 //Order by probability values and take the first label name.
-                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().ToString();
+                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
 
-                //Format string so only the name of the product is said.
-                string[] results = mostConfidentResult.Split(',');
+                if (mostConfidentResult == null) 
+                {
+                    _textVoicer.SayMessage(noLblError);
+                }
+                else
+                {
+                    _textVoicer.SayMessage(mostConfidentResult);
+                }
 
-                _textVoicer.SayMessage(results[0]);
-
-                Thread.Sleep(500);
+                Thread.Sleep(500);  //Why is this here?
             }
             else
             {
