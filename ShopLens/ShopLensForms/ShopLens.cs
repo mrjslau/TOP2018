@@ -52,11 +52,22 @@ namespace ShopLensForms
         }
 
 
-        //Calls method when someons says "what is this".
+        /// <summary> Calls method when someons says "what is this" </summary>
+        /// <remarks>
+        /// This if statement makes sure the <see cref="CAPTURE_Click"/>
+        /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699
+        /// </remarks>
         [STAThread]
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            CAPTURE_Click(sender, e);
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => CAPTURE_Click(sender, e)));
+            }
+            else
+            {
+                CAPTURE_Click(sender, e);
+            }
         }
 
         private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
