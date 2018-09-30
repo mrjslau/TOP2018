@@ -15,14 +15,22 @@ namespace ShopLensForms
 {
     public partial class ShopLens : Form
     {
-        private FilterInfoCollection _captureDevices;
-        private VideoCaptureDevice _videoSource;
+        public ShopLens()
+        {
+            InitializeComponent();
+            _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo device in _captureDevices)
+            {
+                webcam_combobox.Items.Add(device.Name);
+            }
+            _videoSource = new VideoCaptureDevice();
+        }
 
-        
         private TextVoicer _textVoicer = new TextVoicer();
         private VoiceRecognizer _voiceRecognizer = new VoiceRecognizer();
+        private FilterInfoCollection _captureDevices;
+        private VideoCaptureDevice _videoSource;
         private IImageClassificator _imageClassifying = new TensorFlowClassificator();
-
 
         //Commands and their respective grammar objects.
         private const string WhatIsThisCmd = "What is this";
@@ -31,10 +39,9 @@ namespace ShopLensForms
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
         private const string NoLblError = "ERROR: no label names provided to product recognition model.";
-
-        public ShopLens()
+        
+        private void ShopLens_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
         }
 
         /// <summary>This method is called when the Form is shown to the user.</summary> 
@@ -44,9 +51,6 @@ namespace ShopLensForms
             //while the form loads.
             _voiceRecognizer.AddCommand(WhatIsThisCmd, CommandRecognized_WhatIsThis);
             _voiceRecognizer.StartVoiceRecognition();
-
-            //Greet the user.
-            _textVoicer.SayMessage(HelloMessage);
         }
 
 
@@ -60,27 +64,15 @@ namespace ShopLensForms
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new MethodInvoker(() => CAPTURE_Click(sender, e)));
+                BeginInvoke(new MethodInvoker(() => WhatIsThis_btn_Click(sender, e)));
             }
             else
             {
-                CAPTURE_Click(sender, e);
+                WhatIsThis_btn_Click(sender, e);
             }
         }
 
-        private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
-        {
-            MainWindow.Visible = true;
-            _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo device in _captureDevices)
-            {
-                webcam_combobox.Items.Add(device.Name);
-            }
-            //comboBox1.SelectedIndex = 0;
-            _videoSource = new VideoCaptureDevice();
-        }
-
-        private void START_Click(object sender, EventArgs e)
+        private void Start_btn_Click(object sender, EventArgs e)
         {
             if (webcam_combobox.SelectedItem != null)
             {
@@ -101,27 +93,14 @@ namespace ShopLensForms
             live_video.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
-        private void RESET_Click(object sender, EventArgs e)
-        {
-            _videoSource.Stop();
-            live_video.Image = null;
-            live_video.Invalidate();
-            capture_picture.Image = null;
-            capture_picture.Invalidate();
-        }
+        
 
-        private void PAUSE_Click(object sender, EventArgs e)
-        {
-            _videoSource.Stop();
-        }
-
-        private void CAPTURE_Click(object sender, EventArgs e)
+        private void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
             if (live_video.Image != null)
             {
                 //This line of code causes trouble when trying to identify items multiple times.
                 var image = (Image)live_video.Image.Clone();
-                capture_picture.Image = image;
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -148,7 +127,7 @@ namespace ShopLensForms
             }
         }
 
-        private void EXIT_Click(object sender, EventArgs e)
+        private void Exit_btn_Click(object sender, EventArgs e)
         {
             if (_videoSource.IsRunning == true)
             {
@@ -157,9 +136,16 @@ namespace ShopLensForms
             Application.Exit(null);
         }
 
-        private void PictureBox1_Click(object sender, EventArgs e)
+        private void MyList_btn_Click(object sender, EventArgs e)
         {
+            MyListForm ml = new MyListForm();
+            ml.ShowDialog();
+        }
 
+        private void MyCart_btn_Click(object sender, EventArgs e)
+        {
+            MyCartForm mc = new MyCartForm();
+            mc.ShowDialog();
         }
 
         private void ShopLens_Load_1(object sender, EventArgs e)
