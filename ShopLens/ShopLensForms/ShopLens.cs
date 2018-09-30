@@ -24,7 +24,7 @@ namespace ShopLensForms
         private VoiceRecognizer _voiceRecognizer = new VoiceRecognizer();
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        private IImageClassifying _imageClassifying = new TensorFlowClassificator();
+        private IImageClassificator _imageClassifying = new TensorFlowClassificator();
 
         //Commands and their respective grammar objects.
         private const string whatIsThisCmd = "What is this";

@@ -5,8 +5,11 @@ using System.IO;
 using System.Net;
 using TensorFlow;
 
-namespace ImageRecognition
+namespace ImageRecognition.Classificators.Helpers
 {
+    /// <summary>
+    /// Contains utilities used in <see cref="ImageRecognition.Classificators.TensorFlowClassificator"/>
+    /// </summary>
     public static class TfImageUtil
     {
         public static TFTensor CreateTensorFromImageUrl(string url, TFDataType destinationDataType = TFDataType.Float)
@@ -19,18 +22,25 @@ namespace ImageRecognition
             }
         }
 
-        // Convert the image in filename to a Tensor suitable as input to the Inception model.
-        public static TFTensor CreateTensorFromImageFile(string file, TFDataType destinationDataType = TFDataType.Float)
+        /// <summary>
+        /// Loads all strings in a local file and converts them to a tensor.
+        /// </summary>
+        /// <param name="filePath">Path to the local file.</param>
+        /// <param name="destinationDataType">Tensor data type. Better left unchanged.</param>
+        public static TFTensor CreateTensorFromImageFile(string filePath, TFDataType destinationDataType = TFDataType.Float)
         {
-            var contents = File.ReadAllBytes(file);
+            var contents = File.ReadAllBytes(filePath);
 
             return CreateTensorFromBytes(contents, destinationDataType);
         }
 
-        public static TFTensor CreateTensorFromBytes(byte[] contents, TFDataType destinationDataType = TFDataType.Float)
+        /// <summary>
+        /// Creates a tensor from image from .jpeg file bytes.
+        /// </summary>
+        public static TFTensor CreateTensorFromBytes(byte[] fileBytes, TFDataType destinationDataType = TFDataType.Float)
         {
             // DecodeJpeg uses a scalar String-valued tensor as input.
-            var tensor = TFTensor.CreateString(contents);
+            var tensor = TFTensor.CreateString(fileBytes);
 
             // Construct a graph to normalize the image
             using (var graph =
