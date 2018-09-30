@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using VoicedText;
+using VoicedText.TextVoicers;
 
 namespace ShopLensForms
 {

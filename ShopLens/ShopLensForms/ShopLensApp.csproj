@@ -86,7 +86,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextVoicer.cs" />
+    <Compile Include="TextVoicers\IVoicer.cs"/>
+    <Compile Include="TextVoicers\TextVoicer.cs"/>
+    <Compile Include="VoiceRecognizers\IRecognizer.cs"/>
+    <Compile Include="VoiceRecognizers\VoiceRecognizer.cs"/>
     <EmbeddedResource Include="IntroFrom.resx">
       <DependentUpon>IntroFrom.cs</DependentUpon>
     </EmbeddedResource>
@@ -128,9 +131,6 @@
       <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
       <Name>ImageRecognition</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\shopLensLogo.png" />

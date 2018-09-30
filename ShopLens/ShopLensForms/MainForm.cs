@@ -67,24 +67,12 @@ namespace ShopLensForms
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new MethodInvoker(() => CAPTURE_Click(sender, e)));
+                BeginInvoke(new MethodInvoker(() => WhatIsThis_btn_Click(sender, e)));
             }
             else
             {
-                CAPTURE_Click(sender, e);
+                WhatIsThis_btn_Click(sender, e);
             }
-        }
-
-        private void PRESS_ENTER_TO_START_Click(object sender, EventArgs e)
-        {
-            MainWindow.Visible = true;
-            _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo device in _captureDevices)
-            {
-                webcam_combobox.Items.Add(device.Name);
-            }
-            //comboBox1.SelectedIndex = 0;
-            _videoSource = new VideoCaptureDevice();
         }
 
         private void Start_btn_Click(object sender, EventArgs e)
@@ -115,7 +103,6 @@ namespace ShopLensForms
             {
                 //This line of code causes trouble when trying to identify items multiple times.
                 var image = (Image)live_video.Image.Clone();
-                capture_picture.Image = image;
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
