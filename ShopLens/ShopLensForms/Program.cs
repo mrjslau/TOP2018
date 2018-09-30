@@ -10,7 +10,7 @@ namespace ShopLensForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ShopLens());
+            Application.Run(new IntroFrom());
         }
     }
 }
