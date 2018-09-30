@@ -1,3 +1,7 @@
+avocado
 beer
-cucumber
+box
+carrot
+eggs
+orange
 tomato
