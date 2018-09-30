@@ -15,36 +15,34 @@ namespace ShopLensForms
 {
     public partial class ShopLens : Form
     {
+        private FilterInfoCollection _captureDevices;
+        private VideoCaptureDevice _videoSource;
+
+        
+        private TextVoicer _textVoicer = new TextVoicer();
+        private VoiceRecognizer _voiceRecognizer = new VoiceRecognizer();
+        private IImageClassificator _imageClassifying = new TensorFlowClassificator();
+
+
+        //Commands and their respective grammar objects.
+        private const string WhatIsThisCmd = "What is this";
+
+        //Messages that the text voicer says.
+        private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
+        private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
+        private const string NoLblError = "ERROR: no label names provided to product recognition model.";
+
         public ShopLens()
         {
             InitializeComponent();
         }
 
-        private TextVoicer _textVoicer = new TextVoicer();
-        private VoiceRecognizer _voiceRecognizer = new VoiceRecognizer();
-        private FilterInfoCollection _captureDevices;
-        private VideoCaptureDevice _videoSource;
-        private IImageClassificator _imageClassifying = new TensorFlowClassificator();
-
-        //Commands and their respective grammar objects.
-        private const string whatIsThisCmd = "What is this";
-
-        //Messages that the text voicer says.
-        private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
-        private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
-        private const string noLblError = "ERROR: no label names provided to product recognition model.";
-
-
-        private void ShopLens_Load(object sender, EventArgs e)
-        {
-        }
-
-        //This method is called when the Form is shown to the user.
+        /// <summary>This method is called when the Form is shown to the user.</summary> 
         private void ShopLens_Shown(object sender, EventArgs e)
         {
             //Register commands to voice recognizer and register grammar events to methods
             //while the form loads.
-            _voiceRecognizer.AddCommand(whatIsThisCmd, CommandRecognized_WhatIsThis);
+            _voiceRecognizer.AddCommand(WhatIsThisCmd, CommandRecognized_WhatIsThis);
             _voiceRecognizer.StartVoiceRecognition();
 
             //Greet the user.
@@ -52,7 +50,7 @@ namespace ShopLensForms
         }
 
 
-        /// <summary> Calls method when someons says "what is this" </summary>
+        /// <summary> Calls method when someone says "what is this" </summary>
         /// <remarks>
         /// This if statement makes sure the <see cref="CAPTURE_Click"/>
         /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699
@@ -97,6 +95,7 @@ namespace ShopLensForms
             }
         }
 
+        /// <summary> This method is called every time the video source receives a new frame. </summary>
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             live_video.Image = (Bitmap)eventArgs.Frame.Clone();
@@ -136,7 +135,7 @@ namespace ShopLensForms
 
                 if (mostConfidentResult == null) 
                 {
-                    _textVoicer.SayMessage(noLblError);
+                    _textVoicer.SayMessage(NoLblError);
                 }
                 else
                 {
