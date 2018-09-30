@@ -8,6 +8,15 @@ using TensorFlow;
 
 namespace ImageRecognition
 {
+    /// <summary>
+    /// Class to showcase or quickly test image recognition capabilities.
+    /// 
+    /// Usage:
+    ///     - Without command arguments: change variable <see cref="TestImageFilePath"/> to point to the image
+    /// you want to use for testing.
+    ///     - With command arguments: pass a URL to the image that you want to use for testing as the first argument.
+    /// Ex.: `ImageRecognition.exe https://images.mentalfloss.com/wp-content/uploads/2008/06/tomato-Salmonella.jpg`
+    /// </summary>
     class Program
     {
         public static string TestImageFilePath { get; private set; } =
