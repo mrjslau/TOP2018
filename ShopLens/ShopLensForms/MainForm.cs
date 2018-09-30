@@ -51,9 +51,6 @@ namespace ShopLensForms
             //while the form loads.
             _voiceRecognizer.AddCommand(whatIsThisCmd, CommandRecognized_WhatIsThis);
             _voiceRecognizer.StartVoiceRecognition();
-
-            //Greet the user.
-            _textVoicer.SayMessage(HelloMessage);
         }
 
 
@@ -148,6 +145,11 @@ namespace ShopLensForms
         {
             MyCartForm mc = new MyCartForm();
             mc.ShowDialog();
+        }
+
+        private void ShopLens_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

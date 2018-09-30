@@ -37,8 +37,8 @@ namespace ShopLensForms
             this.start_btn = new System.Windows.Forms.Button();
             this.exit_btn = new System.Windows.Forms.Button();
             this.menu_panel = new System.Windows.Forms.Panel();
-            this.MyList_btn = new System.Windows.Forms.Button();
             this.MyCart_btn = new System.Windows.Forms.Button();
+            this.MyList_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.live_video)).BeginInit();
             this.menu_panel.SuspendLayout();
             this.SuspendLayout();
@@ -104,16 +104,6 @@ namespace ShopLensForms
             this.menu_panel.Size = new System.Drawing.Size(216, 451);
             this.menu_panel.TabIndex = 8;
             // 
-            // MyList_btn
-            // 
-            this.MyList_btn.Location = new System.Drawing.Point(14, 112);
-            this.MyList_btn.Name = "MyList_btn";
-            this.MyList_btn.Size = new System.Drawing.Size(190, 30);
-            this.MyList_btn.TabIndex = 8;
-            this.MyList_btn.Text = "MY LIST";
-            this.MyList_btn.UseVisualStyleBackColor = true;
-            this.MyList_btn.Click += new System.EventHandler(this.MyList_btn_Click);
-            // 
             // MyCart_btn
             // 
             this.MyCart_btn.Location = new System.Drawing.Point(14, 148);
@@ -123,6 +113,16 @@ namespace ShopLensForms
             this.MyCart_btn.Text = "MY CART";
             this.MyCart_btn.UseVisualStyleBackColor = true;
             this.MyCart_btn.Click += new System.EventHandler(this.MyCart_btn_Click);
+            // 
+            // MyList_btn
+            // 
+            this.MyList_btn.Location = new System.Drawing.Point(14, 112);
+            this.MyList_btn.Name = "MyList_btn";
+            this.MyList_btn.Size = new System.Drawing.Size(190, 30);
+            this.MyList_btn.TabIndex = 8;
+            this.MyList_btn.Text = "MY LIST";
+            this.MyList_btn.UseVisualStyleBackColor = true;
+            this.MyList_btn.Click += new System.EventHandler(this.MyList_btn_Click);
             // 
             // ShopLens
             // 
@@ -135,6 +135,8 @@ namespace ShopLensForms
             this.Name = "ShopLens";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShopLens";
+            this.Shown += new System.EventHandler(this.ShopLens_Shown);
+            this.Load += new System.EventHandler(this.ShopLens_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.live_video)).EndInit();
             this.menu_panel.ResumeLayout(false);
             this.ResumeLayout(false);
