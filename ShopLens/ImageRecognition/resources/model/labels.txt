@@ -1,7 +1,9 @@
 avocado
+banana
 beer
 box
 carrot
+cucumber
 eggs
 orange
 tomato
