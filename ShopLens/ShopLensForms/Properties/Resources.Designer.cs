@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsFormsApp.Properties {
+namespace ShopLensApp.Properties {
     using System;
     
     

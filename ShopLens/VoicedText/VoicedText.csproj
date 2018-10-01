@@ -51,8 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-      <Compile Include="TextVoicers\IVoicer.cs"/>
-      <Compile Include="TextVoicers\TextVoicer.cs"/>
+    <Compile Include="TextVoicers\IVoicer.cs" />
+    <Compile Include="TextVoicers\TextVoicer.cs" />
     <Compile Include="VoicedTextTest.cs">
       <SubType>Form</SubType>
     </Compile>

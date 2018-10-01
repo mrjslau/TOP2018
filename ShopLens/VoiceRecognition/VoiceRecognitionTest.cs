@@ -3,7 +3,7 @@ using System.Speech.Recognition;
 using System.Windows.Forms;
 using VoicedText;
 
-namespace VoiceRecognition
+namespace VoiceRecognitionWithTextVoicer
 {
     public partial class VoiceRecognitionTest : Form
     {

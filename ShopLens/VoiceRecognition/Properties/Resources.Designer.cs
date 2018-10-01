@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VoiceRecognition.Properties
+namespace VoiceRecognitionWithTextVoicer.Properties
 {
 
 

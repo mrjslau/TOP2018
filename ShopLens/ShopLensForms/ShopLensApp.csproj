@@ -60,46 +60,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntroFrom.cs">
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Views\IntroFrom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IntroFrom.Designer.cs">
+    <Compile Include="Views\IntroFrom.Designer.cs">
       <DependentUpon>IntroFrom.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyCartForm.cs">
+    <Compile Include="Views\MyCartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MyCartForm.Designer.cs">
+    <Compile Include="Views\MyCartForm.Designer.cs">
       <DependentUpon>MyCartForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyListForm.cs">
+    <Compile Include="Views\MyListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MyListForm.Designer.cs">
+    <Compile Include="Views\MyListForm.Designer.cs">
       <DependentUpon>MyListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextVoicers\IVoicer.cs"/>
-    <Compile Include="TextVoicers\TextVoicer.cs"/>
-    <Compile Include="VoiceRecognizers\IRecognizer.cs"/>
-    <Compile Include="VoiceRecognizers\VoiceRecognizer.cs"/>
-    <EmbeddedResource Include="IntroFrom.resx">
+    <EmbeddedResource Include="Views\IntroFrom.resx">
       <DependentUpon>IntroFrom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MyCartForm.resx">
+    <EmbeddedResource Include="Views\MyCartForm.resx">
       <DependentUpon>MyCartForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MyListForm.resx">
+    <EmbeddedResource Include="Views\MyListForm.resx">
       <DependentUpon>MyListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -130,6 +127,14 @@
     <ProjectReference Include="..\ImageRecognition\ImageRecognition.csproj">
       <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
       <Name>ImageRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoicedText\VoicedText.csproj">
+      <Project>{c1f25caa-7525-40ce-8f97-16c511c3c43e}</Project>
+      <Name>VoicedText</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceRecognition\VoiceRecognitionWithTextVoicer.csproj">
+      <Project>{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}</Project>
+      <Name>VoiceRecognitionWithTextVoicer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

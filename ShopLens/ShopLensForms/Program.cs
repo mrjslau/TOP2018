@@ -1,16 +1,15 @@
-﻿using System;
+﻿using ShopLensForms.Controllers;
+using System;
 using System.Windows.Forms;
 
 namespace ShopLensForms
 {
     static class Program
     {
-        [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new IntroFrom());
+            MainController mainController = new MainController();
+            mainController.StartApp();
         }
     }
 }
