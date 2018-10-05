@@ -49,7 +49,7 @@
             this.Enter_btn.Name = "Enter_btn";
             this.Enter_btn.Size = new System.Drawing.Size(386, 43);
             this.Enter_btn.TabIndex = 1;
-            this.Enter_btn.Text = "PRESS ENTER TO STRAT";
+            this.Enter_btn.Text = "SAY \"HELLO\" TO BEGIN";
             this.Enter_btn.UseVisualStyleBackColor = false;
             this.Enter_btn.Click += new System.EventHandler(this.Enter_btn_Click);
             // 

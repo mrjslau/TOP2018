@@ -34,7 +34,7 @@ namespace ShopLensForms
             _videoSource = new VideoCaptureDevice();
         }
 
-        private void Start_btn_Click(object sender, EventArgs e)
+        public void Start_btn_Click(object sender, EventArgs e)
         {
             if (webcam_combobox.SelectedItem != null)
             {
@@ -45,7 +45,7 @@ namespace ShopLensForms
             }
             else
             {
-                MessageBox.Show("Please choose the webcam!");
+                _mainController.TextVoicerVoiceMessage("Please choose a webcam!");
             }
         }
 
@@ -76,7 +76,7 @@ namespace ShopLensForms
             }
             else
             {
-                MessageBox.Show("The webcam is turned off!");
+                _mainController.TextVoicerVoiceMessage("The webcam is turned off!");
             }
         }
 

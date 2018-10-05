@@ -7,7 +7,7 @@ namespace VoicedText
     public partial class VoicedTextTest : Form
     {
         //A text voicer.
-        private TextVoicer textVoicer = new TextVoicer();
+        private TextVoicerSpeechSynthesizer textVoicer = new TextVoicerSpeechSynthesizer();
 
         //The message that the user wrote.
         private string inputMessage;
@@ -27,9 +27,9 @@ namespace VoicedText
         private void VoicedTextTest_Shown(object sender, EventArgs e)
         {
             //Text voicer says hello and mentions the ability to choose voice.
-            textVoicer.SetVolume(textVoicer.MaxVolumeValue);
-            textVoicer.SayMessage(textVoicer.HelloMessageText);
-            textVoicer.SayMessage(textVoicer.ChooseMessageSpeedText);
+            textVoicer.SayMessage("Hello I am a text voicer.");
+            textVoicer.SayMessage("Please write something in the " +
+                "input field for me to say.");
         }
 
         private void InputTextBox_TextChanged(object sender, EventArgs e)
@@ -41,17 +41,17 @@ namespace VoicedText
         {
             if (NormalSpdRadBtn.Checked) //Normal voicer speed.
             {
-                textVoicer.SpeedOfVoicer = 0;
+                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.Normal;
 
             }
             else if (SlowSpdRadBtn.Checked) //Slow voicer speed.
             {
-                textVoicer.SpeedOfVoicer = -1;
+                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.ExtraSlow;
 
             }
             else if (FastSpdRadBtn.Checked) //Fast voicer speed.
             {
-                textVoicer.SpeedOfVoicer = 1;
+                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.Fast;
             }
 
             if (!String.IsNullOrEmpty(inputMessage))

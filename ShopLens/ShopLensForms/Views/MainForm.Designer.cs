@@ -135,7 +135,6 @@ namespace ShopLensForms
             this.Name = "ShopLens";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ShopLens";
-            ((System.ComponentModel.ISupportInitialize)(this.live_video)).EndInit();
             this.menu_panel.ResumeLayout(false);
             this.ResumeLayout(false);
 
