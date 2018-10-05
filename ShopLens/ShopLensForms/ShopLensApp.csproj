@@ -61,11 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Views\IntroFrom.cs">
+    <Compile Include="Views\IntroForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\IntroFrom.Designer.cs">
-      <DependentUpon>IntroFrom.cs</DependentUpon>
+    <Compile Include="Views\IntroForm.Designer.cs">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
@@ -87,8 +87,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Views\IntroFrom.resx">
-      <DependentUpon>IntroFrom.cs</DependentUpon>
+    <EmbeddedResource Include="Views\IntroForm.resx">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

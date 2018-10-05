@@ -1,6 +1,7 @@
 ﻿using ImageRecognition.Classificators;
 using ShopLensApp.VoiceRecognizers;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
@@ -9,22 +10,30 @@ namespace ShopLensForms.Controllers
 {
     public class MainController
     {
-        private IVoicer _textVoicer = new TextVoicer();
-        private IRecognizer _voiceRecognizer = new VoiceRecognizer();
-        private IImageClassificator _imageClassifying = new TensorFlowClassificator();
-        private IntroFrom introFrom = new IntroFrom();
-        private ShopLens shopLens = new ShopLens();
+        private IVoicer _textVoicer;
+        private IRecognizer _voiceRecognizer;
+        private IImageClassificator _imageClassifying;
+
+        private IntroForm _introForm;
+        private ShopLens _shopLens;
 
         private const string whatIsThisCmd = "What is this";
+
+        public MainController()
+        {
+            _textVoicer = new TextVoicer();
+            _voiceRecognizer = new VoiceRecognizer();
+            _imageClassifying = new TensorFlowClassificator();
+
+            _introForm = new IntroForm(this);
+            _shopLens = new ShopLens(this);
+        }
 
         [STAThread]
         public void StartApp()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-        
-            Application.Run(introFrom);
-            Application.Run(shopLens);
+            Application.Run(_introForm);
+            Application.Run(_shopLens);
         }
 
         public void StartVoiceRecognizer()
@@ -42,14 +51,29 @@ namespace ShopLensForms.Controllers
         /// </remarks>
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            if (shopLens.InvokeRequired)
+            if (_shopLens.InvokeRequired)
             {
-                shopLens.BeginInvoke(new MethodInvoker(() => shopLens.WhatIsThis_btn_Click(sender, e)));
+                _shopLens.BeginInvoke(new MethodInvoker(() => _shopLens.WhatIsThis_btn_Click(sender, e)));
             }
             else
             {
-                shopLens.WhatIsThis_btn_Click(sender, e);
+                _shopLens.WhatIsThis_btn_Click(sender, e);
             }
+        }
+
+        public void TextVoicerVoiceMessage(string seeMessage)
+        {
+            _textVoicer.SayMessage(seeMessage);
+        }
+
+        public Dictionary<string, float> ImageClassifyingClassifyImage(byte[] imgArray)
+        {
+            return _imageClassifying.ClassifyImage(imgArray);
+        }
+
+        public void ShowShopLensForm()
+        {
+            _shopLens.ShowDialog();
         }
     }
 }

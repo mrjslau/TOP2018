@@ -8,6 +8,9 @@ namespace ShopLensForms
     {
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             MainController mainController = new MainController();
             mainController.StartApp();
         }

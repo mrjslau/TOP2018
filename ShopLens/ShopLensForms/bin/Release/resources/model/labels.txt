@@ -1,0 +1,7 @@
+avocado
+beer
+box
+carrot
+eggs
+orange
+tomato

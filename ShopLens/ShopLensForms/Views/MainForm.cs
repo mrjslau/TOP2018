@@ -16,18 +16,20 @@ namespace ShopLensForms
     {
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        private MainController mainController;
+        private MainController _mainController;
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
         private const string NoLblError = "ERROR: no label names provided to product recognition model.";
 
-        public ShopLens()
+        public ShopLens(MainController mainController)
         {
+            Hide();
+
             InitializeComponent();
-            mainController = new MainController();
-            mainController.ShopLens = this;
+
+            _mainController = mainController;
 
             _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in _captureDevices)
@@ -44,11 +46,8 @@ namespace ShopLensForms
         /// <summary>This method is called when the Form is shown to the user.</summary> 
         private void ShopLens_Shown(object sender, EventArgs e)
         {
-            mainController.StartVoiceRecognizer();
+            _mainController.StartVoiceRecognizer();
         }
-
-
-        
 
         private void Start_btn_Click(object sender, EventArgs e)
         {
@@ -57,7 +56,7 @@ namespace ShopLensForms
                 _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
                 _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                 _videoSource.Start();
-                _textVoicer.SayMessage(SeeMessage);
+                _mainController.TextVoicerVoiceMessage(SeeMessage);
             }
             else
             {
@@ -71,32 +70,28 @@ namespace ShopLensForms
             live_video.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
-        
-
-        private void WhatIsThis_btn_Click(object sender, EventArgs e)
+        public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
             if (live_video.Image != null)
             {
-                //This line of code causes trouble when trying to identify items multiple times.
                 var image = (Image)live_video.Image.Clone();
 
                 var ms = new MemoryStream();
                 image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                var classificationResults = _imageClassifying.ClassifyImage(ms.ToArray());
+                var classificationResults = _mainController.ImageClassifyingClassifyImage(ms.ToArray());
 
-                _textVoicer.SayMessage("This is");
+                _mainController.TextVoicerVoiceMessage("This is");
 
-                //Order by probability values and take the first label name.
-                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key; ;
 
                 if (mostConfidentResult == null) 
                 {
-                    _textVoicer.SayMessage(NoLblError);
+                    _mainController.TextVoicerVoiceMessage(NoLblError);
                 }
                 else
                 {
-                    _textVoicer.SayMessage(mostConfidentResult);
+                    _mainController.TextVoicerVoiceMessage(mostConfidentResult);
                 }
             }
             else
