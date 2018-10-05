@@ -76,14 +76,9 @@ namespace ShopLensForms
             {
                 var image = (Image)live_video.Image.Clone();
 
-                var ms = new MemoryStream();
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                var classificationResults = _mainController.ImageClassifyingClassifyImage(ms.ToArray());
-
                 _mainController.TextVoicerVoiceMessage("This is");
 
-                string mostConfidentResult = classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key; ;
+                string mostConfidentResult = _mainController.GetMostConfidentResult(image);
 
                 if (mostConfidentResult == null) 
                 {
@@ -119,11 +114,6 @@ namespace ShopLensForms
         {
             MyCartForm mc = new MyCartForm();
             mc.ShowDialog();
-        }
-
-        private void ShopLens_Load_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -2,6 +2,9 @@
 using ShopLensApp.VoiceRecognizers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
@@ -33,7 +36,6 @@ namespace ShopLensForms.Controllers
         public void StartApp()
         {
             Application.Run(_introForm);
-            Application.Run(_shopLens);
         }
 
         public void StartVoiceRecognizer()
@@ -74,6 +76,17 @@ namespace ShopLensForms.Controllers
         public void ShowShopLensForm()
         {
             _shopLens.ShowDialog();
+        }
+
+        public string GetMostConfidentResult(Image image)
+        {
+            var ms = new MemoryStream();
+
+            image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            var classificationResults = ImageClassifyingClassifyImage(ms.ToArray());
+
+            return classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
         }
     }
 }
