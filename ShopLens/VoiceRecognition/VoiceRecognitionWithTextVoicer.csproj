@@ -71,7 +71,7 @@
     <Compile Include="LaunchTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VoiceRecognizers\IRecognizer.cs" />
-    <Compile Include="VoiceRecognizers\VoiceRecognizer.cs" />
+    <Compile Include="VoiceRecognizers\VoiceRecognizerSpeechSynthesizer.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

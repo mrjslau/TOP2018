@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Speech.Recognition;
-using ShopLensApp.VoiceRecognizers;
 
 namespace VoiceRecognitionWithTextVoicer.VoiceRecognizers
 {
-    public class VoiceRecognizer : IRecognizer
+    public class VoiceRecognizerSpeechSynthesizer : IVoiceRecognizer
     {
         private SpeechRecognitionEngine speechRecognizer;  //The voice recognizer.
 
-        public VoiceRecognizer()
+        public VoiceRecognizerSpeechSynthesizer()
         {
             speechRecognizer = new SpeechRecognitionEngine();
         }
@@ -29,7 +28,7 @@ namespace VoiceRecognitionWithTextVoicer.VoiceRecognizers
         //Adds a new grammar to the speech recognizer engine
         //and returns a command's grammar object so that it could be possible
         //to add a specific event for this command.
-        public void AddCommand(string command, Action<object, EventArgs> CommandRecognized_WhatIsThis)
+        public void AddCommand(string command, Action<object, EventArgs> CommandRecognized_MethodToRun)
         {
             //Adds a string of phrases to be distinguished by the voice recognizer.
             Choices commandChoices = new Choices();
@@ -38,7 +37,7 @@ namespace VoiceRecognitionWithTextVoicer.VoiceRecognizers
             GrammarBuilder grammarBuilder = new GrammarBuilder();
             grammarBuilder.Append(commandChoices);
             Grammar newGrammar = new Grammar(grammarBuilder);
-            newGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_WhatIsThis);
+            newGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_MethodToRun);
 
             speechRecognizer.LoadGrammarAsync(newGrammar); //Loads the phrases asynchronously.
         }

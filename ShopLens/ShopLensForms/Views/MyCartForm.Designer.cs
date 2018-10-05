@@ -75,7 +75,6 @@
             this.Name = "MyCartForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MyCartForm";
-            this.Load += new System.EventHandler(this.MyCartForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

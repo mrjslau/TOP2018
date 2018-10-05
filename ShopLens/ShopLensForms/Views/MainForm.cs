@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
-using VoicedText;
-using ImageRecognition.Classificators;
-using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
 using ShopLensForms.Controllers;
 
 namespace ShopLensForms
@@ -37,16 +32,6 @@ namespace ShopLensForms
                 webcam_combobox.Items.Add(device.Name);
             }
             _videoSource = new VideoCaptureDevice();
-        }
-
-        private void ShopLens_Load(object sender, EventArgs e)
-        {
-        }
-
-        /// <summary>This method is called when the Form is shown to the user.</summary> 
-        private void ShopLens_Shown(object sender, EventArgs e)
-        {
-            _mainController.StartVoiceRecognizer();
         }
 
         private void Start_btn_Click(object sender, EventArgs e)
@@ -95,7 +80,7 @@ namespace ShopLensForms
             }
         }
 
-        private void Exit_btn_Click(object sender, EventArgs e)
+        public void Exit_btn_Click(object sender, EventArgs e)
         {
             if (_videoSource.IsRunning == true)
             {

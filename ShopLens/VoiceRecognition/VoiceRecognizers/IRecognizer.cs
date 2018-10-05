@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ShopLensApp.VoiceRecognizers
+namespace VoiceRecognitionWithTextVoicer.VoiceRecognizers
 {
-    public interface IRecognizer
+    public interface IVoiceRecognizer
     {
         void StartVoiceRecognition();
         void StopVoiceRecognition();

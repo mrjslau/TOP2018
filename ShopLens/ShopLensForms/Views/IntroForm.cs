@@ -1,7 +1,6 @@
 ﻿using ShopLensForms.Controllers;
 using System;
 using System.Windows.Forms;
-using VoicedText.TextVoicers;
 
 namespace ShopLensForms
 {
@@ -23,10 +22,10 @@ namespace ShopLensForms
             _mainController.TextVoicerVoiceMessage(HelloMessage);
         }
 
-        private void Enter_btn_Click(object sender, EventArgs e)
+        public void Enter_btn_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _mainController.ShowShopLensForm();
+            _mainController.ShowForm(_mainController._shopLens);
         }
     }
 }
