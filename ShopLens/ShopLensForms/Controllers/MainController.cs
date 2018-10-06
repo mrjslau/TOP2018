@@ -163,9 +163,16 @@ namespace ShopLensForms.Controllers
         /// Makes a particular Windows form visible to the user.
         /// </summary>
         /// <param name="formToBeShown">The form to be shown to the user.</param>
+        /// <remarks>
+        /// The if statement makes sure that if the user says, for example, 'Hello'#
+        /// many times the application will not crash.
+        /// </remarks>
         public void ShowForm(Form formToBeShown)
         {
-            formToBeShown.ShowDialog();
+            if (formToBeShown.Visible == false)
+            {
+                formToBeShown.ShowDialog();
+            }
         }
 
         /// <summary>
