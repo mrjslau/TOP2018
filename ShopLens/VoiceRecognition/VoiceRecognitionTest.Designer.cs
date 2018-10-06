@@ -1,4 +1,4 @@
-﻿namespace VoiceRecognition
+﻿namespace VoiceRecognitionWithTextVoicer
 {
     partial class VoiceRecognitionTest
     {

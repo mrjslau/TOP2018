@@ -70,6 +70,8 @@
     </Compile>
     <Compile Include="LaunchTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VoiceRecognizers\IVoiceRecognizer.cs" />
+    <Compile Include="VoiceRecognizers\VoiceRecognizerSpeechRecEngine.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

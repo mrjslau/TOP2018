@@ -1,6 +1,6 @@
 ﻿using System.Speech.Recognition;
 
-namespace VoiceRecognition
+namespace VoiceRecognitionWithTextVoicer
 {
     class VoiceRecognizer
     {
