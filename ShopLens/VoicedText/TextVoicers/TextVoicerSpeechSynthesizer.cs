@@ -10,24 +10,14 @@ namespace VoicedText.TextVoicers
         private PromptStyle voicerSpeed;
 
         /// <summary>
-        /// The possible speeds of the voicer.
-        /// </summary>
-        public enum VoicerSpeed { ExtraSlow, Slow, Normal, Fast, ExtraFast};
-
-        /// <summary>
         /// The current speed of the voicer.
         /// </summary>
-        public VoicerSpeed speedOfVoicer;
-
-        /// <summary>
-        /// The possible volumes of the voicer.
-        /// </summary>
-        public enum VoicerVolume { NoVolume, Low, Medium, High, Max};
+        public SpeedOfVoicer speedOfVoicer;
 
         /// <summary>
         /// The current volume of the voicer.
         /// </summary>
-        public VoicerVolume volumeOfVoicer;
+        public VolumeOfVoicer volumeOfVoicer;
 
         /// <summary>
         /// The class constructor.
@@ -41,48 +31,48 @@ namespace VoicedText.TextVoicers
             textVoicer = new SpeechSynthesizer();
             messageBuilder = new PromptBuilder();
 
-            speedOfVoicer = VoicerSpeed.Normal;
-            volumeOfVoicer = VoicerVolume.Max;
+            speedOfVoicer = SpeedOfVoicer.Normal;
+            volumeOfVoicer = VolumeOfVoicer.Max;
 
-            SetSpeed((int)speedOfVoicer);
-            SetVolume((int)volumeOfVoicer);
+            SetSpeed(speedOfVoicer);
+            SetVolume(volumeOfVoicer);
         }
 
         /// <summary>
         /// Sets the volume of the voicer.
         /// </summary>
         /// <param name="volumeOfVoicer">
-        /// Pass 0 for NoVolume, 1 for Low, 2 for Medium, 3 for High and 4 for Max volume level.
+        /// 
         /// </param>
         /// <returns></returns>
-        public void SetVolume(int volumeOfVoicer)
+        public void SetVolume(VolumeOfVoicer volumeOfVoicer)
         {
-            this.volumeOfVoicer = (VoicerVolume)volumeOfVoicer;
+            this.volumeOfVoicer = volumeOfVoicer;
 
             switch (volumeOfVoicer)
             {
-                case (int)VoicerVolume.NoVolume:
+                case VolumeOfVoicer.NoVolume:
                     textVoicer.Volume = 0;
                     break;
 
-                case (int)VoicerVolume.Low:
+                case VolumeOfVoicer.Low:
                     textVoicer.Volume = 25;
                     break;
 
-                case (int)VoicerVolume.Medium:
+                case VolumeOfVoicer.Medium:
                     textVoicer.Volume = 50;
                     break;
 
-                case (int)VoicerVolume.High:
+                case VolumeOfVoicer.High:
                     textVoicer.Volume = 75;
                     break;
 
-                case (int)VoicerVolume.Max:
+                case VolumeOfVoicer.Max:
                     textVoicer.Volume = 100;
                     break;
 
                 default:
-                    throw new InvalidEnumArgumentException("Invalid VoicerVolume enum argument passed.");
+                    throw new InvalidEnumArgumentException("Invalid VolumeOfVoicer enum argument passed.");
             }   
         }
 
@@ -93,34 +83,34 @@ namespace VoicedText.TextVoicers
         /// Pass 0 for ExtraSlow, 1 for Slow, 2 for Normal, 3 for Fast, 4 for ExtraFast speed.
         /// </param>
         /// <returns></returns>
-        public void SetSpeed(int speedOfVoicer)
+        public void SetSpeed(SpeedOfVoicer speedOfVoicer)
         {
-            this.speedOfVoicer = (VoicerSpeed)speedOfVoicer;
+            this.speedOfVoicer = speedOfVoicer;
 
             switch (speedOfVoicer)
             {
-                case (int)VoicerSpeed.ExtraSlow:
+                case SpeedOfVoicer.ExtraSlow:
                     voicerSpeed = (new PromptStyle(PromptRate.ExtraSlow));
                     break;
 
-                case (int)VoicerSpeed.Slow:
+                case SpeedOfVoicer.Slow:
                     voicerSpeed = (new PromptStyle(PromptRate.Slow));
                     break;
 
-                case (int)VoicerSpeed.Normal:
+                case SpeedOfVoicer.Normal:
                     voicerSpeed = (new PromptStyle(PromptRate.Medium));
                     break;
 
-                case (int)VoicerSpeed.Fast:
+                case SpeedOfVoicer.Fast:
                     voicerSpeed = (new PromptStyle(PromptRate.Fast));
                     break;
 
-                case (int)VoicerSpeed.ExtraFast:
+                case SpeedOfVoicer.ExtraFast:
                     voicerSpeed = (new PromptStyle(PromptRate.ExtraFast));
                     break;
 
                 default:
-                    throw new InvalidEnumArgumentException("Invalid VoicerSpeed enum argument passed.");
+                    throw new InvalidEnumArgumentException("Invalid SpeedOfVoicer enum argument passed.");
             }
 
         }

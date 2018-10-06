@@ -57,27 +57,10 @@ namespace ShopLensForms
 
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
-            if (live_video.Image != null)
-            {
-                var image = (Image)live_video.Image.Clone();
-
-                _mainController.TextVoicerVoiceMessage("This is");
-
-                string mostConfidentResult = _mainController.GetMostConfidentResult(image);
-
-                if (mostConfidentResult == null) 
-                {
-                    _mainController.TextVoicerVoiceMessage(NoLblError);
-                }
-                else
-                {
-                    _mainController.TextVoicerVoiceMessage(mostConfidentResult);
-                }
-            }
-            else
-            {
-                _mainController.TextVoicerVoiceMessage("The webcam is turned off!");
-            }
+            string webcamTurnedOff = "The webcam is turned off!";
+            string thisIs = "This is";
+            _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
+                thisIs ,NoLblError);
         }
 
         public void Exit_btn_Click(object sender, EventArgs e)

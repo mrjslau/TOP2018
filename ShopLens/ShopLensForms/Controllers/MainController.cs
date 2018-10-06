@@ -60,59 +60,79 @@ namespace ShopLensForms.Controllers
             _voiceRecognizer.StartVoiceRecognition();
         }
 
-        /// <summary> Calls method when someone says a certain command. </summary>
+        /// <summary> Invokes methods on the GUI thread. </summary>
         /// <remarks>
         /// This if statement makes sure the method that must be executed when the specified command is recognized
         /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699.
         /// </remarks>
-        private void CommandRecognized_Hello(object sender, EventArgs e)
+        private void InvokeOnGUIThread(Form formToBeInvokedOn,
+            Action<object, EventArgs> methodToBeInvoked, object sender, EventArgs e)
         {
-            if (_introForm.InvokeRequired)
+            if (formToBeInvokedOn.InvokeRequired)
             {
-                _introForm.BeginInvoke(new MethodInvoker(() => _introForm.Enter_btn_Click(sender, e)));
+                formToBeInvokedOn.BeginInvoke(new MethodInvoker(() => methodToBeInvoked(sender, e)));
             }
             else
             {
-                _introForm.Enter_btn_Click(sender, e);
+                methodToBeInvoked(sender, e);
             }
+        }
+
+        /// <summary> 
+        /// Executes a certain method when a specific command is recognized. 
+        /// </summary>
+        private void CommandRecognized_Hello(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_introForm, _introForm.Enter_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            if (_shopLens.InvokeRequired)
-            {
-                _shopLens.BeginInvoke(new MethodInvoker(() => _shopLens.WhatIsThis_btn_Click(sender, e)));
-            }
-            else
-            {
-                _shopLens.WhatIsThis_btn_Click(sender, e);
-            }
+            InvokeOnGUIThread(_shopLens, _shopLens.WhatIsThis_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Start(object sender, EventArgs e)
         {
-            if (_shopLens.InvokeRequired)
-            {
-                _shopLens.BeginInvoke(new MethodInvoker(() => _shopLens.Start_btn_Click(sender, e)));
-            }
-            else
-            {
-                _shopLens.Start_btn_Click(sender, e);
-            }
+            InvokeOnGUIThread(_shopLens, _shopLens.Start_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Exit(object sender, EventArgs e)
         {
-            if (_shopLens.InvokeRequired)
+            InvokeOnGUIThread(_shopLens, _shopLens.Exit_btn_Click, sender, e);
+        }
+
+        /// <summary>
+        /// Executes logical operations related to the 'What is this' voice command.
+        /// </summary>
+        /// <param name="videoImage">The image which is evaluated with an Image Recognition model.</param>
+        /// <param name="webcamTurnedOff">What to say when the user's webcam is turned off.</param>
+        /// <param name="thisIs">A string of a 'This is' message.</param>
+        /// <param name="noLblError">What to say when there are no labels in our Image Recognition model.</param>
+        public void ExecuteCommand_WhatIsThis(Image videoImage, string webcamTurnedOff, string thisIs, string noLblError)
+        {
+            if (videoImage != null)
             {
-                _shopLens.BeginInvoke(new MethodInvoker(() => _shopLens.Exit_btn_Click(sender, e)));
+                var image = (Image)videoImage.Clone();
+
+                TextVoicerVoiceMessage(thisIs);
+
+                string mostConfidentResult = GetMostConfidentResult(image);
+
+                if (mostConfidentResult == null)
+                {
+                    TextVoicerVoiceMessage(noLblError);
+                }
+                else
+                {
+                    TextVoicerVoiceMessage(mostConfidentResult);
+                }
             }
             else
             {
-                _shopLens.Exit_btn_Click(sender, e);
+                TextVoicerVoiceMessage(webcamTurnedOff);
             }
         }
 
@@ -131,7 +151,9 @@ namespace ShopLensForms.Controllers
         /// </summary>
         /// <param name="imgArray">A byte array of an image 
         /// to be classified by the image classifier object.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// The returned dictionary format is: { label name: float (in range 0-1) }
+        /// </returns>
         private Dictionary<string, float> ImageClassifyingClassifyImage(byte[] imgArray)
         {
             return _imageClassifying.ClassifyImage(imgArray);

@@ -41,17 +41,17 @@ namespace VoicedText
         {
             if (NormalSpdRadBtn.Checked) //Normal voicer speed.
             {
-                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.Normal;
+                textVoicer.speedOfVoicer = SpeedOfVoicer.Normal;
 
             }
             else if (SlowSpdRadBtn.Checked) //Slow voicer speed.
             {
-                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.ExtraSlow;
+                textVoicer.speedOfVoicer = SpeedOfVoicer.ExtraSlow;
 
             }
             else if (FastSpdRadBtn.Checked) //Fast voicer speed.
             {
-                textVoicer.speedOfVoicer = TextVoicerSpeechSynthesizer.VoicerSpeed.Fast;
+                textVoicer.speedOfVoicer = SpeedOfVoicer.Fast;
             }
 
             if (!String.IsNullOrEmpty(inputMessage))
