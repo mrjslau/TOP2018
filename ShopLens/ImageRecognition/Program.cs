@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using ImageRecognition.Classificators;
+using ImageRecognition.OCR;
 using TensorFlow;
 
 namespace ImageRecognition
@@ -20,7 +22,14 @@ namespace ImageRecognition
     class Program
     {
         public static string TestImageFilePath { get; private set; } =
-            Path.Combine("resources", "test", "1.jpg");
+            Path.Combine("resources", "test", "ocr.jpg");
+        
+        public static List<string> OcrKeywords = new List<string>
+        {
+            "grik",
+            "kruop",
+            "ekolog"
+        };
         
         static void Main(string[] args)
         {
@@ -64,13 +73,39 @@ namespace ImageRecognition
             // Classify
             var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
 
+            // OCR
+            var text = TesseractOcr.ParseText();
+            
             // Print
+            Console.WriteLine("------------------------");
+            Console.WriteLine("OBJECT CLASSIFICATION");
+            Console.WriteLine("------------------------");
+            
             stopwatch.Stop();
             foreach (var classification in classificationResults.OrderByDescending(x => x.Value))
             {
                 Console.WriteLine($"{classification.Key, 15} => {Math.Round((classification.Value * 100.0), 3)}%");
             }
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine("OCR RESULTS");
+            Console.WriteLine("------------------------");
+
+            text = text.Trim().Replace("\r\n", " ").Replace("\n", " ");
+            Console.WriteLine(text);
+
+            Console.WriteLine("------------------------");
+            Console.WriteLine("OCR KEYWORDS");
+            Console.WriteLine("------------------------");
+
+            var keywords = text.Split(' ')
+                .Where(word => !string.IsNullOrWhiteSpace(word))
+                .Where(word => OcrKeywords.Any(keyword => word.ToLower().Contains(keyword)));
+
+            foreach (var keyword in keywords)
+                Console.WriteLine(keyword);
             
+            Console.WriteLine("------------------------");
             Console.WriteLine($"Total time: {stopwatch.Elapsed}");
         }
     }

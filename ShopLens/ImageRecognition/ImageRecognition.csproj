@@ -15,6 +15,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="NetSpell" Version="2.1.7"/>
     <PackageReference Include="tensorflow-batteries-linux-x64-cpu" Version="1.10.0.1" />
     <PackageReference Include="tensorflow-batteries-windows-x64-cpu" Version="1.10.0.1" />
     <PackageReference Include="TensorFlowSharp" Version="1.10.0" />
@@ -37,5 +38,8 @@
     <None Update="resources\test\2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\tesseract-master.2072\tessdata"/>
   </ItemGroup>
 </Project>
