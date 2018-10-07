@@ -81,7 +81,6 @@ namespace ImageRecognition
             Console.WriteLine("OBJECT CLASSIFICATION");
             Console.WriteLine("------------------------");
             
-            stopwatch.Stop();
             foreach (var classification in classificationResults.OrderByDescending(x => x.Value))
             {
                 Console.WriteLine($"{classification.Key, 15} => {Math.Round((classification.Value * 100.0), 3)}%");
@@ -106,6 +105,7 @@ namespace ImageRecognition
                 Console.WriteLine(keyword);
             
             Console.WriteLine("------------------------");
+            stopwatch.Stop();
             Console.WriteLine($"Total time: {stopwatch.Elapsed}");
         }
     }
