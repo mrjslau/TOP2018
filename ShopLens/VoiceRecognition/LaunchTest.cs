@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace VoiceRecognition
+namespace VoiceRecognitionWithTextVoicer
 {
     static class LaunchTest
     {
