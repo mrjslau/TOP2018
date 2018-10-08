@@ -10,8 +10,8 @@ namespace ImageRecognition.OCR
         {
             var solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
-            var tesseractPath = solutionDirectory + @"\ImageRecognition\resources\tesseract-master.2072";
-            var testFile = solutionDirectory + @"\ImageRecognition\resources\test\ocr.jpg";
+            var tesseractPath = solutionDirectory + @"\resources\tesseract-master.2072";
+            var testFile = solutionDirectory + @"\resources\test\ocr.jpg";
             var imageFile = File.ReadAllBytes(Program.TestImageFilePath);
             
             var output = string.Empty;
@@ -30,12 +30,12 @@ namespace ImageRecognition.OCR
                 info.Arguments =
                     "/c tesseract.exe " +
                     // Image file.
-                    tempImageFile + " " +
+                    $"\"{tempImageFile}\""+ " " +
                     // Output file (tesseract add '.txt' at the end)
-                    tempOutputFile +
+                    $"\"{tempOutputFile}\"" +
                     // Languages.
                     " -l " + string.Join("+", new[]{"lit"}) +
-                    " --tessdata-dir " + tesseractPath + "\\tessdata" + 
+                    " --tessdata-dir " + $"\"{tesseractPath}\"" + "\\tessdata" + 
                     " quiet";
 
                 // Start tesseract.

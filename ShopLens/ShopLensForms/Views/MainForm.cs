@@ -58,7 +58,7 @@ namespace ShopLensForms
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
             string webcamTurnedOff = "The webcam is turned off!";
-            string thisIs = "This is";
+            string thisIs = "This is"; //TO DO: rename variable properly.
             _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
                 thisIs ,NoLblError);
         }
