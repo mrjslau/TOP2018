@@ -57,8 +57,8 @@ namespace ShopLensForms
 
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
-            string webcamTurnedOff = "The webcam is turned off!";
-            string thisIs = "This is";
+            var webcamTurnedOff = "The webcam is turned off!";
+            var thisIs = "This is";
             _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
                 thisIs ,NoLblError);
         }
@@ -74,13 +74,13 @@ namespace ShopLensForms
 
         private void MyList_btn_Click(object sender, EventArgs e)
         {
-            MyListForm ml = new MyListForm();
+            var ml = new MyListForm();
             ml.ShowDialog();
         }
 
         private void MyCart_btn_Click(object sender, EventArgs e)
         {
-            MyCartForm mc = new MyCartForm();
+            var mc = new MyCartForm();
             mc.ShowDialog();
         }
     }

@@ -119,7 +119,7 @@ namespace ShopLensForms.Controllers
 
                 TextVoicerVoiceMessage(thisIs);
 
-                string mostConfidentResult = GetMostConfidentResult(image);
+                var mostConfidentResult = GetMostConfidentResult(image);
 
                 if (mostConfidentResult == null)
                 {

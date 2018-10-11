@@ -11,7 +11,7 @@ namespace ShopLensForms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainController mainController = new MainController();
+            var mainController = new MainController();
             mainController.StartApp();
         }
     }

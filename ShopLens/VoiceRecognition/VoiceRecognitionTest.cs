@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Speech.Recognition;
 using System.Windows.Forms;
-using VoicedText;
+using VoicedText.TextVoicers;
+using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
 
 namespace VoiceRecognitionWithTextVoicer
 {
     public partial class VoiceRecognitionTest : Form
     {
-        private VoiceRecognizer voiceRecognizer = new VoiceRecognizer(); //A voice recognizer.
-        private TextVoicer textVoicer = new TextVoicer(); //A text voicer.
+        private IVoiceRecognizer voiceRecognizer = new VoiceRecognizerSpeechRecEngine(); //A voice recognizer.
+        private ITextVoicer textVoicer = new TextVoicerSpeechSynthesizer(); //A text voicer.
 
         //Closing and opening statements of the voice recognizer.
         private const string openingStatement = "\nTalk to me now, please.\n";
@@ -41,7 +42,7 @@ namespace VoiceRecognitionWithTextVoicer
         {
             InitializeComponent();
             voiceRecognizer.VoiceRecForm = this;  //Voice recognizer now has a reference to this specific form.
-            voiceRecognizer.AddCommands(voiceCommands);
+            voiceRecognizer.AddCommand(voiceCommands);
         }
 
         private void VoiceRecognitionBox_Enter(object sender, EventArgs e)

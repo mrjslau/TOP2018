@@ -60,8 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TextVoicer.cs" />
+<<<<<<< HEAD
+=======
     <Compile Include="VoiceRecognizer.cs" />
+>>>>>>> 24f914aab7aaf871c604d7508953a31d3d8d85a6
     <Compile Include="VoiceRecognitionTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +104,14 @@
     <ProjectReference Include="..\ImageRecognition\ImageRecognition.csproj">
       <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
       <Name>ImageRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoicedText\VoicedText.csproj">
+<<<<<<< HEAD
+      <Project>{C1F25CAA-7525-40CE-8F97-16C511C3C43E}</Project>
+=======
+      <Project>{c1f25caa-7525-40ce-8f97-16c511c3c43e}</Project>
+>>>>>>> 24f914aab7aaf871c604d7508953a31d3d8d85a6
+      <Name>VoicedText</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
