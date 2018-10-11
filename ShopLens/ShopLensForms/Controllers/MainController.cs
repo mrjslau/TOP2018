@@ -34,6 +34,7 @@ namespace ShopLensForms.Controllers
         private const string startCmd = "Start";
         private const string exitCmd = "Exit";
 
+        //TO DO: solve SOLID Issue with specific objects created.
         public MainController()
         {
             _textVoicer = new TextVoicerSpeechSynthesizer();

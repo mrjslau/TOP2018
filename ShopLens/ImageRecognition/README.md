@@ -12,3 +12,5 @@ If your process is crashing with error "could not find libtenserflow.dll" or sim
 - Find your *"users/User/.nuget/packages/tensorflowsharp"* folder  
 - Copy the contents of *"runtimes/{**YOUR OS NAME**}/native/"* into project root folder
 
+
+For OCR: https://github.com/doxakis/How-to-use-tesseract-ocr-4.0-with-csharp
