@@ -33,12 +33,12 @@ namespace VoiceRecognitionWithTextVoicer.VoiceRecognizers
         /// <inheritdoc cref="ITextVoicer.SayMessage(int)"/>
         public void AddCommand(string command, Action<object, EventArgs> CommandRecognized_MethodToRun)
         {
-            Choices commandChoices = new Choices();
+            var commandChoices = new Choices();
             commandChoices.Add(command);
 
-            GrammarBuilder grammarBuilder = new GrammarBuilder();
+            var grammarBuilder = new GrammarBuilder();
             grammarBuilder.Append(commandChoices);
-            Grammar newGrammar = new Grammar(grammarBuilder);
+            var newGrammar = new Grammar(grammarBuilder);
             newGrammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(CommandRecognized_MethodToRun);
 
             speechRecognizer.LoadGrammarAsync(newGrammar);

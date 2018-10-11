@@ -38,12 +38,12 @@ namespace VoiceRecognitionWithTextVoicer
         public void AddCommands(string [] commands)
         {
             //Adds a string of phrases to be distinguished by the voice recognizer.
-            Choices commandChoices = new Choices();
+            var commandChoices = new Choices();
             commandChoices.Add(commands);
 
-            GrammarBuilder grammarBuilder = new GrammarBuilder();
+            var grammarBuilder = new GrammarBuilder();
             grammarBuilder.Append(commandChoices);
-            Grammar newGrammar = new Grammar(grammarBuilder);
+            var newGrammar = new Grammar(grammarBuilder);
 
             speechRecognizer.LoadGrammarAsync(newGrammar); //Loads the phrases asynchronously.
         }
