@@ -8,7 +8,7 @@ namespace ImageRecognition.OCR
     {
         public static string ParseText()
         {
-            var solutionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
+            var solutionDirectory = Directory.GetCurrentDirectory();
 
             var tesseractPath = solutionDirectory + @"\resources\tesseract-master.2072";
             var testFile = solutionDirectory + @"\resources\test\ocr.jpg";
@@ -30,14 +30,13 @@ namespace ImageRecognition.OCR
                 info.Arguments =
                     "/c tesseract.exe " +
                     // Image file.
-                    $"\"{tempImageFile}\""+ " " +
+                    $"\"{tempImageFile}\"" + " " +
                     // Output file (tesseract add '.txt' at the end)
                     $"\"{tempOutputFile}\"" +
                     // Languages.
-                    " -l " + string.Join("+", new[]{"lit"}) +
-                    " --tessdata-dir " + $"\"{tesseractPath}\"" + "\\tessdata" + 
-                    " quiet";
-
+                    " -l " + string.Join("+", new[] {"lit"}) +
+                    " --tessdata-dir " + $"\"{tesseractPath}\"" + "\\tessdata";
+                
                 // Start tesseract.
                 var process = Process.Start(info);
                 process.WaitForExit();
