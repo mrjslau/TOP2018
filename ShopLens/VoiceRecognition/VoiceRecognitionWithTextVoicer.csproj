@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VoiceRecognizer.cs" />
     <Compile Include="VoiceRecognitionTest.cs">
       <SubType>Form</SubType>
     </Compile>

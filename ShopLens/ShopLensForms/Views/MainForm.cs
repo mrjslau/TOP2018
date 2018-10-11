@@ -58,9 +58,9 @@ namespace ShopLensForms
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
             var webcamTurnedOff = "The webcam is turned off!";
-            var thisIs = "This is";
+            var beginningStatement = "This is";
             _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
-                thisIs ,NoLblError);
+                beginningStatement ,NoLblError);
         }
 
         public void Exit_btn_Click(object sender, EventArgs e)

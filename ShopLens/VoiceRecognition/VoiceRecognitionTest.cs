@@ -35,14 +35,17 @@ namespace VoiceRecognitionWithTextVoicer
         private const string iLuvURsp = "I love you, too.\n";
         private const string stopRecognitionRsp = closingStatement;
 
-        private string[] voiceCommands = { helloCmd, whatIsLuvCmd, somethingShowCmd, sayStupidCmd,
-            howUDoingCmd, meaningLifeCmd, iLuvUCmd, stopRecognitionCmd};
-
         public VoiceRecognitionTest()
         {
             InitializeComponent();
-            voiceRecognizer.VoiceRecForm = this;  //Voice recognizer now has a reference to this specific form.
-            voiceRecognizer.AddCommand(voiceCommands);
+            voiceRecognizer.AddCommand(helloCmd, CommandRecognized_Hello);
+            voiceRecognizer.AddCommand(whatIsLuvCmd, CommandRecognized_WhatIsLuv);
+            voiceRecognizer.AddCommand(somethingShowCmd, CommandRecognized_ShowSmth);
+            voiceRecognizer.AddCommand(sayStupidCmd, CommandRecognized_StupidSay);
+            voiceRecognizer.AddCommand(howUDoingCmd, CommandRecognized_HowUDoin);
+            voiceRecognizer.AddCommand(meaningLifeCmd, CommandRecognized_LifeMeaning);
+            voiceRecognizer.AddCommand(iLuvUCmd, CommandRecognized_ILuvU);
+            voiceRecognizer.AddCommand(stopRecognitionCmd, CommandRecognized_StopRec);
         }
 
         private void VoiceRecognitionBox_Enter(object sender, EventArgs e)
@@ -65,55 +68,51 @@ namespace VoiceRecognitionWithTextVoicer
             CommandOutputBox.Text += openingStatement;
         }
 
-        //The speech recognizer would call this method, when it would recognize a particular command.
-        public void SpeechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        private void CommandRecognized_Hello(object sender, EventArgs e)
         {
-            string speechResult = e.Result.Text;
-            string voicedResponse = "";
+            RespondToCommand(helloRsp);
+        }
 
-            switch (speechResult)
-            {
-                case (helloCmd):
-                    voicedResponse = helloRsp;
-                    break;
+        private void CommandRecognized_WhatIsLuv(object sender, EventArgs e)
+        {
+            RespondToCommand(whatIsLuvRsp);
+        }
 
-                case (whatIsLuvCmd):
-                    voicedResponse = whatIsLuvRsp;
-                    break;
+        private void CommandRecognized_ShowSmth(object sender, EventArgs e)
+        {
+            RespondToCommand(somethingShowRsp);
+        }
 
-                case (somethingShowCmd):
-                    voicedResponse = somethingShowRsp;
-                    break;
+        private void CommandRecognized_StupidSay(object sender, EventArgs e)
+        {
+            RespondToCommand(sayStupidRsp);
+        }
 
-                case (sayStupidCmd):
-                    voicedResponse = sayStupidRsp;
-                    break;
+        private void CommandRecognized_HowUDoin(object sender, EventArgs e)
+        {
+            RespondToCommand(howUDoingRsp);
+        }
 
-                case (howUDoingCmd):
-                    voicedResponse = howUDoingRsp;
-                    break;
+        private void CommandRecognized_LifeMeaning(object sender, EventArgs e)
+        {
+            RespondToCommand(meaningLifeRsp);
+        }
 
-                case (meaningLifeCmd):
-                    voicedResponse = meaningLifeRsp;
-                    break;
+        private void CommandRecognized_ILuvU(object sender, EventArgs e)
+        {
+            RespondToCommand(iLuvURsp);
+        }
 
-                case (iLuvUCmd):
-                    voicedResponse = iLuvURsp;
-                    break;
+        private void CommandRecognized_StopRec(object sender, EventArgs e)
+        {
+            voiceRecognizer.StopVoiceRecognition();
+            StartRecognitionBtn.Enabled = true;
+        }
 
-                case (stopRecognitionCmd):
-                    voicedResponse = closingStatement;
-                    break;
-            }
-
-            CommandOutputBox.Text += voicedResponse;  //Write the response and voice it to the user.
+        public void RespondToCommand(string voicedResponse)
+        {
+            CommandOutputBox.Text += voicedResponse;
             textVoicer.SayMessage(voicedResponse);
-  
-            if (speechResult == stopRecognitionCmd)  //Need to stop asynchronous voice recognition.
-            {
-                voiceRecognizer.StopVoiceRecognition();
-                StartRecognitionBtn.Enabled = true;
-            }
         }
 
         private void VoiceRecognitionTest_Load(object sender, EventArgs e)
