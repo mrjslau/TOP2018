@@ -15,6 +15,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Remove="resources\model\model.pb" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="tensorflow-batteries-linux-x64-cpu" Version="1.10.0.1" />
     <PackageReference Include="tensorflow-batteries-windows-x64-cpu" Version="1.10.0.1" />
     <PackageReference Include="TensorFlowSharp" Version="1.10.0" />
@@ -24,11 +27,6 @@
       <HintPath>..\..\..\..\Windows\WinSxS\msil_system.speech_31bf3856ad364e35_4.0.15671.0_none_a73313f37b889742\System.Speech.dll</HintPath>
       <Private>true</Private>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="resources\model\model.pb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Update="resources\test\1.jpg">
