@@ -69,6 +69,7 @@ namespace ShopLensForms
             {
                 _videoSource.Stop();
             }
+            _mainController.StopVoiceRecognizer();
             Application.Exit(null);
         }
 
