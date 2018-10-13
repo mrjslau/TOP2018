@@ -8,7 +8,7 @@ namespace ShopLensApp.ExtensionMethods
         public static ImageRecognitionResults<TSource> ToImageRecognitionResults<TSource>(this IEnumerable<TSource> source)
             where TSource : IImageRecognitionResultRow
         {
-            var resultContainer = ToImageRecognitionResults<TSource>(source);
+            var resultContainer = new ImageRecognitionResults<TSource>(source);
             return resultContainer;
         }
             
