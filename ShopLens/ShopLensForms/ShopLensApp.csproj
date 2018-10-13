@@ -61,8 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\MainController.cs" />
+      <Compile Include="ExtensionMethods\EnumerableToContainerExtensions.cs"/>
     <Compile Include="ExtensionMethods\ThreadExtensions.cs" />
-    <Compile Include="Views\IntroForm.cs">
+      <Compile Include="Views\IntroForm.cs"/>
+      <Compile Include="Models\ImageRecognitionResultRow.cs"/>
+      <Compile Include="Models\ImageRecognitionResults.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\IntroForm.Designer.cs">
