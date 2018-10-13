@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
+using ShopLensApp.ExtensionMethods;
 
 namespace ShopLensForms.Controllers
 {
@@ -61,11 +62,12 @@ namespace ShopLensForms.Controllers
             _voiceRecognizer.StartVoiceRecognition();
         }
 
-        /// <summary> Invokes methods on the GUI thread. </summary>
-        /// <remarks>
-        /// This if statement makes sure the method that must be executed when the specified command is recognized
-        /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699.
-        /// </remarks>
+        public void StopVoiceRecognizer()
+        {
+            _voiceRecognizer.StopVoiceRecognition();
+        }
+
+
         private void InvokeOnGUIThread(Form formToBeInvokedOn,
             Action<object, EventArgs> methodToBeInvoked, object sender, EventArgs e)
         {
@@ -84,25 +86,25 @@ namespace ShopLensForms.Controllers
         /// </summary>
         private void CommandRecognized_Hello(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_introForm, _introForm.Enter_btn_Click, sender, e);
+            _introForm.InvokeOnGUIThread_VoidObjEvArgs(_introForm.Enter_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.WhatIsThis_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.WhatIsThis_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Start(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.Start_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.Start_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Exit(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.Exit_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.Exit_btn_Click, sender, e);
         }
 
         /// <summary>
