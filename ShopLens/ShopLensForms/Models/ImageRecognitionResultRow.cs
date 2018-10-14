@@ -10,6 +10,11 @@ namespace ShopLensForms.Models
     {
         public string Label { get; set; }
         public double Confidence { get; set; }
+
+        public double this[string Label]
+        {
+            get { return Confidence; }
+        }
         
         public ImageRecognitionResultRow(string label, double confidence)
         {

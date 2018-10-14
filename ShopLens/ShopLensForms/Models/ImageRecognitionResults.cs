@@ -30,7 +30,7 @@ namespace ShopLensForms.Models
 
         public bool Equals(ImageRecognitionResults<T> other)
         {
-            return other != null && this._resultRows.SequenceEqual(other._resultRows);
+            return other != null && _resultRows.SequenceEqual(other._resultRows);
         }
     }
 }
