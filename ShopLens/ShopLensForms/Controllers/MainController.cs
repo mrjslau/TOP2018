@@ -46,8 +46,8 @@ namespace ShopLensForms.Controllers
             _introForm = introForm;
             _shopLens = shopLens;
 
-            _introForm._mainController = this;
-            _shopLens._mainController = this;
+            _introForm.MainController = this;
+            _shopLens.MainController = this;
         }
 
         [STAThread]

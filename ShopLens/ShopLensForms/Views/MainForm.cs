@@ -11,7 +11,7 @@ namespace ShopLensForms
     {
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        public MainController _mainController { get; set;}
+        public MainController MainController { get; set;}
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
@@ -39,11 +39,11 @@ namespace ShopLensForms
                 _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
                 _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                 _videoSource.Start();
-                _mainController.TextVoicerVoiceMessage(SeeMessage);
+                MainController.TextVoicerVoiceMessage(SeeMessage);
             }
             else
             {
-                _mainController.TextVoicerVoiceMessage("Please choose a webcam!");
+                MainController.TextVoicerVoiceMessage("Please choose a webcam!");
             }
         }
 
@@ -57,7 +57,7 @@ namespace ShopLensForms
         {
             var webcamTurnedOff = "The webcam is turned off!";
             var beginningStatement = "This is";
-            _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
+            MainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
                 beginningStatement ,NoLblError);
         }
 
@@ -67,7 +67,7 @@ namespace ShopLensForms
             {
                 _videoSource.Stop();
             }
-            _mainController.StopVoiceRecognizer();
+            MainController.StopVoiceRecognizer();
             Application.Exit(null);
         }
 
