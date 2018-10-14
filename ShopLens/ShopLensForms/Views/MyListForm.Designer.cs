@@ -38,10 +38,6 @@
             // MyList_listBox
             // 
             this.MyList_listBox.FormattingEnabled = true;
-            this.MyList_listBox.Items.AddRange(new object[] {
-            "Tomato",
-            "Cucumber",
-            "Beer"});
             this.MyList_listBox.Location = new System.Drawing.Point(12, 25);
             this.MyList_listBox.Name = "MyList_listBox";
             this.MyList_listBox.Size = new System.Drawing.Size(180, 238);
@@ -104,11 +100,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox MyList_listBox;
         private System.Windows.Forms.Label ItemsToBuy_label;
         private System.Windows.Forms.Button Add_btn;
-        private System.Windows.Forms.TextBox ItemToAdd_textBox;
         private System.Windows.Forms.Button Close_btn;
+        public System.Windows.Forms.TextBox ItemToAdd_textBox;
+        public System.Windows.Forms.ListBox MyList_listBox;
     }
 }

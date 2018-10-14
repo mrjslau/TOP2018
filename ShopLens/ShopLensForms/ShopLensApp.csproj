@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0EF9942F-C7DF-4650-8201-767949EF852F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-      <RootNamespace>ShopLensApp</RootNamespace>
-      <AssemblyName>ShopLensApp</AssemblyName>
+    <RootNamespace>ShopLensApp</RootNamespace>
+    <AssemblyName>ShopLensApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,6 +44,9 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Speech">
@@ -60,43 +63,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-      <Compile Include="Controllers\MainController.cs"/>
-      <Compile Include="Views\IntroForm.cs">
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="IO\Reader.cs" />
+    <Compile Include="IO\Writer.cs" />
+    <Compile Include="IO\Item.cs" />
+    <Compile Include="Views\IntroForm.cs">
       <SubType>Form</SubType>
     </Compile>
-      <Compile Include="Views\IntroForm.Designer.cs">
-          <DependentUpon>IntroForm.cs</DependentUpon>
+    <Compile Include="Views\IntroForm.Designer.cs">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
-      <Compile Include="Views\MainForm.cs">
+    <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-      <Compile Include="Views\MainForm.Designer.cs">
+    <Compile Include="Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-      <Compile Include="Views\MyCartForm.cs">
+    <Compile Include="Views\MyCartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-      <Compile Include="Views\MyCartForm.Designer.cs">
+    <Compile Include="Views\MyCartForm.Designer.cs">
       <DependentUpon>MyCartForm.cs</DependentUpon>
     </Compile>
-      <Compile Include="Views\MyListForm.cs">
+    <Compile Include="Views\MyListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-      <Compile Include="Views\MyListForm.Designer.cs">
+    <Compile Include="Views\MyListForm.Designer.cs">
       <DependentUpon>MyListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-      <EmbeddedResource Include="Views\IntroForm.resx">
-          <DependentUpon>IntroForm.cs</DependentUpon>
+    <EmbeddedResource Include="Views\IntroForm.resx">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </EmbeddedResource>
-      <EmbeddedResource Include="Views\MainForm.resx">
+    <EmbeddedResource Include="Views\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-      <EmbeddedResource Include="Views\MyCartForm.resx">
+    <EmbeddedResource Include="Views\MyCartForm.resx">
       <DependentUpon>MyCartForm.cs</DependentUpon>
     </EmbeddedResource>
-      <EmbeddedResource Include="Views\MyListForm.resx">
+    <EmbeddedResource Include="Views\MyListForm.resx">
       <DependentUpon>MyListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -119,6 +125,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SavedData\items.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,17 +135,18 @@
       <Project>{3b726f99-f999-40f3-aac4-4ca6ac69b2ff}</Project>
       <Name>ImageRecognition</Name>
     </ProjectReference>
-      <ProjectReference Include="..\VoicedText\VoicedText.csproj">
-          <Project>{c1f25caa-7525-40ce-8f97-16c511c3c43e}</Project>
-          <Name>VoicedText</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\VoiceRecognition\VoiceRecognitionWithTextVoicer.csproj">
-          <Project>{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}</Project>
-          <Name>VoiceRecognitionWithTextVoicer</Name>
-      </ProjectReference>
+    <ProjectReference Include="..\VoicedText\VoicedText.csproj">
+      <Project>{c1f25caa-7525-40ce-8f97-16c511c3c43e}</Project>
+      <Name>VoicedText</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceRecognition\VoiceRecognitionWithTextVoicer.csproj">
+      <Project>{A1CF8A54-1E07-4F88-BD82-9D8CB970C864}</Project>
+      <Name>VoiceRecognitionWithTextVoicer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\shopLensLogo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

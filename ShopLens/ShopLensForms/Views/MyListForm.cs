@@ -1,23 +1,27 @@
-﻿using System;
+﻿using ShopLensForms.Controllers;
+using System;
 using System.Windows.Forms;
 
 namespace ShopLensForms
 {
     public partial class MyListForm : Form
     {
-        public MyListForm()
+        private MainController _mainController;
+
+        public MyListForm(MainController mainController)
         {
+            _mainController = mainController;
             InitializeComponent();
         }
 
-        private void Close_btn_Click(object sender, EventArgs e)
+        public void Close_btn_Click(object sender, EventArgs e)
         {
-            Hide();
+            _mainController.HideForm(_mainController._myList);
         }
 
-        private void Add_btn_Click(object sender, EventArgs e)
+        public void Add_btn_Click(object sender, EventArgs e)
         {
-            MyList_listBox.Items.Add(ItemToAdd_textBox.Text);
+            _mainController.AddItem();
         }
     }
 }

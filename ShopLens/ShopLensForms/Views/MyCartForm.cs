@@ -1,12 +1,17 @@
-﻿using System;
+﻿using ShopLensForms.Controllers;
+using System;
 using System.Windows.Forms;
 
 namespace ShopLensForms
 {
     public partial class MyCartForm : Form
     {
-        public MyCartForm()
+        private MainController _mainController;
+
+        public MyCartForm(MainController mainController)
         {
+            _mainController = mainController;
+
             InitializeComponent();
         }
 
