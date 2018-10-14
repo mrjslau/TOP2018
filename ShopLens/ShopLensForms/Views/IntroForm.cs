@@ -6,14 +6,12 @@ namespace ShopLensForms
 {
     public partial class IntroForm : Form
     {
-        private MainController _mainController;
+        public MainController _mainController { get; set; }
 
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
 
-        public IntroForm(MainController mainController)
+        public IntroForm()
         {
-            _mainController = mainController;
-
             InitializeComponent();
         }
 

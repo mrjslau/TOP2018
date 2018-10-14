@@ -36,15 +36,18 @@ namespace ShopLensForms.Controllers
         private const string startCmd = "Start";
         private const string exitCmd = "Exit";
 
-        //TO DO: solve SOLID Issue with specific objects created.
-        public MainController()
-        {
-            _textVoicer = new TextVoicerSpeechSynthesizer();
-            _voiceRecognizer = new VoiceRecognizerSpeechRecEngine();
-            _imageClassifying = new TensorFlowClassificator();
 
-            _introForm = new IntroForm(this);
-            _shopLens = new ShopLens(this);
+        public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer
+            , IImageClassificator imageClassificator, IntroForm introForm, ShopLens shopLens)
+        {
+            _textVoicer = textVoicer;
+            _voiceRecognizer = voiceRecognizer;
+            _imageClassifying = imageClassificator;
+            _introForm = introForm;
+            _shopLens = shopLens;
+
+            _introForm._mainController = this;
+            _shopLens._mainController = this;
         }
 
         [STAThread]

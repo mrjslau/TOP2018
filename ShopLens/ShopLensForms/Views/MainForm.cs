@@ -11,20 +11,18 @@ namespace ShopLensForms
     {
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        private MainController _mainController;
+        public MainController _mainController { get; set;}
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
         private const string NoLblError = "ERROR: no label names provided to product recognition model.";
 
-        public ShopLens(MainController mainController)
+        public ShopLens()
         {
             Hide();
 
             InitializeComponent();
-
-            _mainController = mainController;
 
             _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in _captureDevices)
