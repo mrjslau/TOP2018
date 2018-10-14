@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ShopLensForms.Models;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
 using ShopLensApp.ExtensionMethods;
@@ -189,9 +190,12 @@ namespace ShopLensForms.Controllers
 
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            var classificationResults = ImageClassifyingClassifyImage(ms.ToArray());
+            var classificationResultsDictionary = ImageClassifyingClassifyImage(ms.ToArray());
+            var classificationResults = classificationResultsDictionary
+                .Select(x => new ImageRecognitionResultRow(x.Key, x.Value))
+                .ToImageRecognitionResults();
 
-            return classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+            return classificationResults.MostConfidentResult.Label;
         }
     }
 }
