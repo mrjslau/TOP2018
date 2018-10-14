@@ -24,12 +24,6 @@ namespace ShopLensForms.Controllers
         private IImageClassificator _imageClassifying;
 
         /// <summary>
-        /// Tells the controller whether the text voicer should tell the user
-        /// the recognition probabilities.
-        /// </summary>
-        private bool sayProbabilityEnabled = true;
-
-        /// <summary>
         /// A windows form that the controller communicates with.
         /// </summary>
         public IntroForm _introForm;
@@ -41,8 +35,6 @@ namespace ShopLensForms.Controllers
         private const string whatIsThisCmd = "What is this";
         private const string startCmd = "Start";
         private const string exitCmd = "Exit";
-
-        private const int PERCENTAGE_VALUE = 100;
 
         //TO DO: solve SOLID Issue with specific objects created.
         public MainController()
@@ -205,17 +197,7 @@ namespace ShopLensForms.Controllers
 
             var bestResult = classificationResults.MostConfidentResult;
 
-            if (sayProbabilityEnabled)
-            {
-                return bestResult.Label
-                + " with probability of "
-                + (bestResult[bestResult.Label] * PERCENTAGE_VALUE)
-                + "percent.";
-            }
-            else
-            {
-                return bestResult.Label;
-            }
+            return bestResult.Label;
         }
     }
 }
