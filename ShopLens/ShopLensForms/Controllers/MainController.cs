@@ -36,15 +36,18 @@ namespace ShopLensForms.Controllers
         private const string startCmd = "Start";
         private const string exitCmd = "Exit";
 
-        //TO DO: solve SOLID Issue with specific objects created.
-        public MainController()
-        {
-            _textVoicer = new TextVoicerSpeechSynthesizer();
-            _voiceRecognizer = new VoiceRecognizerSpeechRecEngine();
-            _imageClassifying = new TensorFlowClassificator();
 
-            _introForm = new IntroForm(this);
-            _shopLens = new ShopLens(this);
+        public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer
+            , IImageClassificator imageClassificator, IntroForm introForm, ShopLens shopLens)
+        {
+            _textVoicer = textVoicer;
+            _voiceRecognizer = voiceRecognizer;
+            _imageClassifying = imageClassificator;
+            _introForm = introForm;
+            _shopLens = shopLens;
+
+            _introForm.MainController = this;
+            _shopLens.MainController = this;
         }
 
         [STAThread]
@@ -143,10 +146,10 @@ namespace ShopLensForms.Controllers
         /// <summary>
         /// Uses a text voicer object to voice a message.
         /// </summary>
-        /// <param name="seeMessage">The string of a message to be voiced.</param>
-        public void TextVoicerVoiceMessage(string seeMessage)
+        /// <param name="message">The string of a message to be voiced.</param>
+        public void TextVoicerVoiceMessage(string message)
         {
-            _textVoicer.SayMessage(seeMessage);
+            _textVoicer.SayMessage(message);
         }
 
         /// <summary>
@@ -195,7 +198,9 @@ namespace ShopLensForms.Controllers
                 .Select(x => new ImageRecognitionResultRow(x.Key, x.Value))
                 .ToImageRecognitionResults();
 
-            return classificationResults.MostConfidentResult.Label;
+            var bestResult = classificationResults.MostConfidentResult;
+
+            return bestResult.Label;
         }
     }
 }

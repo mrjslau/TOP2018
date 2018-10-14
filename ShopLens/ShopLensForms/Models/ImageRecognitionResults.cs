@@ -8,14 +8,29 @@ namespace ShopLensForms.Models
     public class ImageRecognitionResults<T> : IEnumerable<T>, IEquatable<ImageRecognitionResults<T>> 
         where T: IImageRecognitionResultRow
     {
-        public T MostConfidentResult =>
-            _resultRows.OrderByDescending(x => x.Confidence).FirstOrDefault(); 
-         
-        private readonly List<T> _resultRows;
+        private readonly HashSet<T> _resultRows = new HashSet<T>();
+
+        public T MostConfidentResult { get; }
 
         public ImageRecognitionResults(IEnumerable<T> resultRows)
         {
-            _resultRows = resultRows.ToList();
+            _resultRows = new HashSet<T>(resultRows);
+            MostConfidentResult = _resultRows.OrderByDescending(x => x.Confidence).FirstOrDefault();
+        }
+
+        public T this[string index]
+        {
+            get {
+                var result = _resultRows.Where(x => x.Label == index).SingleOrDefault();
+                if(result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new KeyNotFoundException();
+                }
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -30,7 +45,7 @@ namespace ShopLensForms.Models
 
         public bool Equals(ImageRecognitionResults<T> other)
         {
-            return other != null && this._resultRows.SequenceEqual(other._resultRows);
+            return other != null && _resultRows.SequenceEqual(other._resultRows);
         }
     }
 }

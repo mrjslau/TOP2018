@@ -11,20 +11,18 @@ namespace ShopLensForms
     {
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        private MainController _mainController;
+        public MainController MainController { get; set;}
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
         private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
         private const string NoLblError = "ERROR: no label names provided to product recognition model.";
 
-        public ShopLens(MainController mainController)
+        public ShopLens()
         {
             Hide();
 
             InitializeComponent();
-
-            _mainController = mainController;
 
             _captureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             foreach (FilterInfo device in _captureDevices)
@@ -41,11 +39,11 @@ namespace ShopLensForms
                 _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
                 _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                 _videoSource.Start();
-                _mainController.TextVoicerVoiceMessage(SeeMessage);
+                MainController.TextVoicerVoiceMessage(SeeMessage);
             }
             else
             {
-                _mainController.TextVoicerVoiceMessage("Please choose a webcam!");
+                MainController.TextVoicerVoiceMessage("Please choose a webcam!");
             }
         }
 
@@ -58,8 +56,8 @@ namespace ShopLensForms
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
             var webcamTurnedOff = "The webcam is turned off!";
-            var beginningStatement = "This is"; //TO DO: rename variable properly.
-            _mainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
+            var beginningStatement = "This is";
+            MainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
                 beginningStatement ,NoLblError);
         }
 
@@ -69,7 +67,7 @@ namespace ShopLensForms
             {
                 _videoSource.Stop();
             }
-            _mainController.StopVoiceRecognizer();
+            MainController.StopVoiceRecognizer();
             Application.Exit(null);
         }
 
