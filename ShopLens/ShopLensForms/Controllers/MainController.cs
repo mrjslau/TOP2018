@@ -66,6 +66,7 @@ namespace ShopLensForms.Controllers
         public void StartApp()
         {
             StartVoiceRecognizer();
+            LoadList(_myList.MyList_listBox);
             Application.Run(_introForm);
         }
 
@@ -249,6 +250,7 @@ namespace ShopLensForms.Controllers
             List<Item> list = source.DeserializeToList(filePath);
             if (list != null)
             {
+                listBoxToBeLoaded.Items.Clear();
                 listBoxToBeLoaded.Items.AddRange(list.ToArray());
             }
         }
@@ -263,10 +265,10 @@ namespace ShopLensForms.Controllers
             Reader read = new Reader();
             Writer write = new Writer();
 
-            List<Item> items = read.DeserializeToList(filePath);
-            //items.Add(itemToAdd);
-            LoadList(_myList.MyList_listBox);
+            List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
+            items.Add(itemToAdd);
             write.SerializeFromList(filePath, items);           
+            LoadList(_myList.MyList_listBox);
         }
 
         /// <summary>

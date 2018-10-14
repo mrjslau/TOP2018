@@ -14,5 +14,10 @@ namespace ShopLensApp.IO
         {
             this.itemName = itemName;
         }
+
+        public override string ToString()
+        {
+            return itemName;
+        }
     }
 }
