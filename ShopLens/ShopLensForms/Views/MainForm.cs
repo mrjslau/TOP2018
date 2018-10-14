@@ -11,7 +11,7 @@ namespace ShopLensForms
     {
         private FilterInfoCollection _captureDevices;
         private VideoCaptureDevice _videoSource;
-        public MainController MainController { get; set;}
+        private MainController MainController { get; set;}
 
         //Messages that the text voicer says.
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
