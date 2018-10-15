@@ -125,7 +125,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="SavedData\items.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -147,6 +146,8 @@
   <ItemGroup>
     <None Include="Properties\shopLensLogo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SavedData\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
