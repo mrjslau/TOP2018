@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using ImageRecognition.Classificators;
 using ImageRecognition.OCR;
 using TensorFlow;
@@ -91,7 +92,10 @@ namespace ImageRecognition
             Console.WriteLine("------------------------");
 
             text = text.Trim().Replace("\r\n", " ").Replace("\n", " ");
-            Console.WriteLine(text);
+            Regex rx = new Regex(@"(?<weight>\d+\.?\d+?\s*?[a-z]+)");
+            Match match = rx.Match(text);
+            string matchedWeight = Regex.Replace(match.Groups["weight"].Value, @"\s+", "");
+            Console.WriteLine(matchedWeight);
 
             Console.WriteLine("------------------------");
             Console.WriteLine("OCR KEYWORDS");
