@@ -15,7 +15,7 @@ namespace ShopLensForms
             InitializeComponent();
         }
 
-        private void Close_btn_Click(object sender, EventArgs e)
+        public void Close_btn_Click(object sender, EventArgs e)
         {
             Hide();
         }

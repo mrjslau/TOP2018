@@ -45,9 +45,9 @@ namespace ShopLensForms.Controllers
         private const string exitCmd = "Exit";
         private const string myShoppingListCmd = "My shopping list";
         private const string myShoppingCartCmd = "My shopping cart";
-        private const string readTheListCmd = "Read the list";//
-        private const string addToShoppingListCmd = "Add to Shopping List";//
-        private const string closeTheListCmd = "Close the list";
+        private const string addToShoppingListCmd = "Add to Shopping List";
+        private const string closeShoppingListCmd = "Close shopping list";
+        private const string closeShoppingCartCmd = "Close shopping cart";
 
         //TO DO: solve SOLID Issue with specific objects created.
         public MainController()
@@ -78,9 +78,9 @@ namespace ShopLensForms.Controllers
             _voiceRecognizer.AddCommand(exitCmd, CommandRecognized_Exit);
             _voiceRecognizer.AddCommand(myShoppingListCmd, CommandRecognized_MyShoppingList);
             _voiceRecognizer.AddCommand(myShoppingCartCmd, CommandRecognized_MyShoppingCart);
-            _voiceRecognizer.AddCommand(readTheListCmd, CommandRecognized_ReadTheList);
             _voiceRecognizer.AddCommand(addToShoppingListCmd, CommandRecognized_AddToShoppingList);
-            _voiceRecognizer.AddCommand(closeTheListCmd, CommandRecognized_CloseTheList);
+            _voiceRecognizer.AddCommand(closeShoppingListCmd, CommandRecognized_CloseShoppingList);
+            _voiceRecognizer.AddCommand(closeShoppingCartCmd, CommandRecognized_CloseShoppingCart);
             _voiceRecognizer.StartVoiceRecognition();
         }
 
@@ -140,24 +140,22 @@ namespace ShopLensForms.Controllers
             InvokeOnGUIThread(_shopLens, _shopLens.MyCart_btn_Click, sender, e);
         }
 
-        private void CommandRecognized_ReadTheList(object sender, EventArgs e)
-        {
-            //InvokeOnGUIThread(_shopLens, _);
-        }
-
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_AddToShoppingList(object sender, EventArgs e)
         {
             InvokeOnGUIThread(_myList, _myList.Add_btn_Click, sender, e);
         }
 
-        private void CommandRecognized_RemoveFromList(object sender, EventArgs e)
-        {
-            //
-        }
-
-        private void CommandRecognized_CloseTheList(object sender, EventArgs e)
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_CloseShoppingList(object sender, EventArgs e)
         {
             InvokeOnGUIThread(_myList, _myList.Close_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_CloseShoppingCart(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_myCart, _myCart.Close_btn_Click, sender, e);
         }
 
         /// <summary>
@@ -190,11 +188,6 @@ namespace ShopLensForms.Controllers
             {
                 TextVoicerVoiceMessage(webcamTurnedOff);
             }
-        }
-
-        public void ExecuteCommand_ReadTheList(Image videoImage, string webcamTurnedOff, string thisIs, string noLblError)
-        {
-
         }
 
         /// <summary>
@@ -236,6 +229,14 @@ namespace ShopLensForms.Controllers
             }
         }
 
+        /// <summary>
+        /// Makes a particular Windows form invisible to the user.
+        /// </summary>
+        /// <param name="formToBeHiden">The form to be hiden from the user.</param>
+        /// <remarks>
+        /// The if statement makes sure that if the user says, for example, 'Close the list'
+        /// many times the application will not crash.
+        /// </remarks>
         public void HideForm(Form formToBeHiden)
         {
             if (formToBeHiden.Visible == true)
@@ -244,6 +245,14 @@ namespace ShopLensForms.Controllers
             }
         }
 
+        /// <summary>
+        /// Load the list in particular Windows form listbox.
+        /// </summary>
+        /// <param name="listBoxToBeLoaded">The listbox where the list has to be loaded.</param>
+        /// <remarks>
+        /// The if statement makes sure that the application will not crash 
+        /// after trying to convert null to array.
+        /// </remarks>
         public void LoadList(ListBox listBoxToBeLoaded)
         {
             Reader source = new Reader();
@@ -255,6 +264,9 @@ namespace ShopLensForms.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds an item to the shopping list.
+        /// </summary>
         public void AddItem()
         {
             string itemName = _myList.ItemToAdd_textBox.Text;
