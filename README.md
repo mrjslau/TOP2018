@@ -2,7 +2,7 @@
 C# project for Applied Object-Oriented Programming course.
 
 ## The goal
-To develop an Android app with C# that would recognise food products and help blind people shop for groceries.
+To develop a mobile app with C# that would recognise food products and help blind people shop for groceries.
 
 ## Prerequisites
 Visual Studio 2017/2017 Preview

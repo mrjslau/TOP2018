@@ -44,9 +44,6 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Speech">
@@ -64,10 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="IO\Reader.cs" />
-    <Compile Include="IO\Writer.cs" />
-    <Compile Include="IO\Item.cs" />
-    <Compile Include="Views\IntroForm.cs">
+      <Compile Include="ExtensionMethods\EnumerableToContainerExtensions.cs"/>
+    <Compile Include="ExtensionMethods\ThreadExtensions.cs" />
+      <Compile Include="Views\IntroForm.cs"/>
+      <Compile Include="Models\ImageRecognitionResultRow.cs"/>
+      <Compile Include="Models\ImageRecognitionResults.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\IntroForm.Designer.cs">
@@ -145,9 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\shopLensLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SavedData\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
