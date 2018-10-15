@@ -1,16 +1,21 @@
-﻿using System;
+﻿using ShopLensForms.Controllers;
+using System;
 using System.Windows.Forms;
 
 namespace ShopLensForms
 {
     public partial class MyCartForm : Form
     {
-        public MyCartForm()
+        private MainController _mainController;
+
+        public MyCartForm(MainController mainController)
         {
+            _mainController = mainController;
+
             InitializeComponent();
         }
 
-        private void Close_btn_Click(object sender, EventArgs e)
+        public void Close_btn_Click(object sender, EventArgs e)
         {
             Hide();
         }
