@@ -31,10 +31,10 @@ namespace ShopLensForms.Controllers
         /// <inheritdoc cref="_introForm"/>
         public ShopLens _shopLens;
 
-        private const string helloCmd = "Hello";
-        private const string whatIsThisCmd = "What is this";
-        private const string startCmd = "Start";
-        private const string exitCmd = "Exit";
+        private string helloCmd = ShopLensApp.GlobalStrings.helloCmd;
+        private string whatIsThisCmd = ShopLensApp.GlobalStrings.whatIsThisCmd;
+        private string startCmd = ShopLensApp.GlobalStrings.startCmd;
+        private string exitCmd = ShopLensApp.GlobalStrings.exitCmd;
 
 
         public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer

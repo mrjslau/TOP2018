@@ -117,4 +117,241 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;exit_btn.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;MyList_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="menu_panel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-4, 0</value>
+  </data>
+  <data name="MyList_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 58</value>
+  </data>
+  <data name="&gt;&gt;start_btn.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;webcam_combobox.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="&gt;&gt;start_btn.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="live_video.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="WhatIsThis_btn.Text" xml:space="preserve">
+    <value>WHAT IS THIS?</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;exit_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="webcam_combobox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 92</value>
+  </data>
+  <data name="exit_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 58</value>
+  </data>
+  <data name="WhatIsThis_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="live_video.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="&gt;&gt;WhatIsThis_btn.Name" xml:space="preserve">
+    <value>WhatIsThis_btn</value>
+  </data>
+  <data name="start_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="MyCart_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 285</value>
+  </data>
+  <data name="WhatIsThis_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 58</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="MyList_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 215</value>
+  </data>
+  <data name="&gt;&gt;MyList_btn.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="&gt;&gt;MyCart_btn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;live_video.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;WhatIsThis_btn.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="menu_panel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 867</value>
+  </data>
+  <data name="&gt;&gt;webcam_combobox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;live_video.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="start_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="start_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 23</value>
+  </data>
+  <data name="MyCart_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>12, 25</value>
+  </data>
+  <data name="&gt;&gt;MyCart_btn.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="live_video.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="exit_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;exit_btn.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="exit_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="MyList_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="live_video.Location" type="System.Drawing.Point, System.Drawing">
+    <value>468, 50</value>
+  </data>
+  <data name="MyCart_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;start_btn.Name" xml:space="preserve">
+    <value>start_btn</value>
+  </data>
+  <data name="&gt;&gt;menu_panel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="start_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 58</value>
+  </data>
+  <data name="MyList_btn.Text" xml:space="preserve">
+    <value>MY LIST</value>
+  </data>
+  <data name="&gt;&gt;menu_panel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;live_video.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="exit_btn.Text" xml:space="preserve">
+    <value>EXIT</value>
+  </data>
+  <data name="&gt;&gt;webcam_combobox.Name" xml:space="preserve">
+    <value>webcam_combobox</value>
+  </data>
+  <data name="WhatIsThis_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 144</value>
+  </data>
+  <data name="&gt;&gt;exit_btn.Name" xml:space="preserve">
+    <value>exit_btn</value>
+  </data>
+  <data name="WhatIsThis_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;MyList_btn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="menu_panel.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;menu_panel.Name" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="&gt;&gt;menu_panel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;MyCart_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WhatIsThis_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="webcam_combobox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="live_video.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1090, 760</value>
+  </data>
+  <data name="MyCart_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>380, 60</value>
+  </data>
+  <data name="&gt;&gt;MyList_btn.Name" xml:space="preserve">
+    <value>MyList_btn</value>
+  </data>
+  <data name="start_btn.Text" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="MyList_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="webcam_combobox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 33</value>
+  </data>
+  <data name="&gt;&gt;webcam_combobox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MyCart_btn.Name" xml:space="preserve">
+    <value>MyCart_btn</value>
+  </data>
+  <data name="menu_panel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;WhatIsThis_btn.Parent" xml:space="preserve">
+    <value>menu_panel</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>ShopLens</value>
+  </data>
+  <data name="webcam_combobox.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="MyCart_btn.Text" xml:space="preserve">
+    <value>MY CART</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1600, 865</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ShopLens</value>
+  </data>
+  <data name="&gt;&gt;start_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="exit_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 752</value>
+  </data>
+  <data name="&gt;&gt;live_video.Name" xml:space="preserve">
+    <value>live_video</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

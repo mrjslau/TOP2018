@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyListForm));
             this.MyList_listBox = new System.Windows.Forms.ListBox();
             this.ItemsToBuy_label = new System.Windows.Forms.Label();
             this.Add_btn = new System.Windows.Forms.Button();
@@ -37,58 +38,43 @@
             // 
             // MyList_listBox
             // 
+            resources.ApplyResources(this.MyList_listBox, "MyList_listBox");
             this.MyList_listBox.FormattingEnabled = true;
             this.MyList_listBox.Items.AddRange(new object[] {
-            "Tomato",
-            "Cucumber",
-            "Beer"});
-            this.MyList_listBox.Location = new System.Drawing.Point(12, 25);
+            resources.GetString("MyList_listBox.Items"),
+            resources.GetString("MyList_listBox.Items1"),
+            resources.GetString("MyList_listBox.Items2")});
             this.MyList_listBox.Name = "MyList_listBox";
-            this.MyList_listBox.Size = new System.Drawing.Size(180, 238);
-            this.MyList_listBox.TabIndex = 0;
             // 
             // ItemsToBuy_label
             // 
-            this.ItemsToBuy_label.AutoSize = true;
-            this.ItemsToBuy_label.Location = new System.Drawing.Point(12, 9);
+            resources.ApplyResources(this.ItemsToBuy_label, "ItemsToBuy_label");
             this.ItemsToBuy_label.Name = "ItemsToBuy_label";
-            this.ItemsToBuy_label.Size = new System.Drawing.Size(83, 13);
-            this.ItemsToBuy_label.TabIndex = 1;
-            this.ItemsToBuy_label.Text = "ITEMS TO BUY";
             // 
             // Add_btn
             // 
-            this.Add_btn.Location = new System.Drawing.Point(350, 25);
+            resources.ApplyResources(this.Add_btn, "Add_btn");
             this.Add_btn.Name = "Add_btn";
-            this.Add_btn.Size = new System.Drawing.Size(61, 23);
-            this.Add_btn.TabIndex = 2;
-            this.Add_btn.Text = "Add";
             this.Add_btn.UseVisualStyleBackColor = true;
             this.Add_btn.Click += new System.EventHandler(this.Add_btn_Click);
             // 
             // ItemToAdd_textBox
             // 
-            this.ItemToAdd_textBox.Location = new System.Drawing.Point(198, 25);
+            resources.ApplyResources(this.ItemToAdd_textBox, "ItemToAdd_textBox");
             this.ItemToAdd_textBox.Name = "ItemToAdd_textBox";
-            this.ItemToAdd_textBox.Size = new System.Drawing.Size(146, 20);
-            this.ItemToAdd_textBox.TabIndex = 3;
             // 
             // Close_btn
             // 
-            this.Close_btn.Location = new System.Drawing.Point(235, 203);
+            resources.ApplyResources(this.Close_btn, "Close_btn");
             this.Close_btn.Name = "Close_btn";
-            this.Close_btn.Size = new System.Drawing.Size(146, 50);
-            this.Close_btn.TabIndex = 4;
-            this.Close_btn.Text = "Close";
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
             // MyListForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(423, 271);
             this.Controls.Add(this.Close_btn);
             this.Controls.Add(this.ItemToAdd_textBox);
             this.Controls.Add(this.Add_btn);
@@ -96,8 +82,6 @@
             this.Controls.Add(this.MyList_listBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MyListForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MyListForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

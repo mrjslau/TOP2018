@@ -13,9 +13,9 @@ namespace ShopLensForms
         private VideoCaptureDevice _videoSource;
 
         //Messages that the text voicer says.
-        private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
-        private const string SeeMessage = "Show me an item and say: what is this. I will identify the item for you.";
-        private const string NoLblError = "ERROR: no label names provided to product recognition model.";
+        private string HelloMessage = ShopLensApp.GlobalStrings.HelloMessage;
+        private string SeeMessage = ShopLensApp.GlobalStrings.SeeMessage;
+        private string NoLblError = ShopLensApp.GlobalStrings.NoLblError;
 
         public MainController MainController { get; set; }
 
@@ -44,7 +44,7 @@ namespace ShopLensForms
             }
             else
             {
-                MainController.TextVoicerVoiceMessage("Please choose a webcam!");
+                MainController.TextVoicerVoiceMessage(ShopLensApp.GlobalStrings.WebcamChooseMessage);
             }
         }
 
@@ -56,8 +56,8 @@ namespace ShopLensForms
 
         public void WhatIsThis_btn_Click(object sender, EventArgs e)
         {
-            var webcamTurnedOff = "The webcam is turned off!";
-            var beginningStatement = "This is";
+            var webcamTurnedOff = ShopLensApp.GlobalStrings.WebcamTurnedOffMessage;
+            var beginningStatement = ShopLensApp.GlobalStrings.BeginningStatement;
             MainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
                 beginningStatement ,NoLblError);
         }
