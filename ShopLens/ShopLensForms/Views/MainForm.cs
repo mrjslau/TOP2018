@@ -74,13 +74,13 @@ namespace ShopLensForms
 
         public void MyList_btn_Click(object sender, EventArgs e)
         {
-            _mainController.ShowForm(_mainController._myList);
-            _mainController.LoadList(_mainController._myList.MyList_listBox);
+            MainController.ShowForm(MainController._myList);
+            MainController.LoadList(MainController._myList.MyList_listBox);
         }
 
         public void MyCart_btn_Click(object sender, EventArgs e)
         {
-            _mainController.ShowForm(_mainController._myCart);
+            MainController.ShowForm(MainController._myCart);
         }
     }
 }

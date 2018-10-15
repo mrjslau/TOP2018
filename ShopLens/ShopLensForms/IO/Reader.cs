@@ -16,8 +16,19 @@ namespace ShopLensApp.IO
         /// </summary>
         /// <param name="filePath">Path of the file, where is the string to be deserialized.</param>
         public List<Item> DeserializeToList(string filePath)
-        {                       
-            string jsonString = File.ReadAllText(filePath);      
+        {
+            string jsonString;
+            try
+            {
+                jsonString = File.ReadAllText(filePath);
+            }
+            catch (FileNotFoundException e)
+            {
+                using (var f = File.OpenRead(filePath))
+                {
+                    jsonString = File.ReadAllText(filePath);
+                }
+            }
             List<Item> list = JsonConvert.DeserializeObject<List<Item>>(jsonString);
             return list;
         }
