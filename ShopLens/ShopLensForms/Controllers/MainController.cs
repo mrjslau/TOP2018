@@ -6,8 +6,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ShopLensForms.Models;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
+using ShopLensApp.ExtensionMethods;
 
 namespace ShopLensForms.Controllers
 {
@@ -49,17 +51,19 @@ namespace ShopLensForms.Controllers
         private const string closeShoppingListCmd = "Close shopping list";
         private const string closeShoppingCartCmd = "Close shopping cart";
 
-        //TO DO: solve SOLID Issue with specific objects created.
-        public MainController()
+        public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer
+            , IImageClassificator imageClassificator, IntroForm introForm, ShopLens shopLens)
         {
-            _textVoicer = new TextVoicerSpeechSynthesizer();
-            _voiceRecognizer = new VoiceRecognizerSpeechRecEngine();
-            _imageClassifying = new TensorFlowClassificator();
-
-            _introForm = new IntroForm(this);
-            _shopLens = new ShopLens(this);
+            _textVoicer = textVoicer;
+            _voiceRecognizer = voiceRecognizer;
+            _imageClassifying = imageClassificator;
+            _introForm = introForm;
+            _shopLens = shopLens;
             _myList = new MyListForm(this);
             _myCart = new MyCartForm(this);
+
+            _introForm.MainController = this;
+            _shopLens.MainController = this;
         }
 
         [STAThread]
@@ -84,11 +88,12 @@ namespace ShopLensForms.Controllers
             _voiceRecognizer.StartVoiceRecognition();
         }
 
-        /// <summary> Invokes methods on the GUI thread. </summary>
-        /// <remarks>
-        /// This if statement makes sure the method that must be executed when the specified command is recognized
-        /// is called within the GUI thread. For information see https://stackoverflow.com/a/10170699.
-        /// </remarks>
+        public void StopVoiceRecognizer()
+        {
+            _voiceRecognizer.StopVoiceRecognition();
+        }
+
+
         private void InvokeOnGUIThread(Form formToBeInvokedOn,
             Action<object, EventArgs> methodToBeInvoked, object sender, EventArgs e)
         {
@@ -107,25 +112,25 @@ namespace ShopLensForms.Controllers
         /// </summary>
         private void CommandRecognized_Hello(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_introForm, _introForm.Enter_btn_Click, sender, e);
+            _introForm.InvokeOnGUIThread_VoidObjEvArgs(_introForm.Enter_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_WhatIsThis(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.WhatIsThis_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.WhatIsThis_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Start(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.Start_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.Start_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_Exit(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_shopLens, _shopLens.Exit_btn_Click, sender, e);
+            _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.Exit_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
@@ -193,10 +198,10 @@ namespace ShopLensForms.Controllers
         /// <summary>
         /// Uses a text voicer object to voice a message.
         /// </summary>
-        /// <param name="seeMessage">The string of a message to be voiced.</param>
-        public void TextVoicerVoiceMessage(string seeMessage)
+        /// <param name="message">The string of a message to be voiced.</param>
+        public void TextVoicerVoiceMessage(string message)
         {
-            _textVoicer.SayMessage(seeMessage);
+            _textVoicer.SayMessage(message);
         }
 
         /// <summary>
@@ -294,9 +299,14 @@ namespace ShopLensForms.Controllers
 
             image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            var classificationResults = ImageClassifyingClassifyImage(ms.ToArray());
+            var classificationResultsDictionary = ImageClassifyingClassifyImage(ms.ToArray());
+            var classificationResults = classificationResultsDictionary
+                .Select(x => new ImageRecognitionResultRow(x.Key, x.Value))
+                .ToImageRecognitionResults();
 
-            return classificationResults.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+            var bestResult = classificationResults.MostConfidentResult;
+
+            return bestResult.Label;
         }
     }
 }

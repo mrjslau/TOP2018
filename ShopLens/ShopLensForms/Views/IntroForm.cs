@@ -6,26 +6,24 @@ namespace ShopLensForms
 {
     public partial class IntroForm : Form
     {
-        private MainController _mainController;
+        public MainController MainController { get; set; }
 
         private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
 
-        public IntroForm(MainController mainController)
+        public IntroForm()
         {
-            _mainController = mainController;
-
             InitializeComponent();
         }
 
         private void IntroForm_Shown(object sender, EventArgs e)
         {
-            _mainController.TextVoicerVoiceMessage(HelloMessage);
+            MainController.TextVoicerVoiceMessage(HelloMessage);
         }
 
         public void Enter_btn_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _mainController.ShowForm(_mainController._shopLens);
+            MainController.ShowForm(MainController._shopLens);
         }
     }
 }
