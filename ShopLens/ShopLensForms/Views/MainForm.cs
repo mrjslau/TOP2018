@@ -72,15 +72,16 @@ namespace ShopLensForms
             Application.Exit(null);
         }
 
-        public void MyList_btn_Click(object sender, EventArgs e)
+        private void MyList_btn_Click(object sender, EventArgs e)
         {
-            _mainController.ShowForm(_mainController._myList);
-            _mainController.LoadList(_mainController._myList.MyList_listBox);
+            var ml = new MyListForm();
+            ml.ShowDialog();
         }
 
-        public void MyCart_btn_Click(object sender, EventArgs e)
+        private void MyCart_btn_Click(object sender, EventArgs e)
         {
-            _mainController.ShowForm(_mainController._myCart);
+            var mc = new MyCartForm();
+            mc.ShowDialog();
         }
     }
 }
