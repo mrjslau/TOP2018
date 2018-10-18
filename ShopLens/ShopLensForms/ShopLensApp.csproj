@@ -150,8 +150,5 @@
   <ItemGroup>
     <None Include="Properties\shopLensLogo.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SavedData\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
