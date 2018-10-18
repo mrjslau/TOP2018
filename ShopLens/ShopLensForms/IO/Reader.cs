@@ -24,6 +24,7 @@ namespace ShopLensApp.IO
             }
             catch (FileNotFoundException e)
             {
+                File.Create(filePath);
                 using (var f = File.OpenRead(filePath))
                 {
                     jsonString = File.ReadAllText(filePath);
