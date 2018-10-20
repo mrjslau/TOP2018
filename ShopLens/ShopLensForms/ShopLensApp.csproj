@@ -44,6 +44,9 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Speech">
@@ -61,13 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\MainController.cs" />
-      <Compile Include="ExtensionMethods\EnumerableToContainerExtensions.cs"/>
+    <Compile Include="ExtensionMethods\EnumerableToContainerExtensions.cs"/>
     <Compile Include="ExtensionMethods\ThreadExtensions.cs" />
-      <Compile Include="Views\IntroForm.cs"/>
-      <Compile Include="Models\ImageRecognitionResultRow.cs"/>
-      <Compile Include="Models\ImageRecognitionResults.cs">
+    <Compile Include="Views\IntroForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Models\ImageRecognitionResultRow.cs"/>
+    <Compile Include="Models\ImageRecognitionResults.cs"/>
+    <Compile Include="IO\Reader.cs" />
+    <Compile Include="IO\Writer.cs" />
+    <Compile Include="IO\Item.cs" />
     <Compile Include="Views\IntroForm.Designer.cs">
       <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
