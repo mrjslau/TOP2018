@@ -6,7 +6,7 @@
 	<dict>
 		<key>output-files</key>
 		<array>
-			<string>/Users/marijuslaucevicius/Projects/ShopLens/iOS/obj/iPhoneSimulator/Debug/actool/partial-info.plist</string>
+			<string>/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/obj/iPhoneSimulator/Debug/actool/partial-info.plist</string>
 		</array>
 	</dict>
 	<key>com.apple.actool.document.warnings</key>
@@ -17,7 +17,7 @@
 				<string>./AppIcon.appiconset/[][watch][44x44][longLook][42mm][2x][][][2d][(null)]</string>
 			</array>
 			<key>catalog</key>
-			<string>/Users/marijuslaucevicius/Projects/ShopLens/iOS/obj/iPhoneSimulator/Debug/actool/cloned-assets/Assets.xcassets</string>
+			<string>/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/obj/iPhoneSimulator/Debug/actool/cloned-assets/Assets.xcassets</string>
 			<key>message</key>
 			<string>The app icon set "AppIcon" has an unassigned child.</string>
 			<key>type</key>

@@ -1,5 +1,5 @@
---cache=/Users/marijuslaucevicius/Projects/ShopLens/iOS/obj/iPhoneSimulator/Debug/mtouch-cache
---sim=/Users/marijuslaucevicius/Projects/ShopLens/iOS/bin/iPhoneSimulator/Debug/ShopLens.iOS.app
+--cache=/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/obj/iPhoneSimulator/Debug/mtouch-cache
+--sim=/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/bin/iPhoneSimulator/Debug/ShopLens.iOS.app
 --executable=ShopLens.iOS
 --debug
 --nolink
@@ -9,7 +9,7 @@
 --aot-options=-O=-float32
 --http-message-handler=NSUrlSessionHandler
 --abi=x86_64
---symbollist=/Users/marijuslaucevicius/Projects/ShopLens/iOS/obj/iPhoneSimulator/Debug/mtouch-symbols.list
+--symbollist=/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/obj/iPhoneSimulator/Debug/mtouch-symbols.list
 --dsym=no
 -r=/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.iOS/mscorlib.dll
 -r=/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.iOS/System.Core.dll
@@ -17,5 +17,5 @@
 -r=/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.iOS/System.Xml.dll
 -r=/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/mono/Xamarin.iOS/Xamarin.iOS.dll
 --target-framework=Xamarin.iOS,v1.0
---root-assembly=/Users/marijuslaucevicius/Projects/ShopLens/iOS/bin/iPhoneSimulator/Debug/ShopLens.iOS.exe
+--root-assembly=/Users/marijuslaucevicius/Desktop/TOP2018/Mobile/ShopLens/iOS/bin/iPhoneSimulator/Debug/ShopLens.iOS.exe
 

@@ -19,12 +19,26 @@ namespace ShopLens.Droid
             // Get our button from the layout resource,
             // and attach an event to it
             Button textVoicerButton = FindViewById<Button>(Resource.Id.TextVoicerButton);
+            Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);
+            Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);
 
             textVoicerButton.Click += (sender, e) =>
             {
                 var intent = new Intent(this, typeof(TextVoicerActivity));
                 StartActivity(intent);
             };
+
+            cameraButton.Click += (sender, e) =>
+            {
+                var intent = new Intent(this, typeof(CameraActivity));
+                StartActivity(intent);
+            };
+
+            //speechButton.Click += (sender, e) =>
+            //{
+            //    var intent = new Intent(this, typeof(SpeechActivity));
+            //    StartActivity(intent);
+            //};
         }
     }
 }

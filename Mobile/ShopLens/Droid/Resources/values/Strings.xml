@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">Hello World, Click Me!</string>
     <string name="app_name">ShopLens.Droid</string>
+    
+    <string name="messageSpeakNow">Speak now!</string>
 </resources>

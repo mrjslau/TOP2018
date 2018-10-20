@@ -1,8 +1,12 @@
 ﻿<Properties StartupConfiguration="{C9A1F13C-C165-4F1A-9B77-494622B5657B}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/MainActivity.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/Resources/values/Strings.xml">
     <Files>
-      <File FileName="Droid/MainActivity.cs" Line="10" Column="33" />
+      <File FileName="Droid/MainActivity.cs" Line="41" Column="15" />
       <File FileName="Droid/TextVoicerActivity.cs" Line="54" Column="55" />
+      <File FileName="Droid/CameraActivity.cs" Line="34" Column="63" />
+      <File FileName="Droid/Properties/AndroidManifest.xml" Line="1" Column="1" />
+      <File FileName="Droid/SpeechActivity.cs" Line="16" Column="34" />
+      <File FileName="Droid/Resources/values/Strings.xml" Line="8" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
