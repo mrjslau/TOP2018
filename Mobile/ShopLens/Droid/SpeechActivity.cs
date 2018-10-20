@@ -10,10 +10,10 @@ namespace ShopLens.Droid
     [Activity(Label = "SpeechActivity")]
     public class SpeechActivity : Activity
     {
-        private bool isRecording;
-        private readonly int VOICE = 10;
-        private TextView textBox;
-        private Button recButton;
+        bool isRecording;
+        readonly int VOICE = 10;
+        TextView textBox;
+        Button recButton;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -23,7 +23,7 @@ namespace ShopLens.Droid
             isRecording = false;
 
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.Speech);
 
             // get the resources from the layout
             recButton = FindViewById<Button>(Resource.Id.btnRecord);
@@ -47,7 +47,7 @@ namespace ShopLens.Droid
             }
             else
             {
-                recButton.Click += delegate
+                recButton.Click += (sender, e) =>
                 {
                     // change the text on the button
                     recButton.Text = "End Recording";
@@ -96,7 +96,9 @@ namespace ShopLens.Droid
                         textBox.Text = textInput;
                     }
                     else
+                    {
                         textBox.Text = "No speech was recognised";
+                    }
                     // change the text back on the button
                     recButton.Text = "Start Recording";
                 }

@@ -34,11 +34,11 @@ namespace ShopLens.Droid
                 StartActivity(intent);
             };
 
-            //speechButton.Click += (sender, e) =>
-            //{
-            //    var intent = new Intent(this, typeof(SpeechActivity));
-            //    StartActivity(intent);
-            //};
+            speechButton.Click += (sender, e) =>
+            {
+                var intent = new Intent(this, typeof(SpeechActivity));
+                StartActivity(intent);
+            };
         }
     }
 }
