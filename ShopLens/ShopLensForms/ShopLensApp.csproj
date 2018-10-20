@@ -70,7 +70,7 @@
     <Compile Include="IO\IWriter.cs" />
     <Compile Include="IO\ReaderJSON.cs" />
     <Compile Include="IO\WriterJSON.cs" />
-    <Compile Include="Views\IntroForm.cs">
+    <Compile Include="Views\IntroForm.cs"/>
     <Compile Include="GlobalStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,7 +80,6 @@
     <Compile Include="Models\ImageRecognitionResults.cs">
       <SubType>Form</SubType>
     </Compile>
-
     <Compile Include="Views\IntroForm.Designer.cs">
       <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
