@@ -7,7 +7,7 @@ namespace ShopLensApp.IO
     /// <summary>
     /// Class to write data to a file
     /// </summary>
-    public class WriterJSON : IWriter
+    public class JsonWriter : IWriter
     {
         /// <inheritdoc cref="IWriter.SerializeFromList(string, List{Item})"/>
         public void SerializeFromList(string filePath, List<Item> items)

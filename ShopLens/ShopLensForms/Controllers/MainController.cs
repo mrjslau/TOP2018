@@ -260,7 +260,7 @@ namespace ShopLensForms.Controllers
         /// </remarks>
         public void LoadList(ListBox listBoxToBeLoaded)
         {
-            IReader source = new ReaderJSON();
+            IReader source = new JsonReader();
             List<Item> list = source.DeserializeToList(filePath);
             if (list != null)
             {
@@ -279,8 +279,8 @@ namespace ShopLensForms.Controllers
 
             _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
 
-            IReader read = new ReaderJSON();
-            IWriter write = new WriterJSON();
+            IReader read = new JsonReader();
+            IWriter write = new JsonWriter();
 
             List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
             items.Add(itemToAdd);

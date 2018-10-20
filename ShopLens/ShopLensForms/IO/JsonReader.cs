@@ -9,7 +9,7 @@ namespace ShopLensApp.IO
     /// <summary>
     /// Class to read data from a file
     /// </summary>
-    public class ReaderJSON : IReader
+    public class JsonReader : IReader
     {
         /// <inheritdoc cref="IReader.DeserializeToList(string)"/>
         public List<Item> DeserializeToList(string filePath)
