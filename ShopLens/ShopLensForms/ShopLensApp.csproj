@@ -68,9 +68,9 @@
     <Compile Include="ExtensionMethods\ThreadExtensions.cs" />
     <Compile Include="IO\IReader.cs" />
     <Compile Include="IO\IWriter.cs" />
-    <Compile Include="IO\JsonReader.cs"/>
-    <Compile Include="IO\JsonWriter.cs"/>
-    <Compile Include="Models\Item.cs"/>
+    <Compile Include="IO\JsonReader.cs" />
+    <Compile Include="IO\JsonWriter.cs" />
+    <Compile Include="Models\ShoppingItem.cs" />
     <Compile Include="Views\IntroForm.cs">
       <SubType>Form</SubType>
     </Compile>

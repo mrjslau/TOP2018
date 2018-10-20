@@ -12,10 +12,10 @@ namespace ShopLensApp.IO
     public class JsonReader : IReader
     {
         /// <inheritdoc cref="IReader.DeserializeToList(string)"/>
-        public List<Item> DeserializeToList(string filePath)
+        public List<ShoppingItem> DeserializeToList(string filePath)
         {
             string jsonString = ReadText(filePath);
-            List<Item> list = JsonConvert.DeserializeObject<List<Item>>(jsonString);
+            List<ShoppingItem> list = JsonConvert.DeserializeObject<List<ShoppingItem>>(jsonString);
             return list;
         }
 

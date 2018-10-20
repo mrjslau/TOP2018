@@ -261,7 +261,7 @@ namespace ShopLensForms.Controllers
         public void LoadList(ListBox listBoxToBeLoaded)
         {
             IReader source = new JsonReader();
-            List<Item> list = source.DeserializeToList(filePath);
+            List<ShoppingItem> list = source.DeserializeToList(filePath);
             if (list != null)
             {
                 listBoxToBeLoaded.Items.Clear();
@@ -275,14 +275,14 @@ namespace ShopLensForms.Controllers
         public void AddItem()
         {
             string itemName = _myList.ItemToAdd_textBox.Text;
-            Item itemToAdd = new Item(itemName);
+            ShoppingItem itemToAdd = new ShoppingItem(itemName);
 
             _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
 
             IReader read = new JsonReader();
             IWriter write = new JsonWriter();
 
-            List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
+            List<ShoppingItem> items = read.DeserializeToList(filePath) ?? new List<ShoppingItem>();
             items.Add(itemToAdd);
             write.SerializeFromList(filePath, items);           
             LoadList(_myList.MyList_listBox);

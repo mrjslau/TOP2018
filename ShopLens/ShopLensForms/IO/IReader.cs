@@ -8,7 +8,7 @@ namespace ShopLensApp.IO
         /// Deserialize string of JSON format to the list of 'Item' objects.
         /// </summary>
         /// <param name="filePath">Path of the JSON file, where the string to be deserialized is to be located.</param>
-        List<Item> DeserializeToList(string filePath);
+        List<ShoppingItem> DeserializeToList(string filePath);
         string ReadText(string filePath);
     }
 }

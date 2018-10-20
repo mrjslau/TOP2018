@@ -9,8 +9,8 @@ namespace ShopLensApp.IO
     /// </summary>
     public class JsonWriter : IWriter
     {
-        /// <inheritdoc cref="IWriter.SerializeFromList(string, List{Item})"/>
-        public void SerializeFromList(string filePath, List<Item> items)
+        /// <inheritdoc cref="IWriter.SerializeFromList(string, List{ShoppingItem})"/>
+        public void SerializeFromList(string filePath, List<ShoppingItem> items)
         {
             using (StreamWriter file = File.CreateText(filePath))
             {
