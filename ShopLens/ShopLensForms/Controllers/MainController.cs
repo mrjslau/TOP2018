@@ -1,4 +1,5 @@
 ﻿using ImageRecognition.Classificators;
+using ShopLensApp.IO;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +15,9 @@ namespace ShopLensForms.Controllers
 {
     public class MainController
     {
+        public string filePath = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName
+            + @"\ShopLensForms\SavedData\items.json";
+
         /// <inheritdoc cref="ITextVoicer"/>
         private ITextVoicer _textVoicer;
 
@@ -31,11 +35,21 @@ namespace ShopLensForms.Controllers
         /// <inheritdoc cref="_introForm"/>
         public ShopLens _shopLens;
 
-        private string helloCmd = ShopLensApp.GlobalStrings.helloCmd;
-        private string whatIsThisCmd = ShopLensApp.GlobalStrings.whatIsThisCmd;
-        private string startCmd = ShopLensApp.GlobalStrings.startCmd;
-        private string exitCmd = ShopLensApp.GlobalStrings.exitCmd;
+        /// <inheritdoc cref="_introForm"/>
+        public MyListForm _myList;
 
+        /// <inheritdoc cref="_introForm"/>
+        public MyCartForm _myCart;
+
+        private const string helloCmd = "Hello";
+        private const string whatIsThisCmd = "What is this";
+        private const string startCmd = "Start";
+        private const string exitCmd = "Exit";
+        private const string myShoppingListCmd = "My shopping list";
+        private const string myShoppingCartCmd = "My shopping cart";
+        private const string addToShoppingListCmd = "Add to Shopping List";
+        private const string closeShoppingListCmd = "Close shopping list";
+        private const string closeShoppingCartCmd = "Close shopping cart";
 
         public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer
             , IImageClassificator imageClassificator, IntroForm introForm, ShopLens shopLens)
@@ -45,6 +59,8 @@ namespace ShopLensForms.Controllers
             _imageClassifying = imageClassificator;
             _introForm = introForm;
             _shopLens = shopLens;
+            _myList = new MyListForm(this);
+            _myCart = new MyCartForm(this);
 
             _introForm.MainController = this;
             _shopLens.MainController = this;
@@ -54,6 +70,7 @@ namespace ShopLensForms.Controllers
         public void StartApp()
         {
             StartVoiceRecognizer();
+            LoadList(_myList.MyList_listBox);
             Application.Run(_introForm);
         }
 
@@ -63,6 +80,11 @@ namespace ShopLensForms.Controllers
             _voiceRecognizer.AddCommand(whatIsThisCmd, CommandRecognized_WhatIsThis);
             _voiceRecognizer.AddCommand(startCmd, CommandRecognized_Start);
             _voiceRecognizer.AddCommand(exitCmd, CommandRecognized_Exit);
+            _voiceRecognizer.AddCommand(myShoppingListCmd, CommandRecognized_MyShoppingList);
+            _voiceRecognizer.AddCommand(myShoppingCartCmd, CommandRecognized_MyShoppingCart);
+            _voiceRecognizer.AddCommand(addToShoppingListCmd, CommandRecognized_AddToShoppingList);
+            _voiceRecognizer.AddCommand(closeShoppingListCmd, CommandRecognized_CloseShoppingList);
+            _voiceRecognizer.AddCommand(closeShoppingCartCmd, CommandRecognized_CloseShoppingCart);
             _voiceRecognizer.StartVoiceRecognition();
         }
 
@@ -109,6 +131,36 @@ namespace ShopLensForms.Controllers
         private void CommandRecognized_Exit(object sender, EventArgs e)
         {
             _shopLens.InvokeOnGUIThread_VoidObjEvArgs(_shopLens.Exit_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_MyShoppingList(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_shopLens, _shopLens.MyList_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_MyShoppingCart(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_shopLens, _shopLens.MyCart_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_AddToShoppingList(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_myList, _myList.Add_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_CloseShoppingList(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_myList, _myList.Close_btn_Click, sender, e);
+        }
+
+        /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
+        private void CommandRecognized_CloseShoppingCart(object sender, EventArgs e)
+        {
+            InvokeOnGUIThread(_myCart, _myCart.Close_btn_Click, sender, e);
         }
 
         /// <summary>
@@ -180,6 +232,60 @@ namespace ShopLensForms.Controllers
             {
                 formToBeShown.ShowDialog();
             }
+        }
+
+        /// <summary>
+        /// Makes a particular Windows form invisible to the user.
+        /// </summary>
+        /// <param name="formToBeHiden">The form to be hiden from the user.</param>
+        /// <remarks>
+        /// The if statement makes sure that if the user says, for example, 'Close the list'
+        /// many times the application will not crash.
+        /// </remarks>
+        public void HideForm(Form formToBeHidden)
+        {
+            if (formToBeHidden.Visible == true)
+            {
+                formToBeHidden.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Load the list in particular Windows form listbox.
+        /// </summary>
+        /// <param name="listBoxToBeLoaded">The listbox where the list has to be loaded.</param>
+        /// <remarks>
+        /// The if statement makes sure that the application will not crash 
+        /// after trying to convert null to array.
+        /// </remarks>
+        public void LoadList(ListBox listBoxToBeLoaded)
+        {
+            IReader source = new ReaderJSON();
+            List<Item> list = source.DeserializeToList(filePath);
+            if (list != null)
+            {
+                listBoxToBeLoaded.Items.Clear();
+                listBoxToBeLoaded.Items.AddRange(list.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Adds an item to the shopping list.
+        /// </summary>
+        public void AddItem()
+        {
+            string itemName = _myList.ItemToAdd_textBox.Text;
+            Item itemToAdd = new Item(itemName);
+
+            _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
+
+            IReader read = new ReaderJSON();
+            IWriter write = new WriterJSON();
+
+            List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
+            items.Add(itemToAdd);
+            write.SerializeFromList(filePath, items);           
+            LoadList(_myList.MyList_listBox);
         }
 
         /// <summary>

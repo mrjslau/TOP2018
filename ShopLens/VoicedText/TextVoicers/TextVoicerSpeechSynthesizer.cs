@@ -115,7 +115,7 @@ namespace VoicedText.TextVoicers
 
         }
 
-        /// <inheritdoc cref="ITextVoicer.SayMessage(int)"/>
+        /// <inheritdoc cref="ITextVoicer.SayMessage(string)"/>
         public void SayMessage(string message)
         {
             messageBuilder.StartStyle(voicerSpeed);
