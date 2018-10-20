@@ -59,8 +59,8 @@ namespace ShopLensForms
             // 
             // webcam_combobox
             // 
-            resources.ApplyResources(this.webcam_combobox, "webcam_combobox");
             this.webcam_combobox.FormattingEnabled = true;
+            resources.ApplyResources(this.webcam_combobox, "webcam_combobox");
             this.webcam_combobox.Name = "webcam_combobox";
             // 
             // start_btn
@@ -79,7 +79,6 @@ namespace ShopLensForms
             // 
             // menu_panel
             // 
-            resources.ApplyResources(this.menu_panel, "menu_panel");
             this.menu_panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.menu_panel.Controls.Add(this.MyCart_btn);
             this.menu_panel.Controls.Add(this.MyList_btn);
@@ -87,15 +86,13 @@ namespace ShopLensForms
             this.menu_panel.Controls.Add(this.webcam_combobox);
             this.menu_panel.Controls.Add(this.exit_btn);
             this.menu_panel.Controls.Add(this.WhatIsThis_btn);
+            resources.ApplyResources(this.menu_panel, "menu_panel");
             this.menu_panel.Name = "menu_panel";
             // 
             // MyCart_btn
             // 
             resources.ApplyResources(this.MyCart_btn, "MyCart_btn");
             this.MyCart_btn.Name = "MyCart_btn";
-            this.MyCart_btn.Size = new System.Drawing.Size(190, 31);
-            this.MyCart_btn.TabIndex = 9;
-            this.MyCart_btn.Text = "MY SHOPPING CART";
             this.MyCart_btn.UseVisualStyleBackColor = true;
             this.MyCart_btn.Click += new System.EventHandler(this.MyCart_btn_Click);
             // 
@@ -103,9 +100,6 @@ namespace ShopLensForms
             // 
             resources.ApplyResources(this.MyList_btn, "MyList_btn");
             this.MyList_btn.Name = "MyList_btn";
-            this.MyList_btn.Size = new System.Drawing.Size(190, 30);
-            this.MyList_btn.TabIndex = 8;
-            this.MyList_btn.Text = "MY SHOPPING LIST";
             this.MyList_btn.UseVisualStyleBackColor = true;
             this.MyList_btn.Click += new System.EventHandler(this.MyList_btn_Click);
             // 
@@ -117,8 +111,6 @@ namespace ShopLensForms
             this.Controls.Add(this.live_video);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ShopLens";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ShopLens";
             ((System.ComponentModel.ISupportInitialize)(this.live_video)).EndInit();
             this.menu_panel.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -130,24 +130,14 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>12, 25</value>
   </data>
-  <data name="Add_btn.Text" xml:space="preserve">
-    <value>Add</value>
-  </data>
   <data name="&gt;&gt;Close_btn.Name" xml:space="preserve">
     <value>Close_btn</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>MyListForm</value>
   </data>
   <data name="&gt;&gt;MyList_listBox.Name" xml:space="preserve">
     <value>MyList_listBox</value>
   </data>
   <data name="&gt;&gt;Close_btn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="MyList_listBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
   </data>
   <data name="Add_btn.Location" type="System.Drawing.Point, System.Drawing">
     <value>700, 48</value>
@@ -165,8 +155,8 @@
   <data name="MyList_listBox.Items" xml:space="preserve">
     <value>Tomato</value>
   </data>
-  <data name="&gt;&gt;ItemsToBuy_label.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="Add_btn.Text" xml:space="preserve">
+    <value>Add</value>
   </data>
   <data name="&gt;&gt;ItemsToBuy_label.Name" xml:space="preserve">
     <value>ItemsToBuy_label</value>
@@ -180,6 +170,7 @@
   <data name="ItemToAdd_textBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>396, 48</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Add_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
   </data>
@@ -194,6 +185,12 @@
   </data>
   <data name="MyList_listBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>356, 454</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="MyList_listBox.Items2" xml:space="preserve">
     <value>Beer</value>
@@ -210,14 +207,14 @@
   <data name="&gt;&gt;Add_btn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ItemToAdd_textBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="ItemsToBuy_label.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="ItemsToBuy_label.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 0, 6, 0</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
   </data>
   <data name="&gt;&gt;ItemToAdd_textBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -228,8 +225,8 @@
   <data name="ItemsToBuy_label.Text" xml:space="preserve">
     <value>ITEMS TO BUY</value>
   </data>
-  <data name="ItemToAdd_textBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
+  <data name="&gt;&gt;MyList_listBox.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="ItemsToBuy_label.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -243,14 +240,17 @@
   <data name="Close_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
   </data>
-  <data name="&gt;&gt;ItemsToBuy_label.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ItemToAdd_textBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="Add_btn.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="MyList_listBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;Add_btn.Parent" xml:space="preserve">
     <value>$this</value>
@@ -273,11 +273,11 @@
   <data name="Close_btn.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;ItemsToBuy_label.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="ItemToAdd_textBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
   </data>
-  <data name="&gt;&gt;MyList_listBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>MyListForm</value>
   </data>
   <data name="MyList_listBox.ItemHeight" type="System.Int32, mscorlib">
     <value>25</value>

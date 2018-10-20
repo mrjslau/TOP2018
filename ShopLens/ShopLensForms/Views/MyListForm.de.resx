@@ -117,26 +117,54 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MyList_listBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="MyList_listBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 26</value>
+  </data>
+  <data name="MyList_listBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 225</value>
+  </data>
+  <data name="ItemsToBuy_label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 10</value>
+  </data>
   <data name="ItemsToBuy_label.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 25</value>
+    <value>116, 13</value>
   </data>
   <data name="ItemsToBuy_label.Text" xml:space="preserve">
     <value>ARTIKEL ZU KAUFEN</value>
   </data>
   <data name="Add_btn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 91</value>
+    <value>198, 60</value>
   </data>
   <data name="Add_btn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>424, 44</value>
+    <value>125, 32</value>
   </data>
   <data name="Add_btn.Text" xml:space="preserve">
-    <value>HINZUFÜGEN</value>
+    <value>Add to shopping list</value>
+  </data>
+  <data name="ItemToAdd_textBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 25</value>
   </data>
   <data name="ItemToAdd_textBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>424, 31</value>
+    <value>108, 20</value>
+  </data>
+  <data name="Close_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>338, 225</value>
+  </data>
+  <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 26</value>
   </data>
   <data name="Close_btn.Text" xml:space="preserve">
-    <value>SCHLIESSEN</value>
+    <value>Close shopping list</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>423, 271</value>
   </data>
 </root>

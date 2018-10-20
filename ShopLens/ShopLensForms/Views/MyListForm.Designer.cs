@@ -40,11 +40,6 @@
             // 
             resources.ApplyResources(this.MyList_listBox, "MyList_listBox");
             this.MyList_listBox.FormattingEnabled = true;
-            this.MyList_listBox.Items.AddRange(new object[] {
-            resources.GetString("MyList_listBox.Items"),
-            resources.GetString("MyList_listBox.Items1"),
-            resources.GetString("MyList_listBox.Items2")});
-            this.MyList_listBox.Location = new System.Drawing.Point(12, 25);
             this.MyList_listBox.Name = "MyList_listBox";
             // 
             // ItemsToBuy_label
@@ -55,11 +50,7 @@
             // Add_btn
             // 
             resources.ApplyResources(this.Add_btn, "Add_btn");
-            this.Add_btn.Location = new System.Drawing.Point(245, 51);
             this.Add_btn.Name = "Add_btn";
-            this.Add_btn.Size = new System.Drawing.Size(126, 23);
-            this.Add_btn.TabIndex = 2;
-            this.Add_btn.Text = "Add to shopping list";
             this.Add_btn.UseVisualStyleBackColor = true;
             this.Add_btn.Click += new System.EventHandler(this.Add_btn_Click);
             // 
@@ -67,16 +58,11 @@
             // 
             resources.ApplyResources(this.ItemToAdd_textBox, "ItemToAdd_textBox");
             this.ItemToAdd_textBox.Name = "ItemToAdd_textBox";
-            this.ItemToAdd_textBox.Size = new System.Drawing.Size(213, 20);
-            this.ItemToAdd_textBox.TabIndex = 3;
             // 
             // Close_btn
             // 
             resources.ApplyResources(this.Close_btn, "Close_btn");
             this.Close_btn.Name = "Close_btn";
-            this.Close_btn.Size = new System.Drawing.Size(146, 50);
-            this.Close_btn.TabIndex = 4;
-            this.Close_btn.Text = "Close shopping list";
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 

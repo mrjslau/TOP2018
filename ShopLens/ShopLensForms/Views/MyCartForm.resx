@@ -165,11 +165,11 @@
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
   </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
   <data name="ItemsInMyCart_label.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 0, 6, 0</value>
-  </data>
-  <data name="MyCart_listBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>25</value>
   </data>
   <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
     <value>282, 106</value>
@@ -207,8 +207,8 @@
   <data name="&gt;&gt;ItemsInMyCart_label.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
+  <data name="MyCart_listBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
   <data name="Close_btn.Text" xml:space="preserve">
     <value>CLOSE</value>

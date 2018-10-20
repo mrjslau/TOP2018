@@ -118,13 +118,38 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ItemsInMyCart_label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 13</value>
+  </data>
   <data name="ItemsInMyCart_label.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 25</value>
+    <value>186, 13</value>
   </data>
   <data name="ItemsInMyCart_label.Text" xml:space="preserve">
     <value>ARTIKEL IN MEINEM WARENKORB</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MyCart_listBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="MyCart_listBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 30</value>
+  </data>
+  <data name="MyCart_listBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 225</value>
+  </data>
+  <data name="Close_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>299, 226</value>
+  </data>
+  <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 29</value>
+  </data>
   <data name="Close_btn.Text" xml:space="preserve">
-    <value>SCHLIESSEN</value>
+    <value>Close shopping cart</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>381, 274</value>
   </data>
 </root>

@@ -43,17 +43,12 @@
             // 
             resources.ApplyResources(this.MyCart_listBox, "MyCart_listBox");
             this.MyCart_listBox.FormattingEnabled = true;
-            this.MyCart_listBox.Items.AddRange(new object[] {
-            resources.GetString("MyCart_listBox.Items")});
             this.MyCart_listBox.Name = "MyCart_listBox";
             // 
             // Close_btn
             // 
             resources.ApplyResources(this.Close_btn, "Close_btn");
             this.Close_btn.Name = "Close_btn";
-            this.Close_btn.Size = new System.Drawing.Size(141, 55);
-            this.Close_btn.TabIndex = 2;
-            this.Close_btn.Text = "Close shopping cart";
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
