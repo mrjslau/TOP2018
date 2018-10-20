@@ -92,7 +92,7 @@ namespace ImageRecognition
             Console.WriteLine("------------------------");
 
             text = text.Trim().Replace("\r\n", " ").Replace("\n", " ");
-            Regex rx = new Regex(@"(?<weight>(\d+\s?\.?\s?\d*?\s*?[g,l]|\d+\s?\.?\s?\d*?\s*?[m,k,c][g,l]?)");
+            Regex rx = new Regex(@"(?<weight>(\d+\s?\.?\s?\d*?\s*?[g,l]|\d+\s?\.?\s?\d*?\s*?[m,k,c][g,l]?)(\s|$))");
             Match match = rx.Match(text);
             string matchedWeight = Regex.Replace(match.Groups["weight"].Value, @"\s+", "");
             Console.WriteLine(matchedWeight);
