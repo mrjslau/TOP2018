@@ -9,12 +9,9 @@ namespace ShopLensApp.IO
     /// <summary>
     /// Class to read data from a file
     /// </summary>
-    public class Reader
+    public class ReaderJSON : IReader
     {
-        /// <summary>
-        /// Deserialize string of JSON format to the list of 'Item' objects.
-        /// </summary>
-        /// <param name="filePath">Path of the file, where is the string to be deserialized.</param>
+        /// <inheritdoc cref="IReader.DeserializeToList(string)"/>
         public List<Item> DeserializeToList(string filePath)
         {
             string jsonString;

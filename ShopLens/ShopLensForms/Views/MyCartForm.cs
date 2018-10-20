@@ -17,7 +17,7 @@ namespace ShopLensForms
 
         public void Close_btn_Click(object sender, EventArgs e)
         {
-            Hide();
+            _mainController.HideForm(this);
         }
     }
 }

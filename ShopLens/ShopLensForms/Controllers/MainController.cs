@@ -242,11 +242,11 @@ namespace ShopLensForms.Controllers
         /// The if statement makes sure that if the user says, for example, 'Close the list'
         /// many times the application will not crash.
         /// </remarks>
-        public void HideForm(Form formToBeHiden)
+        public void HideForm(Form formToBeHidden)
         {
-            if (formToBeHiden.Visible == true)
+            if (formToBeHidden.Visible == true)
             {
-                formToBeHiden.Hide();
+                formToBeHidden.Hide();
             }
         }
 
@@ -260,7 +260,7 @@ namespace ShopLensForms.Controllers
         /// </remarks>
         public void LoadList(ListBox listBoxToBeLoaded)
         {
-            Reader source = new Reader();
+            IReader source = new ReaderJSON();
             List<Item> list = source.DeserializeToList(filePath);
             if (list != null)
             {
@@ -279,8 +279,8 @@ namespace ShopLensForms.Controllers
 
             _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
 
-            Reader read = new Reader();
-            Writer write = new Writer();
+            IReader read = new ReaderJSON();
+            IWriter write = new WriterJSON();
 
             List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
             items.Add(itemToAdd);
