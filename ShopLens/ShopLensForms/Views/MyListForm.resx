@@ -117,4 +117,178 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ItemToAdd_textBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 31</value>
+  </data>
+  <data name="&gt;&gt;ItemToAdd_textBox.Name" xml:space="preserve">
+    <value>ItemToAdd_textBox</value>
+  </data>
+  <data name="ItemsToBuy_label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 25</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>12, 25</value>
+  </data>
+  <data name="&gt;&gt;Close_btn.Name" xml:space="preserve">
+    <value>Close_btn</value>
+  </data>
+  <data name="&gt;&gt;MyList_listBox.Name" xml:space="preserve">
+    <value>MyList_listBox</value>
+  </data>
+  <data name="&gt;&gt;Close_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Add_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>700, 48</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MyList_listBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MyListForm</value>
+  </data>
+  <data name="MyList_listBox.Items" xml:space="preserve">
+    <value>Tomato</value>
+  </data>
+  <data name="Add_btn.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.Name" xml:space="preserve">
+    <value>ItemsToBuy_label</value>
+  </data>
+  <data name="&gt;&gt;MyList_listBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ItemsToBuy_label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 17</value>
+  </data>
+  <data name="ItemToAdd_textBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>396, 48</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Add_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>846, 521</value>
+  </data>
+  <data name="&gt;&gt;Add_btn.Name" xml:space="preserve">
+    <value>Add_btn</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="MyList_listBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>356, 454</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="MyList_listBox.Items2" xml:space="preserve">
+    <value>Beer</value>
+  </data>
+  <data name="&gt;&gt;Close_btn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="MyList_listBox.Items1" xml:space="preserve">
+    <value>Cucumber</value>
+  </data>
+  <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>292, 96</value>
+  </data>
+  <data name="&gt;&gt;Add_btn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ItemsToBuy_label.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ItemsToBuy_label.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 0</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;ItemToAdd_textBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Close_btn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="ItemsToBuy_label.Text" xml:space="preserve">
+    <value>ITEMS TO BUY</value>
+  </data>
+  <data name="&gt;&gt;MyList_listBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="ItemsToBuy_label.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;ItemToAdd_textBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ItemToAdd_textBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Close_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ItemToAdd_textBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="Add_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="MyList_listBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="&gt;&gt;ItemsToBuy_label.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;Add_btn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Add_btn.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Close_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>470, 390</value>
+  </data>
+  <data name="Close_btn.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="&gt;&gt;MyList_listBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="MyList_listBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 48</value>
+  </data>
+  <data name="Close_btn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ItemToAdd_textBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>MyListForm</value>
+  </data>
+  <data name="MyList_listBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="Add_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 44</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>de</value>
+  </metadata>
 </root>

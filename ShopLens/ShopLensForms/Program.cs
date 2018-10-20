@@ -1,5 +1,6 @@
 ﻿using ImageRecognition.Classificators;
 using ShopLensForms.Controllers;
+using System.Threading;
 using System.Windows.Forms;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
@@ -10,6 +11,10 @@ namespace ShopLensForms
     {
         static void Main()
         {
+            // Locale settings -- uncomment for German language
+            //Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("de");
+            //Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de");
+
             ITextVoicer _textVoicer = new TextVoicerSpeechSynthesizer();
             IVoiceRecognizer _voiceRecognizer = new VoiceRecognizerSpeechRecEngine();
             IImageClassificator _imageClassificator= new TensorFlowClassificator();

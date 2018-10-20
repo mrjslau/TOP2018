@@ -8,7 +8,7 @@ namespace ShopLensForms
     {
         public MainController MainController { get; set; }
 
-        private const string HelloMessage = "Hello and welcome to ShopLens. It's time to begin your shopping.";
+        private string HelloMessage = ShopLensApp.GlobalStrings.HelloMessage;
 
         public IntroForm()
         {

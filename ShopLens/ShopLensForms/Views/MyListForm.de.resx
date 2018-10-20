@@ -117,121 +117,54 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>12, 25</value>
-  </data>
-  <data name="&gt;&gt;Close_btn.Name" xml:space="preserve">
-    <value>Close_btn</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Close_btn.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="MyList_listBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
-  <data name="&gt;&gt;Close_btn.Parent" xml:space="preserve">
-    <value>$this</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="MyList_listBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 26</value>
   </data>
-  <data name="&gt;&gt;Close_btn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MyList_listBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 225</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ItemsToBuy_label.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 10</value>
   </data>
-  <data name="ItemsInMyCart_label.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 25</value>
+  <data name="ItemsToBuy_label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 13</value>
   </data>
-  <data name="ItemsInMyCart_label.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="ItemsToBuy_label.Text" xml:space="preserve">
+    <value>ARTIKEL ZU KAUFEN</value>
   </data>
-  <data name="&gt;&gt;ItemsInMyCart_label.Name" xml:space="preserve">
-    <value>ItemsInMyCart_label</value>
+  <data name="Add_btn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 60</value>
   </data>
-  <data name="&gt;&gt;MyCart_listBox.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="Add_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 32</value>
   </data>
-  <data name="&gt;&gt;ItemsInMyCart_label.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="Add_btn.Text" xml:space="preserve">
+    <value>Add to shopping list</value>
   </data>
-  <data name="&gt;&gt;Close_btn.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="ItemToAdd_textBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 25</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="MyCart_listBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>762, 527</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
-  </data>
-  <data name="ItemsInMyCart_label.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 0, 6, 0</value>
-  </data>
-  <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>282, 106</value>
-  </data>
-  <data name="&gt;&gt;MyCart_listBox.Name" xml:space="preserve">
-    <value>MyCart_listBox</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MyCartForm</value>
-  </data>
-  <data name="Close_btn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>6, 6, 6, 6</value>
-  </data>
-  <data name="ItemsInMyCart_label.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;ItemsInMyCart_label.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="MyCart_listBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="ItemToAdd_textBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 20</value>
   </data>
   <data name="Close_btn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>432, 385</value>
+    <value>338, 225</value>
   </data>
-  <data name="ItemsInMyCart_label.Text" xml:space="preserve">
-    <value>ITEMS IN MY CART</value>
-  </data>
-  <data name="&gt;&gt;MyCart_listBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="MyCart_listBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 58</value>
-  </data>
-  <data name="&gt;&gt;ItemsInMyCart_label.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="MyCart_listBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>25</value>
+  <data name="Close_btn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 26</value>
   </data>
   <data name="Close_btn.Text" xml:space="preserve">
-    <value>CLOSE</value>
+    <value>Close shopping list</value>
   </data>
-  <data name="MyCart_listBox.Items" xml:space="preserve">
-    <value>Tomato</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
   </data>
-  <data name="ItemsInMyCart_label.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 25</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>423, 271</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>MyCartForm</value>
-  </data>
-  <data name="&gt;&gt;MyCart_listBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="MyCart_listBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 429</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>de</value>
-  </metadata>
 </root>
