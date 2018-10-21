@@ -269,11 +269,9 @@ namespace ShopLensForms.Controllers
         {
             IReader source = new JsonReader();
             shoppingList = source.DeserializeToList(filePath);
-            if (shoppingList != null)
-            {
-                listBoxToBeLoaded.Items.Clear();
-                listBoxToBeLoaded.Items.AddRange(shoppingList.ToArray());
-            }
+            
+            listBoxToBeLoaded.Items.Clear();
+            listBoxToBeLoaded.Items.AddRange(shoppingList.ToArray());
         }
 
         /// <summary>
@@ -283,15 +281,7 @@ namespace ShopLensForms.Controllers
         {
             string itemName = _myList.ItemToAdd_textBox.Text;
             ShoppingItem itemToAdd = new ShoppingItem(itemName);
-            try
-            {
-                shoppingList.Add(itemToAdd);
-            }
-            catch (NullReferenceException e)
-            {
-                shoppingList = new List<ShoppingItem>();
-                shoppingList.Add(itemToAdd);
-            }
+            shoppingList.Add(itemToAdd);
 
             _myList.MyList_listBox.Items.Clear();
             _myList.MyList_listBox.Items.AddRange(shoppingList.ToArray());

@@ -16,21 +16,13 @@ namespace ShopLensApp.IO
         {
             string jsonString = ReadText(filePath);
             List<ShoppingItem> list = JsonConvert.DeserializeObject<List<ShoppingItem>>(jsonString);
-            return list;
+            return list ?? new List<ShoppingItem>();
         }
 
         public string ReadText(string filePath)
         {
-            string text;
-            if (!File.Exists(filePath))
-            {
-                using (File.Create(filePath))
-                {
-
-                }
-            }
-            text = File.ReadAllText(filePath);
-            using (var f = File.OpenRead(filePath))
+            string text = "";
+            if (File.Exists(filePath))
             {
                 text = File.ReadAllText(filePath);
             }
