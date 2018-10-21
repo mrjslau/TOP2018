@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ShopLensApp.IO
 {
-    public class Item
+    public class ShoppingItem
     {
         public string itemName;
 
-        public Item(string itemName)
+        public ShoppingItem(string itemName)
         {
             this.itemName = itemName;
         }

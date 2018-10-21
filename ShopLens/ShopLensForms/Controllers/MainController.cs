@@ -10,13 +10,18 @@ using ShopLensForms.Models;
 using VoicedText.TextVoicers;
 using VoiceRecognitionWithTextVoicer.VoiceRecognizers;
 using ShopLensApp.ExtensionMethods;
+using System.Configuration;
+using System.Collections.Specialized;
 
 namespace ShopLensForms.Controllers
 {
+
     public class MainController
     {
+        public static List<ShoppingItem> shoppingList;
+
         public string filePath = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName
-            + @"\ShopLensForms\SavedData\items.json";
+            + ConfigurationManager.AppSettings.Get("filePath");
 
         /// <inheritdoc cref="ITextVoicer"/>
         private ITextVoicer _textVoicer;
@@ -41,15 +46,15 @@ namespace ShopLensForms.Controllers
         /// <inheritdoc cref="_introForm"/>
         public MyCartForm _myCart;
 
-        private const string helloCmd = "Hello";
-        private const string whatIsThisCmd = "What is this";
-        private const string startCmd = "Start";
-        private const string exitCmd = "Exit";
-        private const string myShoppingListCmd = "My shopping list";
-        private const string myShoppingCartCmd = "My shopping cart";
-        private const string addToShoppingListCmd = "Add to Shopping List";
-        private const string closeShoppingListCmd = "Close shopping list";
-        private const string closeShoppingCartCmd = "Close shopping cart";
+        private string helloCmd = ConfigurationManager.AppSettings.Get("helloCmd");
+        private string whatIsThisCmd = ConfigurationManager.AppSettings.Get("whatIsThisCmd");
+        private string startCmd = ConfigurationManager.AppSettings.Get("startCmd");
+        private string exitCmd = ConfigurationManager.AppSettings.Get("exitCmd");
+        private string myShoppingListCmd = ConfigurationManager.AppSettings.Get("myShoppingListCmd");
+        private string myShoppingCartCmd = ConfigurationManager.AppSettings.Get("myShoppingCartCmd");
+        private string addToShoppingListCmd = ConfigurationManager.AppSettings.Get("addToShoppingListCmd");
+        private string closeShoppingListCmd = ConfigurationManager.AppSettings.Get("closeShoppingListCmd");
+        private string closeShoppingCartCmd = ConfigurationManager.AppSettings.Get("closeShoppingCartCmd");
 
         public MainController(ITextVoicer textVoicer, IVoiceRecognizer voiceRecognizer
             , IImageClassificator imageClassificator, IntroForm introForm, ShopLens shopLens)
@@ -64,6 +69,8 @@ namespace ShopLensForms.Controllers
 
             _introForm.MainController = this;
             _shopLens.MainController = this;
+
+            shoppingList = new List<ShoppingItem>();
         }
 
         [STAThread]
@@ -254,19 +261,13 @@ namespace ShopLensForms.Controllers
         /// Load the list in particular Windows form listbox.
         /// </summary>
         /// <param name="listBoxToBeLoaded">The listbox where the list has to be loaded.</param>
-        /// <remarks>
-        /// The if statement makes sure that the application will not crash 
-        /// after trying to convert null to array.
-        /// </remarks>
         public void LoadList(ListBox listBoxToBeLoaded)
         {
-            IReader source = new ReaderJSON();
-            List<Item> list = source.DeserializeToList(filePath);
-            if (list != null)
-            {
-                listBoxToBeLoaded.Items.Clear();
-                listBoxToBeLoaded.Items.AddRange(list.ToArray());
-            }
+            IReader source = new JsonReader();
+            shoppingList = source.DeserializeToList(filePath);
+            
+            listBoxToBeLoaded.Items.Clear();
+            listBoxToBeLoaded.Items.AddRange(shoppingList.ToArray());
         }
 
         /// <summary>
@@ -275,17 +276,14 @@ namespace ShopLensForms.Controllers
         public void AddItem()
         {
             string itemName = _myList.ItemToAdd_textBox.Text;
-            Item itemToAdd = new Item(itemName);
+            ShoppingItem itemToAdd = new ShoppingItem(itemName);
+            shoppingList.Add(itemToAdd);
 
-            _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
+            _myList.MyList_listBox.Items.Clear();
+            _myList.MyList_listBox.Items.AddRange(shoppingList.ToArray());
 
-            IReader read = new ReaderJSON();
-            IWriter write = new WriterJSON();
-
-            List<Item> items = read.DeserializeToList(filePath) ?? new List<Item>();
-            items.Add(itemToAdd);
-            write.SerializeFromList(filePath, items);           
-            LoadList(_myList.MyList_listBox);
+            IWriter write = new JsonWriter();
+            write.SerializeFromList(filePath, shoppingList);  
         }
 
         /// <summary>

@@ -88,15 +88,14 @@ namespace ImageRecognition
             }
 
             Console.WriteLine("------------------------");
-            Console.WriteLine("OCR RESULTS");
+            Console.WriteLine("OCR WEIGHT FINDER RESUTLS");
             Console.WriteLine("------------------------");
 
             text = text.Trim().Replace("\r\n", " ").Replace("\n", " ");
-            Regex rx = new Regex(@"(?<weight>(\d+\s?\.?\s?\d*?\s*?[g,l]|\d+\s?\.?\s?\d*?\s*?[m,k,c][g,l]?)(\s|$))");
-            Match match = rx.Match(text);
-            string matchedWeight = Regex.Replace(match.Groups["weight"].Value, @"\s+", "");
-            Console.WriteLine(matchedWeight);
-
+            var regexWeightFinder = new RegexMetricWeightSubstringFinder();
+            var octResult = regexWeightFinder.FindWeightSpecifier(text);
+            Console.WriteLine(octResult);
+            
             Console.WriteLine("------------------------");
             Console.WriteLine("OCR KEYWORDS");
             Console.WriteLine("------------------------");
