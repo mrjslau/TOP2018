@@ -13,8 +13,11 @@ using ShopLensApp.ExtensionMethods;
 
 namespace ShopLensForms.Controllers
 {
+
     public class MainController
     {
+        public static List<ShoppingItem> shoppingList;
+
         public string filePath = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName
             + @"\ShopLensForms\SavedData\items.json";
 
@@ -64,6 +67,8 @@ namespace ShopLensForms.Controllers
 
             _introForm.MainController = this;
             _shopLens.MainController = this;
+
+            shoppingList = new List<ShoppingItem>();
         }
 
         [STAThread]
@@ -261,11 +266,11 @@ namespace ShopLensForms.Controllers
         public void LoadList(ListBox listBoxToBeLoaded)
         {
             IReader source = new JsonReader();
-            List<ShoppingItem> list = source.DeserializeToList(filePath);
-            if (list != null)
+            shoppingList = source.DeserializeToList(filePath);
+            if (shoppingList != null)
             {
                 listBoxToBeLoaded.Items.Clear();
-                listBoxToBeLoaded.Items.AddRange(list.ToArray());
+                listBoxToBeLoaded.Items.AddRange(shoppingList.ToArray());
             }
         }
 
@@ -276,16 +281,21 @@ namespace ShopLensForms.Controllers
         {
             string itemName = _myList.ItemToAdd_textBox.Text;
             ShoppingItem itemToAdd = new ShoppingItem(itemName);
+            try
+            {
+                shoppingList.Add(itemToAdd);
+            }
+            catch (NullReferenceException e)
+            {
+                shoppingList = new List<ShoppingItem>();
+                shoppingList.Add(itemToAdd);
+            }
 
-            _myList.MyList_listBox.Items.Add(string.Join(Environment.NewLine, itemName));           
+            _myList.MyList_listBox.Items.Clear();
+            _myList.MyList_listBox.Items.AddRange(shoppingList.ToArray());
 
-            IReader read = new JsonReader();
             IWriter write = new JsonWriter();
-
-            List<ShoppingItem> items = read.DeserializeToList(filePath) ?? new List<ShoppingItem>();
-            items.Add(itemToAdd);
-            write.SerializeFromList(filePath, items);           
-            LoadList(_myList.MyList_listBox);
+            write.SerializeFromList(filePath, shoppingList);  
         }
 
         /// <summary>
