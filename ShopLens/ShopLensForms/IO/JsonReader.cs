@@ -19,6 +19,7 @@ namespace ShopLensApp.IO
             return list ?? new List<ShoppingItem>();
         }
 
+        /// <inheritdoc cref="IReader.ReadText(string)"/>
         public string ReadText(string filePath)
         {
             string text = "";

@@ -261,10 +261,6 @@ namespace ShopLensForms.Controllers
         /// Load the list in particular Windows form listbox.
         /// </summary>
         /// <param name="listBoxToBeLoaded">The listbox where the list has to be loaded.</param>
-        /// <remarks>
-        /// The if statement makes sure that the application will not crash 
-        /// after trying to convert null to array.
-        /// </remarks>
         public void LoadList(ListBox listBoxToBeLoaded)
         {
             IReader source = new JsonReader();
