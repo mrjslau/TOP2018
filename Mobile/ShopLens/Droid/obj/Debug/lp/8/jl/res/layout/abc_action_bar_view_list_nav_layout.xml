@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2012 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,5 +12,12 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
---><!-- Styled linear layout, compensating for the lack of a defStyle parameter
-     in pre-Honeycomb LinearLayout's constructor. --><LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" style="?attr/actionBarTabBarStyle" xmlns:android="http://schemas.android.com/apk/res/android"></LinearLayout>
+-->
+
+<!-- Styled linear layout, compensating for the lack of a defStyle parameter
+     in pre-Honeycomb LinearLayout's constructor. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              style="?attr/actionBarTabBarStyle">
+</LinearLayout>

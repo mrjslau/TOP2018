@@ -39,7 +39,7 @@ namespace ShopLens.Droid
         {
             string text = editTextToVoice.Text;
             if (!String.IsNullOrEmpty(text))
-                tts.Speak(text, QueueMode.Flush, null);
+                tts.Speak(text, QueueMode.Flush, null, null);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)

@@ -101,6 +101,7 @@ namespace ShopLens.Droid
                     }
                     // change the text back on the button
                     recButton.Text = "Start Recording";
+                    isRecording = false;
                 }
             }
 
