@@ -12,13 +12,13 @@ namespace ShopLensApp.IO
         /// <inheritdoc cref="IWriter.SerializeFromList(string, List{ShoppingItem})"/>
         public void SerializeFromList(string filePath, List<ShoppingItem> items)
         {
-            if(!Directory.Exists(Path.GetDirectoryName(filePath)))
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             }
-            using (StreamWriter file = File.CreateText(filePath))
+            using (var file = File.CreateText(filePath))
             {
-                JsonSerializer serializer = new JsonSerializer();
+                var serializer = new JsonSerializer();
                 serializer.Serialize(file, items);
             }
         }

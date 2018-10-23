@@ -275,8 +275,8 @@ namespace ShopLensForms.Controllers
         /// </summary>
         public void AddItem()
         {
-            string itemName = _myList.ItemToAdd_textBox.Text;
-            ShoppingItem itemToAdd = new ShoppingItem(itemName);
+            var itemName = _myList.ItemToAdd_textBox.Text;
+            var itemToAdd = new ShoppingItem(itemName);
             shoppingList.Add(itemToAdd);
 
             _myList.MyList_listBox.Items.Clear();
