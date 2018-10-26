@@ -22,7 +22,7 @@ namespace ImageRecognition.OCR
     /// </summary>
     public class RegexMetricWeightSubstringFinder : IMetricWeightSubstringFinder
     {
-        private readonly Regex _rx = new Regex(@"(?<weight>\d+\.?\d+?\s*?[a-z]+)");
+        private readonly Regex _rx = new Regex(@"(?<weight>(\d+\s?\.?\s?\d*?\s*?[g,l]|\d+\s?\.?\s?\d*?\s*?[m,k,c][g,l]?)(\s|$))");
         
         /// <inheritdoc cref="IMetricWeightSubstringFinder.FindWeightSpecifier"/>
         public string FindWeightSpecifier(string input)
