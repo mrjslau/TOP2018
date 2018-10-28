@@ -1,6 +1,6 @@
 ﻿namespace ShopLensForms
 {
-    partial class MyListForm
+    partial class ShoppingListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyListForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShoppingListForm));
             this.MyList_listBox = new System.Windows.Forms.ListBox();
             this.ItemsToBuy_label = new System.Windows.Forms.Label();
             this.Add_btn = new System.Windows.Forms.Button();
@@ -66,7 +66,7 @@
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
-            // MyListForm
+            // ShoppingListForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -77,7 +77,7 @@
             this.Controls.Add(this.ItemsToBuy_label);
             this.Controls.Add(this.MyList_listBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "MyListForm";
+            this.Name = "ShoppingListForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

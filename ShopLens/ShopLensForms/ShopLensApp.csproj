@@ -91,17 +91,17 @@
     <Compile Include="Views\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyCartForm.cs">
+    <Compile Include="Views\CartForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\MyCartForm.Designer.cs">
-      <DependentUpon>MyCartForm.cs</DependentUpon>
+      <DependentUpon>CartForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyListForm.cs">
+    <Compile Include="Views\ShoppingListForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\MyListForm.Designer.cs">
-      <DependentUpon>MyListForm.cs</DependentUpon>
+      <DependentUpon>ShoppingListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,16 +120,16 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MyCartForm.de.resx">
-      <DependentUpon>MyCartForm.cs</DependentUpon>
+      <DependentUpon>CartForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MyCartForm.resx">
-      <DependentUpon>MyCartForm.cs</DependentUpon>
+      <DependentUpon>CartForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MyListForm.de.resx">
-      <DependentUpon>MyListForm.cs</DependentUpon>
+      <DependentUpon>ShoppingListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MyListForm.resx">
-      <DependentUpon>MyListForm.cs</DependentUpon>
+      <DependentUpon>ShoppingListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

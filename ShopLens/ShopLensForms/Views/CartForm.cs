@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace ShopLensForms
 {
-    public partial class MyCartForm : Form
+    public partial class CartForm : Form
     {
         private MainController _mainController;
 
-        public MyCartForm(MainController mainController)
+        public CartForm(MainController mainController)
         {
             _mainController = mainController;
 

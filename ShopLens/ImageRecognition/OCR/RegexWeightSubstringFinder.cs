@@ -17,6 +17,7 @@ namespace ImageRecognition.OCR
         string FindWeightSpecifier(string input);
     }
     
+    /// <inheritdoc />
     /// <summary>
     /// A class that realises the weight substring search using Regular Expressions.
     /// </summary>

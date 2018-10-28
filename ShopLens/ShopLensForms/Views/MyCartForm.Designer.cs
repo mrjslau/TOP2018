@@ -1,6 +1,6 @@
 ﻿namespace ShopLensForms
 {
-    partial class MyCartForm
+    partial class CartForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyCartForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CartForm));
             this.ItemsInMyCart_label = new System.Windows.Forms.Label();
             this.MyCart_listBox = new System.Windows.Forms.ListBox();
             this.Close_btn = new System.Windows.Forms.Button();
@@ -52,7 +52,7 @@
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
-            // MyCartForm
+            // CartForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -61,7 +61,7 @@
             this.Controls.Add(this.MyCart_listBox);
             this.Controls.Add(this.ItemsInMyCart_label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "MyCartForm";
+            this.Name = "CartForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace ShopLensForms
 {
-    public partial class MyListForm : Form
+    public partial class ShoppingListForm : Form
     {
         private MainController _mainController;
 
-        public MyListForm(MainController mainController)
+        public ShoppingListForm(MainController mainController)
         {
             _mainController = mainController;
             InitializeComponent();
@@ -16,7 +16,7 @@ namespace ShopLensForms
 
         public void Close_btn_Click(object sender, EventArgs e)
         {
-            _mainController.HideForm(_mainController._myList);
+            _mainController.HideForm(_mainController.ShoppingList);
         }
 
         public void Add_btn_Click(object sender, EventArgs e)

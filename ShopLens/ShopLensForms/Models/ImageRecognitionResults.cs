@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace ShopLensForms.Models
 {
+    /// <summary>
+    /// This class holds image recognition results and provides accessibility methods to it.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ImageRecognitionResults<T> : IEnumerable<T>, IEquatable<ImageRecognitionResults<T>> 
         where T: IImageRecognitionResultRow
     {
@@ -21,7 +25,7 @@ namespace ShopLensForms.Models
         public T this[string index]
         {
             get {
-                var result = _resultRows.Where(x => x.Label == index).SingleOrDefault();
+                var result = _resultRows.SingleOrDefault(x => x.Label == index);
                 if(result != null)
                 {
                     return result;

@@ -13,9 +13,8 @@ namespace ShopLensForms
         private VideoCaptureDevice _videoSource;
 
         //Messages that the text voicer says.
-        private string HelloMessage = ShopLensApp.GlobalStrings.HelloMessage;
-        private string SeeMessage = ShopLensApp.GlobalStrings.SeeMessage;
-        private string NoLblError = ShopLensApp.GlobalStrings.NoLblError;
+        private string _seeMessage = ShopLensApp.GlobalStrings.SeeMessage;
+        private string _noLblError = ShopLensApp.GlobalStrings.NoLblError;
 
         public MainController MainController { get; set; }
 
@@ -40,7 +39,7 @@ namespace ShopLensForms
                 _videoSource = new VideoCaptureDevice(_captureDevices[webcam_combobox.SelectedIndex].MonikerString);
                 _videoSource.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                 _videoSource.Start();
-                MainController.TextVoicerVoiceMessage(SeeMessage);
+                MainController.TextVoicerVoiceMessage(_seeMessage);
             }
             else
             {
@@ -59,7 +58,7 @@ namespace ShopLensForms
             var webcamTurnedOff = ShopLensApp.GlobalStrings.WebcamTurnedOffMessage;
             var beginningStatement = ShopLensApp.GlobalStrings.BeginningStatement;
             MainController.ExecuteCommand_WhatIsThis(live_video.Image, webcamTurnedOff,
-                beginningStatement ,NoLblError);
+                beginningStatement ,_noLblError);
         }
 
         public void Exit_btn_Click(object sender, EventArgs e)
@@ -74,13 +73,13 @@ namespace ShopLensForms
 
         public void MyList_btn_Click(object sender, EventArgs e)
         {
-            MainController.ShowForm(MainController._myList);
-            MainController.LoadList(MainController._myList.MyList_listBox);
+            MainController.ShowForm(MainController.ShoppingList);
+            MainController.LoadList(MainController.ShoppingList.MyList_listBox);
         }
 
         public void MyCart_btn_Click(object sender, EventArgs e)
         {
-            MainController.ShowForm(MainController._myCart);
+            MainController.ShowForm(MainController.Cart);
         }
     }
 }
