@@ -38,7 +38,7 @@ namespace ShopLens.Droid
         private void SpeakOut()
         {
             string text = editTextToVoice.Text;
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
                 tts.Speak(text, QueueMode.Flush, null, null);
         }
 

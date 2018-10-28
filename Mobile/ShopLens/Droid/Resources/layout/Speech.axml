@@ -18,6 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnRecord" />
+		<Button
+			android:text="Record And Voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRecordAndVoice" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -38,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/textYourText"
-            android:textColor="#ffedf01d"
+            android:textColor="@android:color/black"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp" />
     </LinearLayout>
