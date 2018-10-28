@@ -12,22 +12,31 @@ using Android.Content;
 using Android.OS;
 using Android.Widget;
 using Camera;
+using Android.Support.V4.Content;
+using Android.Support.Compat;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "CameraActivity")]
+
+    [Activity (Label = "CameraActivity")]
     public class CameraActivity : Activity
     {
         Button BtnTakeImg;
         ImageView ImgView;
-        public static File _file;
+
+        public static File productPhoto;
         public static File _dir;
+
+        public static int REQUEST_IMAGE = 102;
+        public static string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Camera);
+
             if (IsThereAnAppToTakePictures())
             {
                 CreateDirectoryForPictures();
@@ -53,24 +62,34 @@ namespace ShopLens.Droid
         }
         private void TakeAPicture(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(MediaStore.ActionImageCapture);
-            _file = new File(_dir, string.Format("Image_{0}.jpg", Guid.NewGuid()));
-            intent.PutExtra(MediaStore.ExtraOutput, Uri.FromFile(_file));
-            StartActivityForResult(intent, 102);
+            Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
+            productPhoto = new File(_dir, string.Format("Image_{0}.jpg", Guid.NewGuid()));
+            if (productPhoto != null)
+            {
+                Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
+                takePictureIntent.PutExtra(MediaStore.ExtraOutput, photoUri);
+                takePictureIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+                takePictureIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
+            }
+            //If there's a working camera on the device.
+            if (takePictureIntent.ResolveActivity(PackageManager) != null) {
+                StartActivityForResult(takePictureIntent, REQUEST_IMAGE);
+            }
+            
         }
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == 102 && resultCode == Result.Ok)
+            if (requestCode == REQUEST_IMAGE && resultCode == Result.Ok)
             {
                 // ideti i galerija
                 Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-                Uri contentUri = Uri.FromFile(_file);
+                Uri contentUri = Uri.FromFile(productPhoto);
                 mediaScanIntent.SetData(contentUri);
                 SendBroadcast(mediaScanIntent);
                 // konvertavimas 
                 int height = ImgView.Height;
                 int width = Resources.DisplayMetrics.WidthPixels;
-                using (Bitmap bitmap = _file.Path.LoadAndResizeBitmap(width, height))
+                using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
                 {
                     ImgView.RecycleBitmap();
                     ImgView.SetImageBitmap(bitmap);
