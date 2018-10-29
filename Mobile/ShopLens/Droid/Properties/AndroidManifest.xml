@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="TOP2018.ShopLens" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="27" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<application android:label="ShopLens">
+		<provider 
+      android:name="android.support.v4.content.FileProvider" 
+      android:authorities="${applicationId}.shoplens.fileprovider" 
+      android:exported="false" 
+      android:grantUriPermissions="true">
+			<meta-data 
+        android:name="android.support.FILE_PROVIDER_PATHS" 
+        android:resource="@xml/provider_paths" />
+		</provider>
+	</application>
+</manifest>

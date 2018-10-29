@@ -17,5 +17,8 @@ Visual Studio 2017/2017 Preview
 - Product price recognition: the app would recognise the price of a product if it is visible with the product itself.
 - Aisle recognition: the app would also be able to tell the user where he/she is in the shop.
 
+## To test the mobile app on your device
+- https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/set-up-device-for-development
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
