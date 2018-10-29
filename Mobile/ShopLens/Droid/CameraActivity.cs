@@ -71,7 +71,7 @@ namespace ShopLens.Droid
                 takePictureIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
                 takePictureIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
             }
-            //If there's a working camera on the device.
+            // If there's a working camera on the device.
             if (takePictureIntent.ResolveActivity(PackageManager) != null) {
                 StartActivityForResult(takePictureIntent, REQUEST_IMAGE);
             }
@@ -81,19 +81,19 @@ namespace ShopLens.Droid
         {
             if (requestCode == REQUEST_IMAGE && resultCode == Result.Ok)
             {
-                // ideti i galerija
+                // Put image in gallery.
                 Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
                 Uri contentUri = Uri.FromFile(productPhoto);
                 mediaScanIntent.SetData(contentUri);
                 SendBroadcast(mediaScanIntent);
-                // konvertavimas 
+
+                // Conversion. 
                 int height = ImgView.Height;
                 int width = Resources.DisplayMetrics.WidthPixels;
                 using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
                 {
                     ImgView.RecycleBitmap();
                     ImgView.SetImageBitmap(bitmap);
-                    // cia ideti i DB  
                 }
             }
         }

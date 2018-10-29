@@ -14,7 +14,7 @@ namespace Camera
 {
     public static class BitmapHelpers
     {
-        /// This method will recyle the memory help by a bitmap in an ImageView  
+        // This method will recyle the memory help by a bitmap in an ImageView.
         public static void RecycleBitmap(this ImageView imageView)
         {
             if (imageView == null)
@@ -27,10 +27,10 @@ namespace Camera
                 ((BitmapDrawable)toRecycle).Bitmap.Recycle();
             }
         }
-        /// Load the image from the device, and resize it to the specified dimensions.  
+        // Load the image from the device, and resize it to the specified dimensions.  
         public static Bitmap LoadAndResizeBitmap(this string fileName, int width, int height)
         {
-            // First we get the the dimensions of the file on disk  
+            // First we get the the dimensions of the file on disk  .
             BitmapFactory.Options options = new BitmapFactory.Options
             {
                 InPurgeable = true,

@@ -13,11 +13,11 @@ namespace ShopLens.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            // Set our view from the "main" layout resource
+            // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
             // Get our button from the layout resource,
-            // and attach an event to it
+            // and attach an event to it.
             Button textVoicerButton = FindViewById<Button>(Resource.Id.TextVoicerButton);
             Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);
             Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);
