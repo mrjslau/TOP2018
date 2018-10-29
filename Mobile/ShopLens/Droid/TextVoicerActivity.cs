@@ -1,14 +1,6 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 
 using Android.Speech.Tts;
@@ -29,8 +21,6 @@ namespace ShopLens.Droid
             if(status == OperationResult.Success)
             {
                 tts.SetLanguage(Locale.Us);
-                //tts.SetPitch(0.5f);
-                //tts.SetSpeechRate(2.0f);
                 SpeakOut();
             }
         }
@@ -46,7 +36,7 @@ namespace ShopLens.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
+            // Create your application here.
             SetContentView(Resource.Layout.TextVoicer);
 
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
