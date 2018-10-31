@@ -10,18 +10,18 @@
         android:text="Text voicer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/TextVoicerButton" 
-	    android:contentDescription="Text voicer."/>
+        android:id="@+id/TextVoicerButton"
+		android:contentDescription="Text voicer."/>
     <Button
         android:text="Speech Recognizer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/SpeechButton" 
-	    android:contentDescription="Speech recognizer and recording voicer."/>
+        android:id="@+id/SpeechButton"
+		android:contentDescription="Speech recognizer and recording voicer."/>
     <Button
         android:text="Camera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/CameraButton" 
-	    android:contentDescription="Camera."/>
+        android:id="@+id/CameraButton"
+		android:contentDescription="Camera."/>
 </LinearLayout>
