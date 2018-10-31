@@ -6,16 +6,16 @@
     android:layout_height="match_parent">
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+		android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
         android:id="@+id/btntakepicture"
         android:text="Take image"
-		android:contentDescription="Take photo."/>
+	    android:contentDescription="Take photo."/>
     <ImageView
         android:src="@android:drawable/ic_menu_gallery"
         android:layout_width="match_parent"
         android:layout_height="243.0dp"
         android:id="@+id/ImgTakeimg"
-		android:contentDescription="The shown photo."/>
+	    android:contentDescription="The shown photo."/>
 </LinearLayout>
