@@ -48,7 +48,7 @@
             android:textColor="@android:color/black"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-		    android:contentDescription="Recognized text."/>
+		android:contentDescription="Recognized text."/>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

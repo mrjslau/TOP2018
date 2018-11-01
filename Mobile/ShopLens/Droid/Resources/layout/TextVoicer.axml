@@ -21,11 +21,11 @@
         android:minHeight="25px"
         android:id="@+id/editTextToVoice"
         android:hint="Enter your text to speech"
-	    android:contentDescription="Text to be voiced, write your text here."/>
+	android:contentDescription="Text to be voiced, write your text here."/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TextToVoiceButton"
         android:text="Speak"
-	    android:contentDescription="Voice text."/>
+	android:contentDescription="Voice text."/>
 </LinearLayout>
