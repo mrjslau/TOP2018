@@ -18,13 +18,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnRecord"
-		android:contentDescription="Start recording."/>
+	  android:contentDescription="Start recording."/>
 		<Button
 			android:text="Record And Voice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnRecordAndVoice"
-		android:contentDescription="Record and voice recording."/>
+	  android:contentDescription="Record and voice recording."/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -48,7 +48,7 @@
             android:textColor="@android:color/black"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-		android:contentDescription="Recognized text."/>
+	  android:contentDescription="Recognized text."/>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
