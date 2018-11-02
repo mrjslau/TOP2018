@@ -17,7 +17,7 @@
 /ShopLens/WindowsFormsApp1/bin
 /ShopLens/WindowsFormsApp1/obj
 /.vs
-/ShopLens/ShopLensForms/bin/Debug
+/ShopLens/ShopLensForms/bin
 /ShopLens/ShopLensForms/obj
 /Mobile/ShopLens/.vs/ShopLens/v15/Server/sqlite3
 /Mobile/ShopLens/Droid
@@ -31,5 +31,10 @@
 /Mobile/ShopLens/Droid/obj
 /Mobile/ShopLens/iOS/bin
 /Mobile/ShopLens/iOS/obj
+/ShopLens/ShopLensForms/SavedData/
+/Mobile/ShopLens/packages
+/Mobile/ShopLens/.vs
+/Mobile/ShopLens/ImageRecognitionMobile/obj
+/Mobile/ShopLens/ImageRecognitionMobile
 /ShopLens/ShopLensForms/SavedData/items.json
 /ShopLens/ImageRecognition/App.config

@@ -13,7 +13,6 @@ using Android.OS;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
-using Android.Support.Compat;
 
 namespace ShopLens.Droid
 {
@@ -24,11 +23,11 @@ namespace ShopLens.Droid
         Button BtnTakeImg;
         ImageView ImgView;
 
-        public static File productPhoto;
-        public static File _dir;
+        public File productPhoto;
+        public File _dir;
 
-        public static int REQUEST_IMAGE = 102;
-        public static string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
+        public const int REQUEST_IMAGE = 102;
+        public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -95,6 +94,10 @@ namespace ShopLens.Droid
                     ImgView.RecycleBitmap();
                     ImgView.SetImageBitmap(bitmap);
                 }
+            }
+            else if (requestCode == REQUEST_IMAGE && resultCode == Result.Canceled)
+            {
+                // I don't know what we should do if the user cancelled the photo taking activity.
             }
         }
     }

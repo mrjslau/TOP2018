@@ -8,4 +8,7 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>ShopLens</Import_RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Class1.cs" />
+  </ItemGroup>
 </Project>
