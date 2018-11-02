@@ -13,7 +13,6 @@ using Android.OS;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
-using Android.Support.Compat;
 
 namespace ShopLens.Droid
 {
