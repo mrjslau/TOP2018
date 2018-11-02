@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Widget;
 using Android.OS;
 using System.Collections.Generic;
+using ImageRecognition.OCR;
 
 namespace ShopLens.Droid
 {
@@ -13,6 +14,8 @@ namespace ShopLens.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            var a = new RegexMetricWeightSubstringFinder();
+            
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
