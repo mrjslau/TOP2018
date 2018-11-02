@@ -70,6 +70,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidReader.cs" />
+    <Compile Include="AndroidWriter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

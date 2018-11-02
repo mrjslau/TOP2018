@@ -6,6 +6,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShopLens", "ShopLens\ShopLe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLens.Droid", "Droid\ShopLens.Droid.csproj", "{C9A1F13C-C165-4F1A-9B77-494622B5657B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognition", "..\..\ShopLens\ImageRecognition\ImageRecognition.csproj", "{6690D3AD-3784-4088-AED7-92247B35089B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ShopLens\ShopLens.projitems*{96116e4f-89d6-4260-8a3f-e358dc24b460}*SharedItemsImports = 13
@@ -33,6 +35,18 @@ Global
 		{C9A1F13C-C165-4F1A-9B77-494622B5657B}.Release|iPhone.Build.0 = Release|Any CPU
 		{C9A1F13C-C165-4F1A-9B77-494622B5657B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{C9A1F13C-C165-4F1A-9B77-494622B5657B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|iPhone.Build.0 = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{6690D3AD-3784-4088-AED7-92247B35089B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
