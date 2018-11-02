@@ -7,7 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using ImageRecognition.Classificators;
 using ImageRecognition.OCR;
-using TensorFlow;
+//using TensorFlow;
 
 namespace ImageRecognition
 {
@@ -72,8 +72,8 @@ namespace ImageRecognition
             }
 
             // Classify
-            var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
-
+//            var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
+//            var classificationResults = new WebClas
             // OCR
             var text = TesseractOcr.ParseText();
             
@@ -82,10 +82,10 @@ namespace ImageRecognition
             Console.WriteLine("OBJECT CLASSIFICATION");
             Console.WriteLine("------------------------");
             
-            foreach (var classification in classificationResults.OrderByDescending(x => x.Value))
-            {
-                Console.WriteLine($"{classification.Key, 15} => {Math.Round((classification.Value * 100.0), 3)}%");
-            }
+//            foreach (var classification in classificationResults.OrderByDescending(x => x.Value))
+//            {
+//                Console.WriteLine($"{classification.Key, 15} => {Math.Round((classification.Value * 100.0), 3)}%");
+//            }
 
             Console.WriteLine("------------------------");
             Console.WriteLine("OCR WEIGHT FINDER RESUTLS");
