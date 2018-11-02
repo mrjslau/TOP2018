@@ -14,13 +14,14 @@ namespace ShopLens.Droid
     public class SpeechActivity : Activity, TextToSpeech.IOnInitListener
     {
         bool isRecording;
-        readonly int VOICE = 10;
+        readonly int REQUEST_VOICE = 10;
+
         TextView textBox;
         Button recButton;
         Button recAndVoiceButton;
 
         TextToSpeech textVoicer;
-        private static bool voicerIsEnabled;
+        private bool voicerIsEnabled;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -123,7 +124,7 @@ namespace ShopLens.Droid
                 // voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.German).
 
                 voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.Default);
-                StartActivityForResult(voiceIntent, VOICE);
+                StartActivityForResult(voiceIntent, REQUEST_VOICE);
             }
         }
 
@@ -135,7 +136,7 @@ namespace ShopLens.Droid
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == VOICE)
+            if (requestCode == REQUEST_VOICE)
             {
                 if (resultCode == Result.Ok)
                 {
