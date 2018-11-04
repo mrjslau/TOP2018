@@ -22,12 +22,16 @@ namespace ShopLens.Droid
     {
         Button BtnTakeImg;
         ImageView ImgView;
+        Button BtnPickImg;
+        public static readonly int PickImageId = 1000;
 
         public File productPhoto;
         public File _dir;
 
         public const int REQUEST_IMAGE = 102;
         public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
+
+        public static int PICK_IMAGE = 1;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,7 +46,18 @@ namespace ShopLens.Droid
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
                 BtnTakeImg.Click += TakeAPicture;
+
+                BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
+                BtnPickImg.Click += PickOnClick;
             }
+        }
+
+        private void PickOnClick(object sender, EventArgs eventArgs)
+        {
+            Intent = new Intent();
+            Intent.SetType("image/*");
+            Intent.SetAction(Intent.ActionGetContent);
+            StartActivityForResult(Intent.CreateChooser(Intent, "Select Picture"), PickImageId);
         }
 
         private void CreateDirectoryForPictures()
@@ -98,6 +113,11 @@ namespace ShopLens.Droid
             else if (requestCode == REQUEST_IMAGE && resultCode == Result.Canceled)
             {
                 // I don't know what we should do if the user cancelled the photo taking activity.
+            }
+            else if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
+            {
+                Android.Net.Uri uri = data.Data;
+                ImgView.SetImageURI(uri);
             }
         }
     }
