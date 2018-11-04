@@ -45,6 +45,7 @@ namespace ShopLens.Droid
                 CreateDirectoryForPictures();
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                BtnTakeImg.Enabled = false;
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
