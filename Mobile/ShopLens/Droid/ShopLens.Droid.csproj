@@ -102,6 +102,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageRecognitionMobile\ImageRecognitionMobile.csproj">
+      <Project>{de6726c1-e1f5-40d8-8583-d3c519f85ebe}</Project>
+      <Name>ImageRecognitionMobile</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\ShopLens\ShopLens.projitems" Label="Shared" Condition="Exists('..\ShopLens\ShopLens.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Crosslight.Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Crosslight.Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Crosslight.Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Crosslight.Xamarin.Android.Support.Annotations.targets')" />
