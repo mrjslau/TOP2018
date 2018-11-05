@@ -18,20 +18,21 @@ using ImageRecognition.Classificators;
 using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
+using Android.Runtime;
 
 namespace ShopLens.Droid
 {
 
-    [Activity (Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
         Button RecVoice;
-  
+
         TextToSpeech tts;
-        
+
         public static readonly int PickImageId = 1000;
 
         public File productPhoto;
@@ -57,10 +58,9 @@ namespace ShopLens.Droid
             {
                 shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
                 shopLensPictureDirectoryCreator.CreateDirectory(_dir);
-               
+
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
-                BtnTakeImg.Enabled = false;
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
@@ -69,8 +69,17 @@ namespace ShopLens.Droid
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
                 RecVoice.Click += RecogniseVoice;
             }
-            
+
             tts = new TextToSpeech(this, this);
+        }
+
+        public void OnInit([GeneratedEnum] OperationResult status)
+        {
+            // If initialization was successful.
+            if (status == OperationResult.Success)
+            {
+                tts.SetLanguage(Locale.Us);
+            }
         }
 
         private void RecogniseVoice(object sender, EventArgs e)
@@ -127,34 +136,22 @@ namespace ShopLens.Droid
             }
 
         }
+
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             if (requestCode == REQUEST_IMAGE)
             {
                 if (resultCode == Result.Ok && productPhoto != null)
                 {
-                    // Put image in gallery.
-                    Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-                    Uri contentUri = Uri.FromFile(productPhoto);
-                    mediaScanIntent.SetData(contentUri);
-                    SendBroadcast(mediaScanIntent);
-
-                    // Conversion. 
-                    int height = ImgView.Height;
-                    int width = Resources.DisplayMetrics.WidthPixels;
-                    using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
-                    {
-                        ImgView.RecycleBitmap();
-                        ImgView.SetImageBitmap(bitmap);
-                    }
+                    PictureShowBitmap();
+                    RecogniseImage(data);
                 }
             }
             else if (requestCode == PickImageId)
             {
                 if (resultCode == Result.Ok && data != null)
                 {
-                    Uri uri = data.Data;
-                    ImgView.SetImageURI(uri);
+                    RecogniseImage(data);
                 }
             }
             else if (requestCode == REQUEST_VOICE)
@@ -165,50 +162,67 @@ namespace ShopLens.Droid
                     if (matches[0] == whatIsThisCmd)
                     {
                         TakeAPicture(this, new EventArgs());
+                        PictureShowBitmap();
+                        RecogniseImage(data);
                     }
-                    
+
                     else if (matches[0] == choosePicCmd)
                     {
                         PickOnClick(this, new EventArgs());
+                        RecogniseImage(data);
                     }
                 }
             }
-                Uri uri = data.Data;
-                ImgView.SetImageURI(uri);
-                
-                // Run the image recognition task
-                Task.Run(() =>
-                    {
-                        try
-                        {
-                            var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                            using (var stream = new MemoryStream())
-                            {
-                                // 0 because compression quality not applicable to .png
-                                image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+        }
 
-                                var results = new WebClassificator().ClassifyImage(stream.ToArray());
-                                tts.Speak(
-                                    $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
-                                    QueueMode.Flush,
-                                    null,
-                                    null);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e);
-                        }
-                    });
+        private void PictureShowBitmap()
+        {
+            // Put image in gallery.
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            Uri contentUri = Uri.FromFile(productPhoto);
+            mediaScanIntent.SetData(contentUri);
+            SendBroadcast(mediaScanIntent);
+
+            // Conversion. 
+            int height = ImgView.Height;
+            int width = Resources.DisplayMetrics.WidthPixels;
+            using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
+            {
+                ImgView.RecycleBitmap();
+                ImgView.SetImageBitmap(bitmap);
             }
         }
-        
-        public void OnInit(OperationResult status)
+
+        private void RecogniseImage(Intent data)
         {
-            if(status == OperationResult.Success)
+            Uri uri = data.Data;
+            ImgView.SetImageURI(uri);
+
+            // Run the image recognition task
+            Task.Run(() =>
             {
-                tts.SetLanguage(Locale.Us);
-            }
+                try
+                {
+                    var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                    using (var stream = new MemoryStream())
+                    {
+                        // 0 because compression quality not applicable to .png
+                        image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+
+                        var results = new WebClassificator().ClassifyImage(stream.ToArray());
+                        tts.Speak(
+                            $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
+                            QueueMode.Flush,
+                            null,
+                            null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+            });
         }
     }
 }
+
