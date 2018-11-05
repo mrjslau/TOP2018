@@ -1,5 +1,4 @@
-﻿
-using Uri = Android.Net.Uri;
+﻿using Uri = Android.Net.Uri;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,21 +15,24 @@ using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
 using ImageRecognition.Classificators;
+using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
+using Android.Runtime;
 
 namespace ShopLens.Droid
 {
 
-    [Activity (Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
-        
+        Button RecVoice;
+
         TextToSpeech tts;
-        
+
         public static readonly int PickImageId = 1000;
 
         public File productPhoto;
@@ -39,7 +41,11 @@ namespace ShopLens.Droid
         public const int REQUEST_IMAGE = 102;
         public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
 
-        public static int PICK_IMAGE = 1;
+        private IDirectoryCreator shopLensPictureDirectoryCreator;
+
+        private const string whatIsThisCmd = "what is this";
+        private const string choosePicCmd = "I have a photo";
+        private const int REQUEST_VOICE = 10;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -50,20 +56,54 @@ namespace ShopLens.Droid
 
             if (IsThereAnAppToTakePictures())
             {
-                CreateDirectoryForPictures();
+                shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
+                shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
-                BtnTakeImg.Enabled = false;
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
                 BtnPickImg.Click += PickOnClick;
+
+                RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
+                RecVoice.Click += RecogniseVoice;
             }
-            
+
             tts = new TextToSpeech(this, this);
         }
 
-        private void PickOnClick(object sender, EventArgs eventArgs)
+        public void OnInit([GeneratedEnum] OperationResult status)
+        {
+            // If initialization was successful.
+            if (status == OperationResult.Success)
+            {
+                tts.SetLanguage(Locale.Us);
+            }
+        }
+
+        private void RecogniseVoice(object sender, EventArgs e)
+        {
+            var voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
+
+            // Put a message on the modal dialog.
+            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, Application.Context.GetString(Resource.String.messageSpeakNow));
+
+            // If there is more then 1.5s of silence, consider the speech over.
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
+
+            // You can specify other languages recognised here, for example:
+            // voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.German).
+
+            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.Default);
+            StartActivityForResult(voiceIntent, REQUEST_VOICE);
+        }
+
+        private void PickOnClick(object sender, EventArgs e)
         {
             Intent = new Intent();
             Intent.SetType("image/*");
@@ -71,21 +111,14 @@ namespace ShopLens.Droid
             StartActivityForResult(Intent.CreateChooser(Intent, "Select Picture"), PickImageId);
         }
 
-        private void CreateDirectoryForPictures()
-        {
-            _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "C#Corner");
-            if (!_dir.Exists())
-            {
-                _dir.Mkdirs();
-            }
-        }
         private bool IsThereAnAppToTakePictures()
         {
             Intent intent = new Intent(MediaStore.ActionImageCapture);
             IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
             return availableActivities != null && availableActivities.Count > 0;
         }
-        private void TakeAPicture(object sender, EventArgs eventArgs)
+
+        private void TakeAPicture(object sender, EventArgs e)
         {
             Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
             productPhoto = new File(_dir, string.Format("Image_{0}.jpg", Guid.NewGuid()));
@@ -97,72 +130,99 @@ namespace ShopLens.Droid
                 takePictureIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
             }
             // If there's a working camera on the device.
-            if (takePictureIntent.ResolveActivity(PackageManager) != null) {
+            if (takePictureIntent.ResolveActivity(PackageManager) != null)
+            {
                 StartActivityForResult(takePictureIntent, REQUEST_IMAGE);
             }
-            
+
         }
+
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == REQUEST_IMAGE && resultCode == Result.Ok)
+            if (requestCode == REQUEST_IMAGE)
             {
-                // Put image in gallery.
-                Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-                Uri contentUri = Uri.FromFile(productPhoto);
-                mediaScanIntent.SetData(contentUri);
-                SendBroadcast(mediaScanIntent);
-
-                // Conversion. 
-                int height = ImgView.Height;
-                int width = Resources.DisplayMetrics.WidthPixels;
-                using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
+                if (resultCode == Result.Ok && productPhoto != null)
                 {
-                    ImgView.RecycleBitmap();
-                    ImgView.SetImageBitmap(bitmap);
+                    PictureShowBitmap();
+                    RecogniseImage(data);
                 }
             }
-            else if (requestCode == REQUEST_IMAGE && resultCode == Result.Canceled)
+            else if (requestCode == PickImageId)
             {
-                // I don't know what we should do if the user cancelled the photo taking activity.
+                if (resultCode == Result.Ok && data != null)
+                {
+                    RecogniseImage(data);
+                }
             }
-            else if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
+            else if (requestCode == REQUEST_VOICE)
             {
-                Uri uri = data.Data;
-                ImgView.SetImageURI(uri);
-                
-                // Run the image recognition task
-                Task.Run(() =>
+                var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
+                if (matches.Count != 0)
+                {
+                    if (matches[0] == whatIsThisCmd)
                     {
-                        try
-                        {
-                            var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                            using (var stream = new MemoryStream())
-                            {
-                                // 0 because compression quality not applicable to .png
-                                image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                        TakeAPicture(this, new EventArgs());
+                        PictureShowBitmap();
+                        RecogniseImage(data);
+                    }
 
-                                var results = new WebClassificator().ClassifyImage(stream.ToArray());
-                                tts.Speak(
-                                    $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
-                                    QueueMode.Flush,
-                                    null,
-                                    null);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e);
-                        }
-                    });
+                    else if (matches[0] == choosePicCmd)
+                    {
+                        PickOnClick(this, new EventArgs());
+                        RecogniseImage(data);
+                    }
+                }
             }
         }
-        
-        public void OnInit(OperationResult status)
+
+        private void PictureShowBitmap()
         {
-            if(status == OperationResult.Success)
+            // Put image in gallery.
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            Uri contentUri = Uri.FromFile(productPhoto);
+            mediaScanIntent.SetData(contentUri);
+            SendBroadcast(mediaScanIntent);
+
+            // Conversion. 
+            int height = ImgView.Height;
+            int width = Resources.DisplayMetrics.WidthPixels;
+            using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
             {
-                tts.SetLanguage(Locale.Us);
+                ImgView.RecycleBitmap();
+                ImgView.SetImageBitmap(bitmap);
             }
+        }
+
+        private void RecogniseImage(Intent data)
+        {
+            Uri uri = data.Data;
+            ImgView.SetImageURI(uri);
+
+            // Run the image recognition task
+            Task.Run(() =>
+            {
+                try
+                {
+                    var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                    using (var stream = new MemoryStream())
+                    {
+                        // 0 because compression quality not applicable to .png
+                        image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+
+                        var results = new WebClassificator().ClassifyImage(stream.ToArray());
+                        tts.Speak(
+                            $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
+                            QueueMode.Flush,
+                            null,
+                            null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+            });
         }
     }
 }
+

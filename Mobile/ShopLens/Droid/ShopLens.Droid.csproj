@@ -70,9 +70,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDirectoryCreator.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShopLensPictureDirectoryCreator.cs" />
     <Compile Include="TextVoicerActivity.cs" />
     <Compile Include="CameraActivity.cs" />
     <Compile Include="BitmapHelper.cs" />

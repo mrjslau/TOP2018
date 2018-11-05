@@ -18,7 +18,12 @@ namespace ShopLens.Droid
 
         public void OnInit([GeneratedEnum] OperationResult status)
         {
-            if(status == OperationResult.Success)
+            // If we get an error, use the default language.
+            if (status == OperationResult.Error)
+            {
+                tts.SetLanguage(Locale.Default);
+            }
+            else if (status == OperationResult.Success)
             {
                 tts.SetLanguage(Locale.Us);
                 SpeakOut();
