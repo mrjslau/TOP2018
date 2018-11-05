@@ -1,29 +1,37 @@
 ﻿using Uri = Android.Net.Uri;
 using System;
 using System.Collections.Generic;
-using Java.IO;
-
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Android.Provider;
 using Android.Graphics;
 using Android.Content.PM;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Speech.Tts;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
+using ImageRecognition.Classificators;
 using Android.Speech;
 using Java.Util;
+using File = Java.IO.File;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "CameraActivity")]
-    public class CameraActivity : Activity
+
+    [Activity (Label = "CameraActivity")]
+    public class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
         Button RecVoice;
+  
+        TextToSpeech tts;
+        
         public static readonly int PickImageId = 1000;
 
         public File productPhoto;
@@ -52,6 +60,7 @@ namespace ShopLens.Droid
                
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                BtnTakeImg.Enabled = false;
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
@@ -60,6 +69,8 @@ namespace ShopLens.Droid
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
                 RecVoice.Click += RecogniseVoice;
             }
+            
+            tts = new TextToSpeech(this, this);
         }
 
         private void RecogniseVoice(object sender, EventArgs e)
@@ -161,6 +172,42 @@ namespace ShopLens.Droid
                         PickOnClick(this, new EventArgs());
                     }
                 }
+            }
+                Uri uri = data.Data;
+                ImgView.SetImageURI(uri);
+                
+                // Run the image recognition task
+                Task.Run(() =>
+                    {
+                        try
+                        {
+                            var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                            using (var stream = new MemoryStream())
+                            {
+                                // 0 because compression quality not applicable to .png
+                                image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+
+                                var results = new WebClassificator().ClassifyImage(stream.ToArray());
+                                tts.Speak(
+                                    $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
+                                    QueueMode.Flush,
+                                    null,
+                                    null);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
+                    });
+            }
+        }
+        
+        public void OnInit(OperationResult status)
+        {
+            if(status == OperationResult.Success)
+            {
+                tts.SetLanguage(Locale.Us);
             }
         }
     }
