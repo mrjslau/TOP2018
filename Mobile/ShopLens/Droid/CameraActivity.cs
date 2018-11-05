@@ -1,5 +1,4 @@
-﻿
-using Uri = Android.Net.Uri;
+﻿using Uri = Android.Net.Uri;
 using System;
 using System.Collections.Generic;
 using Java.IO;
@@ -16,8 +15,7 @@ using Android.Support.V4.Content;
 
 namespace ShopLens.Droid
 {
-
-    [Activity (Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity
     {
         Button BtnTakeImg;
@@ -25,16 +23,14 @@ namespace ShopLens.Droid
         Button BtnPickImg;
         public static readonly int PickImageId = 1000;
 
-        IDirectoryCreator shopLensPictureDirectoryCreator;
-
         public File productPhoto;
         public File _dir;
 
         public const int REQUEST_IMAGE = 102;
         public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
-
         public static int PICK_IMAGE = 1;
 
+        private IDirectoryCreator shopLensPictureDirectoryCreator;
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -44,14 +40,10 @@ namespace ShopLens.Droid
 
             if (IsThereAnAppToTakePictures())
             {
-                shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator
-                {
-                    PictureDirectory = _dir
-                };
+                shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
+                shopLensPictureDirectoryCreator.CreateDirectory(_dir);
 
-                shopLensPictureDirectoryCreator.CreateDirectories();
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
-                BtnTakeImg.Enabled = true;
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
                 BtnTakeImg.Click += TakeAPicture;
 
@@ -87,16 +79,17 @@ namespace ShopLens.Droid
                 takePictureIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
             }
             // If there's a working camera on the device.
-            if (takePictureIntent.ResolveActivity(PackageManager) != null) {
+            if (takePictureIntent.ResolveActivity(PackageManager) != null)
+            {
                 StartActivityForResult(takePictureIntent, REQUEST_IMAGE);
             }
-            
+
         }
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             if (requestCode == REQUEST_IMAGE)
             {
-                if(resultCode == Result.Ok && productPhoto != null)
+                if (resultCode == Result.Ok && productPhoto != null)
                 {
                     // Put image in gallery.
                     Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
@@ -112,7 +105,7 @@ namespace ShopLens.Droid
                         ImgView.RecycleBitmap();
                         ImgView.SetImageBitmap(bitmap);
                     }
-                }                
+                }
             }
             else if (requestCode == PickImageId)
             {
