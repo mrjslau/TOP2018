@@ -12,6 +12,8 @@ using Android.OS;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
+using Android.Speech;
+using Java.Util;
 
 namespace ShopLens.Droid
 {
@@ -21,6 +23,7 @@ namespace ShopLens.Droid
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
+        Button RecVoice;
         public static readonly int PickImageId = 1000;
 
         public File productPhoto;
@@ -28,9 +31,13 @@ namespace ShopLens.Droid
 
         public const int REQUEST_IMAGE = 102;
         public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
-        public static int PICK_IMAGE = 1;
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
+
+        private const string whatIsThisCmd = "what is this";
+        private const string choosePicCmd = "I have a photo";
+        private const int REQUEST_VOICE = 10;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -42,17 +49,41 @@ namespace ShopLens.Droid
             {
                 shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
                 shopLensPictureDirectoryCreator.CreateDirectory(_dir);
-
+               
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
                 BtnPickImg.Click += PickOnClick;
+
+                RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
+                RecVoice.Click += RecogniseVoice;
             }
         }
 
-        private void PickOnClick(object sender, EventArgs eventArgs)
+        private void RecogniseVoice(object sender, EventArgs e)
+        {
+            var voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
+
+            // Put a message on the modal dialog.
+            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, Application.Context.GetString(Resource.String.messageSpeakNow));
+
+            // If there is more then 1.5s of silence, consider the speech over.
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
+            voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
+
+            // You can specify other languages recognised here, for example:
+            // voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.German).
+
+            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.Default);
+            StartActivityForResult(voiceIntent, REQUEST_VOICE);
+        }
+
+        private void PickOnClick(object sender, EventArgs e)
         {
             Intent = new Intent();
             Intent.SetType("image/*");
@@ -67,7 +98,7 @@ namespace ShopLens.Droid
             return availableActivities != null && availableActivities.Count > 0;
         }
 
-        private void TakeAPicture(object sender, EventArgs eventArgs)
+        private void TakeAPicture(object sender, EventArgs e)
         {
             Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
             productPhoto = new File(_dir, string.Format("Image_{0}.jpg", Guid.NewGuid()));
@@ -113,6 +144,22 @@ namespace ShopLens.Droid
                 {
                     Uri uri = data.Data;
                     ImgView.SetImageURI(uri);
+                }
+            }
+            else if (requestCode == REQUEST_VOICE)
+            {
+                var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
+                if (matches.Count != 0)
+                {
+                    if (matches[0] == whatIsThisCmd)
+                    {
+                        TakeAPicture(this, new EventArgs());
+                    }
+                    
+                    else if (matches[0] == choosePicCmd)
+                    {
+                        PickOnClick(this, new EventArgs());
+                    }
                 }
             }
         }

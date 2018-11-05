@@ -16,11 +16,11 @@ namespace ShopLens.Droid
         bool isRecording;
         readonly int REQUEST_VOICE = 10;
 
-        TextView textBox;
-        Button recButton;
-        Button recAndVoiceButton;
+        private TextView textBox;
+        private Button recButton;
+        private Button recAndVoiceButton;
 
-        TextToSpeech textVoicer;
+        private TextToSpeech textVoicer;
         private bool voicerIsEnabled;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -69,7 +69,7 @@ namespace ShopLens.Droid
                 recAndVoiceButton.Click += (sender, e) =>
                 {
                     EnableVoicer();
-                    RecordVoice(recAndVoiceButton); 
+                    RecordVoice(recAndVoiceButton);
                 };
             }
         }
@@ -166,7 +166,7 @@ namespace ShopLens.Droid
                 }
             }
 
-            base.OnActivityResult(requestCode, resultCode, data);
+                base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }
