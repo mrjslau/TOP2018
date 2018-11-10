@@ -18,26 +18,24 @@ namespace ImageRecognition.Classificators
     public class WebClassificator : IImageClassificator, IAsyncImageClassificator
     {
         /// <inheritdoc/>
-        public Dictionary<string, float> ClassifyImage(byte[] image)
+        public Dictionary<string, float> ClassifyImage(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
         {
-            return ClassifyImageAsync(image).GetAwaiter().GetResult();
+            return ClassifyImageAsync(image, cvProjectId, cvPredictionKey, cvRequestUri).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="ClassifyImage" />
         /// <summary>Same as <see cref="ClassifyImage"/> but performed asynchronously.</summary>
-        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image)
+        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
         {
-            var projectId = Guid.Parse("11e80156-6630-4cd7-a9e6-3441f9da09e2");
-            var predictionKey = "13185045e5b84af5bd045d029447d951";
-            
+            var projectId = Guid.Parse(cvProjectId);
+            var predictionKey = cvPredictionKey;
+            var uri = cvRequestUri;
+
             // Form request
             var client = new HttpClient();
+
             // Request headers
             client.DefaultRequestHeaders.Add("Prediction-Key", predictionKey);
-
-            // Request parameters
-            var uri = 
-                $"https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/{projectId}/image";
 
             var multipartFormDataContent = GetMultipartFormDataContent(image);
 

@@ -2,6 +2,14 @@
 using Android.Content;
 using Android.Widget;
 using Android.OS;
+using PCLAppConfig;
+
+public enum ActivityIds
+{
+    VoiceRequest = 101,
+    ImageRequest = 201,
+    PickImageRequest = 202
+}
 
 namespace ShopLens.Droid
 {
@@ -11,7 +19,9 @@ namespace ShopLens.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            
+
+            ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
