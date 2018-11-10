@@ -17,6 +17,17 @@ namespace ImageRecognition.Classificators
     /// </summary>
     public class WebClassificator : IImageClassificator, IAsyncImageClassificator
     {
+        private readonly Guid projectId;
+        private readonly string predictionKey;
+        private readonly string uri; 
+
+        public WebClassificator(string passProjectId, string passPredictionKey, string passRequestUri)
+        {
+            projectId = Guid.Parse(passProjectId);
+            predictionKey = passPredictionKey;
+            uri = passRequestUri;
+        }
+
         /// <inheritdoc/>
         public Dictionary<string, float> ClassifyImage(byte[] image)
         {
@@ -27,17 +38,10 @@ namespace ImageRecognition.Classificators
         /// <summary>Same as <see cref="ClassifyImage"/> but performed asynchronously.</summary>
         public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image)
         {
-            var projectId = Guid.Parse("11e80156-6630-4cd7-a9e6-3441f9da09e2");
-            var predictionKey = "13185045e5b84af5bd045d029447d951";
-            
             // Form request
             var client = new HttpClient();
             // Request headers
             client.DefaultRequestHeaders.Add("Prediction-Key", predictionKey);
-
-            // Request parameters
-            var uri = 
-                $"https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/{projectId}/image";
 
             var multipartFormDataContent = GetMultipartFormDataContent(image);
 

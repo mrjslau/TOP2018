@@ -19,6 +19,7 @@ using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
 using Android.Runtime;
+using PCLAppConfig;
 
 namespace ShopLens.Droid
 {
@@ -33,20 +34,18 @@ namespace ShopLens.Droid
 
         TextToSpeech tts;
 
-        public static readonly int PickImageId = 1000;
-
         public File productPhoto;
         public File _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
 
-        // TO DO: change ID constants into global enum.
-        public const int REQUEST_IMAGE = 102;
-        public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
+        public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
 
-        private const string whatIsThisCmd = "what is this";
-        private const string choosePicCmd = "I have a photo";
-        private const int REQUEST_VOICE = 10;
+        private static readonly int REQUEST_VOICE = (int)ActivityIds.VoiceRequest;
+        private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
+        private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
+        private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
+        private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -91,7 +90,7 @@ namespace ShopLens.Droid
             // Put a message on the modal dialog.
             voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, Application.Context.GetString(Resource.String.messageSpeakNow));
 
-            // If there is more then 1.5s of silence, consider the speech over.
+            // If there is more than 1.5s of silence, consider the speech over.
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
@@ -194,7 +193,7 @@ namespace ShopLens.Droid
         private void RecogniseImage(Uri uri)
         {
             // Run the image recognition task
-            const int maxWebClassifierImageSize = 512;
+            int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
             Task.Run(async () =>
             {
                 try
@@ -203,10 +202,12 @@ namespace ShopLens.Droid
                     image = BitmapHelpers.ScaleDown(image, maxWebClassifierImageSize);
                     using (var stream = new MemoryStream())
                     {
-                        // 0 because compression quality not applicable to .png
+                        // 0 because compression quality is not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray());
+                        var results = await new WebClassificator(ConfigurationManager.AppSettings["cvProjectId"],
+                            ConfigurationManager.AppSettings["cvPredictionKey"],
+                            ConfigurationManager.AppSettings["cvRequestUri"]).ClassifyImageAsync(stream.ToArray());
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
                             QueueMode.Flush,

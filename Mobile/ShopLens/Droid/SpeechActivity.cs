@@ -14,7 +14,7 @@ namespace ShopLens.Droid
     public class SpeechActivity : Activity, TextToSpeech.IOnInitListener
     {
         bool isRecording;
-        readonly int REQUEST_VOICE = 10;
+        readonly int REQUEST_VOICE = (int) ActivityIds.VoiceRequest;
 
         private TextView textBox;
         private Button recButton;
