@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ImageRecognition.Classificators
+namespace ImageRecognitionMobile.Classificators
 {
     /// <summary>
     /// Interface encapsulating image classification methods.
