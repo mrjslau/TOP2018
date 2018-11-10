@@ -20,6 +20,7 @@ using Java.Util;
 using File = Java.IO.File;
 using Android.Runtime;
 using PCLAppConfig;
+using ShopLens.Droid.Helpers;
 
 namespace ShopLens.Droid
 {
@@ -84,23 +85,7 @@ namespace ShopLens.Droid
 
         private void RecogniseVoice(object sender, EventArgs e)
         {
-            var voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
-            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
-
-            // Put a message on the modal dialog.
-            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, Application.Context.GetString(Resource.String.messageSpeakNow));
-
-            // If there is more than 1.5s of silence, consider the speech over.
-            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
-            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
-            voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
-            voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
-
-            // You can specify other languages recognised here, for example:
-            // voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.German).
-
-            voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.Default);
-            StartActivityForResult(voiceIntent, REQUEST_VOICE);
+            StartActivityForResult(VoiceRecognizerHelper.SetUpVoiceRecognizerIntent(), REQUEST_VOICE);
         }
 
         private void PickOnClick(object sender, EventArgs e)
@@ -185,7 +170,7 @@ namespace ShopLens.Droid
             int height = ImgView.Height;
             int width = ImgView.Width;
             var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-            image = BitmapHelpers.ScaleDown(image, Math.Min(height, width));
+            image = BitmapHelper.ScaleDown(image, Math.Min(height, width));
             ImgView.RecycleBitmap();
             ImgView.SetImageBitmap(image);
         }
@@ -199,7 +184,7 @@ namespace ShopLens.Droid
                 try
                 {
                     var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                    image = BitmapHelpers.ScaleDown(image, maxWebClassifierImageSize);
+                    image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
                     using (var stream = new MemoryStream())
                     {
                         // 0 because compression quality is not applicable to .png
