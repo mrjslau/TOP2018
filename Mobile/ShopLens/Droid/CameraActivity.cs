@@ -38,6 +38,7 @@ namespace ShopLens.Droid
         public File productPhoto;
         public File _dir;
 
+        // TO DO: change ID constants into global enum.
         public const int REQUEST_IMAGE = 102;
         public const string FILE_PROVIDER_NAME = ".shoplens.fileprovider";
 
