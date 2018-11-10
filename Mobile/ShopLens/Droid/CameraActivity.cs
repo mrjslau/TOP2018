@@ -36,7 +36,7 @@ namespace ShopLens.Droid
         public static readonly int PickImageId = 1000;
 
         public File productPhoto;
-        public File _dir;
+        public File _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
 
         // TO DO: change ID constants into global enum.
         public const int REQUEST_IMAGE = 102;
@@ -114,21 +114,21 @@ namespace ShopLens.Droid
 
         private bool IsThereAnAppToTakePictures()
         {
-            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            var intent = new Intent(MediaStore.ActionImageCapture);
             IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
             return availableActivities != null && availableActivities.Count > 0;
         }
 
         private void TakeAPicture(object sender, EventArgs e)
         {
-            Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
-            productPhoto = new File(_dir, string.Format("Image_{0}.jpg", Guid.NewGuid()));
+            var takePictureIntent = new Intent(MediaStore.ActionImageCapture);
+            productPhoto = new File(_dir, $"Image_{Guid.NewGuid()}.jpg");
             if (productPhoto != null)
             {
                 Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
                 takePictureIntent.PutExtra(MediaStore.ExtraOutput, photoUri);
-                takePictureIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-                takePictureIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
+                takePictureIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                takePictureIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
             }
             // If there's a working camera on the device.
             if (takePictureIntent.ResolveActivity(PackageManager) != null)
@@ -144,15 +144,17 @@ namespace ShopLens.Droid
             {
                 if (resultCode == Result.Ok && productPhoto != null)
                 {
-                    PictureShowBitmap();
-                    RecogniseImage(data);
+                    Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
+                    PictureShowBitmap(photoUri);
+                    RecogniseImage(photoUri);
                 }
             }
             else if (requestCode == PickImageId)
             {
                 if (resultCode == Result.Ok && data != null)
                 {
-                    RecogniseImage(data);
+                    PictureShowBitmap(data.Data);
+                    RecogniseImage(data.Data);
                 }
             }
             else if (requestCode == REQUEST_VOICE)
@@ -163,54 +165,48 @@ namespace ShopLens.Droid
                     if (matches[0] == whatIsThisCmd)
                     {
                         TakeAPicture(this, new EventArgs());
-                        PictureShowBitmap();
-                        RecogniseImage(data);
                     }
 
                     else if (matches[0] == choosePicCmd)
                     {
                         PickOnClick(this, new EventArgs());
-                        RecogniseImage(data);
                     }
                 }
             }
         }
 
-        private void PictureShowBitmap()
+        private void PictureShowBitmap(Uri uri)
         {
             // Put image in gallery.
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Uri contentUri = Uri.FromFile(productPhoto);
-            mediaScanIntent.SetData(contentUri);
+            mediaScanIntent.SetData(uri);
             SendBroadcast(mediaScanIntent);
 
             // Conversion. 
             int height = ImgView.Height;
-            int width = Resources.DisplayMetrics.WidthPixels;
-            using (Bitmap bitmap = productPhoto.Path.LoadAndResizeBitmap(width, height))
-            {
-                ImgView.RecycleBitmap();
-                ImgView.SetImageBitmap(bitmap);
-            }
+            int width = ImgView.Width;
+            var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+            image = BitmapHelpers.ScaleDown(image, Math.Min(height, width));
+            ImgView.RecycleBitmap();
+            ImgView.SetImageBitmap(image);
         }
 
-        private void RecogniseImage(Intent data)
+        private void RecogniseImage(Uri uri)
         {
-            Uri uri = data.Data;
-            ImgView.SetImageURI(uri);
-
             // Run the image recognition task
-            Task.Run(() =>
+            const int maxWebClassifierImageSize = 512;
+            Task.Run(async () =>
             {
                 try
                 {
                     var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                    image = BitmapHelpers.ScaleDown(image, maxWebClassifierImageSize);
                     using (var stream = new MemoryStream())
                     {
                         // 0 because compression quality not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = new WebClassificator().ClassifyImage(stream.ToArray());
+                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray());
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
                             QueueMode.Flush,

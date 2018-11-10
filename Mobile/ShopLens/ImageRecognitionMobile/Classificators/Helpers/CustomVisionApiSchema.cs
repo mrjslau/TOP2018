@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace ImageRecognition.Classificators.Helpers
+namespace ImageRecognitionMobile.Classificators.Helpers
 {
 // Generated using https://app.quicktype.io/#l=cs&r=json2csharp
     public partial class CustomVisionPredictionResponse

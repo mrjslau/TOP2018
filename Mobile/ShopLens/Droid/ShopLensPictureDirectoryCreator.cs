@@ -12,7 +12,6 @@ namespace ShopLens.Droid
 
         private void CreateDirectoryForPictures(File pictureDirectory)
         {
-            pictureDirectory = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
             if (!pictureDirectory.Exists())
             {
                 if (!pictureDirectory.Mkdirs())

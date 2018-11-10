@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using ImageRecognition.Classificators.Helpers;
+using ImageRecognitionMobile.Classificators;
+using ImageRecognitionMobile.Classificators.Helpers;
 
 namespace ImageRecognition.Classificators
 {
@@ -20,34 +20,15 @@ namespace ImageRecognition.Classificators
         /// <inheritdoc/>
         public Dictionary<string, float> ClassifyImage(byte[] image)
         {
-            var projectId = Guid.Parse("d5a1e593-4419-4488-9abf-db6ae1ef1152");
-            var predictionKey = "3b53c4a0ae874ffe996779dfbc2bb499";
-            
-            // Form request
-            var client = new HttpClient();
-            // Request headers
-            client.DefaultRequestHeaders.Add("Prediction-Key", predictionKey);
-
-            // Request parameters
-            var uri = 
-                $"https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/{projectId}/image";
-
-            var multipartFormDataContent = GetMultipartFormDataContent(image);
-
-            // Execute request
-            var response = client.PostAsync(uri, multipartFormDataContent).GetAwaiter().GetResult();
-            response.EnsureSuccessStatusCode();
-            
-            var results = CustomVisionPredictionResponse.FromJson(response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
-            return results.Predictions.ToDictionary(x => x.TagName, x => (float) x.Probability);
+            return ClassifyImageAsync(image).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="ClassifyImage" />
         /// <summary>Same as <see cref="ClassifyImage"/> but performed asynchronously.</summary>
         public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image)
         {
-            var projectId = Guid.Parse(ConfigurationManager.AppSettings.Get("projectId"));
-            var predictionKey = ConfigurationManager.AppSettings.Get("predictionKey");
+            var projectId = Guid.Parse("11e80156-6630-4cd7-a9e6-3441f9da09e2");
+            var predictionKey = "13185045e5b84af5bd045d029447d951";
             
             // Form request
             var client = new HttpClient();

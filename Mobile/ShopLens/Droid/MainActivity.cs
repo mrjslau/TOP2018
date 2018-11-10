@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Widget;
 using Android.OS;
-using System.Collections.Generic;
 
 namespace ShopLens.Droid
 {

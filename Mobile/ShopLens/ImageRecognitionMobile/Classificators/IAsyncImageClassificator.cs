@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ImageRecognition.Classificators
+namespace ImageRecognitionMobile.Classificators
 {
     /// <summary>
     /// Interface encapsulating asynchronous image classification methods.
