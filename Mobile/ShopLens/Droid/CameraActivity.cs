@@ -183,7 +183,7 @@ namespace ShopLens.Droid
 
             // Conversion. 
             int height = ImgView.Height;
-            int width = Resources.DisplayMetrics.WidthPixels;
+            int width = ImgView.Width;
             var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
             image = BitmapHelpers.ScaleDown(image, Math.Min(height, width));
             ImgView.RecycleBitmap();
@@ -194,7 +194,7 @@ namespace ShopLens.Droid
         {
             // Run the image recognition task
             const int maxWebClassifierImageSize = 512;
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
@@ -205,7 +205,7 @@ namespace ShopLens.Droid
                         // 0 because compression quality not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = new WebClassificator().ClassifyImage(stream.ToArray());
+                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray());
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
                             QueueMode.Flush,
