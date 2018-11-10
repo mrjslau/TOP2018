@@ -205,9 +205,10 @@ namespace ShopLens.Droid
                         // 0 because compression quality is not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = await new WebClassificator(ConfigurationManager.AppSettings["cvProjectId"],
+                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(), 
+                            ConfigurationManager.AppSettings["cvProjectId"],
                             ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]).ClassifyImageAsync(stream.ToArray());
+                            ConfigurationManager.AppSettings["cvRequestUri"]);
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
                             QueueMode.Flush,

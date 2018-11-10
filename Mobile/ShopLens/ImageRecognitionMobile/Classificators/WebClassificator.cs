@@ -17,29 +17,23 @@ namespace ImageRecognition.Classificators
     /// </summary>
     public class WebClassificator : IImageClassificator, IAsyncImageClassificator
     {
-        private readonly Guid projectId;
-        private readonly string predictionKey;
-        private readonly string uri; 
-
-        public WebClassificator(string passProjectId, string passPredictionKey, string passRequestUri)
-        {
-            projectId = Guid.Parse(passProjectId);
-            predictionKey = passPredictionKey;
-            uri = passRequestUri;
-        }
-
         /// <inheritdoc/>
-        public Dictionary<string, float> ClassifyImage(byte[] image)
+        public Dictionary<string, float> ClassifyImage(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
         {
-            return ClassifyImageAsync(image).GetAwaiter().GetResult();
+            return ClassifyImageAsync(image, cvProjectId, cvPredictionKey, cvRequestUri).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="ClassifyImage" />
         /// <summary>Same as <see cref="ClassifyImage"/> but performed asynchronously.</summary>
-        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image)
+        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
         {
+            var projectId = Guid.Parse(cvProjectId);
+            var predictionKey = cvPredictionKey;
+            var uri = cvRequestUri;
+
             // Form request
             var client = new HttpClient();
+
             // Request headers
             client.DefaultRequestHeaders.Add("Prediction-Key", predictionKey);
 
