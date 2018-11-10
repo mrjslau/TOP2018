@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace ImageRecognition.OCR
+namespace ImageRecognitionMobile.OCR
 {
     /// <summary>
     /// Interface for a finder that finds a weight substring in a string.
