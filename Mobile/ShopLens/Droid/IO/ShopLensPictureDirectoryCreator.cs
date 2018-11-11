@@ -14,11 +14,7 @@ namespace ShopLens.Droid
         {
             if (!pictureDirectory.Exists())
             {
-                if (!pictureDirectory.Mkdirs())
-                {
-                    // TO DO: throw valid exception.
-                    throw new System.Exception();
-                }
+                pictureDirectory.Mkdirs();
             }
         }
     }

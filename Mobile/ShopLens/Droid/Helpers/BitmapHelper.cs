@@ -4,7 +4,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 namespace Camera
 {
-    public static class BitmapHelpers
+    public static class BitmapHelper
     {
         // This method will recyle the memory help by a bitmap in an ImageView.
         public static void RecycleBitmap(this ImageView imageView)
