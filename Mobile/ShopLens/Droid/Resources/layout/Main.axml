@@ -24,4 +24,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/CameraButton"
 	  android:contentDescription="Camera."/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ShoppingListButton"
+        android:text="Shopping List" />
 </LinearLayout>
