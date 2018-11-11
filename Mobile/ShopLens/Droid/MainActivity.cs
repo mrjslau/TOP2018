@@ -31,6 +31,7 @@ namespace ShopLens.Droid
             Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);
             Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);
             Button shoppingListButton = FindViewById<Button>(Resource.Id.ShoppingListButton);
+            Button shoppingCartButton = FindViewById<Button>(Resource.Id.ShoppingCartButton);
 
             textVoicerButton.Click += (sender, e) =>
             {
@@ -53,6 +54,12 @@ namespace ShopLens.Droid
             shoppingListButton.Click += (sender, e) =>
             {
                 var intent = new Intent(this, typeof(ShoppingListActivity));
+                StartActivity(intent);
+            };
+
+            shoppingCartButton.Click += (sender, e) =>
+            {
+                var intent = new Intent(this, typeof(ShoppingCartActivity));
                 StartActivity(intent);
             };
         }

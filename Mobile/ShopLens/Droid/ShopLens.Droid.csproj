@@ -93,6 +93,7 @@
     <Compile Include="Helpers\BitmapHelper.cs" />
     <Compile Include="ShoppingListActivity.cs" />
     <Compile Include="ShoppingListAdapter.cs" />
+    <Compile Include="ShoppingCartActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
@@ -118,7 +119,8 @@
     <AndroidResource Include="Resources\values-v21\style.axml" />
     <AndroidResource Include="Resources\layout\Camera.axml" />
     <AndroidResource Include="Resources\layout\Speech.axml" />
-    <AndroidResource Include="Resources\xml\shopping_list_item.xml" />
+    <AndroidResource Include="Resources\layout\ShoppingList.axml" />
+    <AndroidResource Include="Resources\layout\ShoppingCart.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />

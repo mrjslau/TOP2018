@@ -57,6 +57,10 @@ namespace ShopLens.Droid
 
             SetContentView(Resource.Layout.Camera);
 
+            //var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            //SetSupportActionBar(toolbar);
+            //SupportActionBar.Title = "ShopLens";
+
             if (IsThereAnAppToTakePictures())
             {
                 // Set up a custom speech recognizer in this activity.
