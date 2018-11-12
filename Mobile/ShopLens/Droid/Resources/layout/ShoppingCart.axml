@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlshcart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ShoppingCartActivity">
+    
+    <LinearLayout
+        android:id="@+id/ShopCartLinearLayout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent">
+        <EditText 
+            android:hint="Item's name" 
+            android:id="@+id/ShopCartAddItemEditText"
+            android:layout_height="wrap_content" 
+            android:layout_weight="1"
+            android:layout_width="fill_parent" />
+        <Button
+            android:id="@+id/ShopCartAddItemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+    </LinearLayout>
+    
+    <ListView
+        android:id="@+id/ShopCartList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ShopCartLinearLayout"
+        />
+</RelativeLayout>
