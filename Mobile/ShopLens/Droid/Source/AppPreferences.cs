@@ -10,7 +10,6 @@ namespace ShopLens.Droid.Source
         Context pContext;
         List<string> items;
         int itemCounter = 0;
-        //test
 
         public ActivityPreferences(Context context, string name)
         {

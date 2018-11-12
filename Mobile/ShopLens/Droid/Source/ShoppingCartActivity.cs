@@ -4,13 +4,14 @@ using Android.App;
 using Android.OS;
 using Android.Widget;
 using ShopLens.Droid.Source;
+using PCLAppConfig;
 
 namespace ShopLens.Droid
 {
     [Activity(Label = "ShoppingCartActivity")]
     public class ShoppingCartActivity : Activity
     {
-        readonly string PREFS_NAME = "USER_SHOP_CART";
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
 
         EditText addItemEditText;
         Button addItemButton;
