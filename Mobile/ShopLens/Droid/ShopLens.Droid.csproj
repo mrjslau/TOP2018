@@ -92,9 +92,9 @@
     <Compile Include="Source\MainActivity.cs" />
     <Compile Include="Source\ShoppingCartActivity.cs" />
     <Compile Include="Source\ShoppingListActivity.cs" />
-    <Compile Include="Source\ShoppingListAdapter.cs" />
     <Compile Include="Source\SpeechActivity.cs" />
     <Compile Include="Source\TextVoicerActivity.cs" />
+    <Compile Include="Source\AppPreferences.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
