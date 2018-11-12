@@ -189,6 +189,7 @@ namespace ShopLens.Droid
                             ConfigurationManager.AppSettings["cvProjectId"],
                             ConfigurationManager.AppSettings["cvPredictionKey"],
                             ConfigurationManager.AppSettings["cvRequestUri"]);
+
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
                             QueueMode.Flush,
