@@ -33,13 +33,13 @@ namespace ShopLens.Droid
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
 
             ArrayAdapter<string> listAdapter = 
-                new ArrayAdapter<String>(this, Android.Resource.Layout.SimpleListItemChecked, items);
+                new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
             listView.Adapter = listAdapter;
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += (sender, e) =>
             {
-                if (!String.IsNullOrWhiteSpace(addItemEditText.Text)){
+                if (!string.IsNullOrWhiteSpace(addItemEditText.Text)){
                     listAdapter.Add(addItemEditText.Text);
                     prefs.AddString(addItemEditText.Text);
                 }
