@@ -8,26 +8,18 @@ namespace ShopLens.Droid.Source
         ISharedPreferences prefs;
         ISharedPreferencesEditor prefsEditor;
         Context pContext;
-        List<string> items;
-        int itemCounter = 0;
 
         public ActivityPreferences(Context context, string name)
         {
             pContext = context;
             prefs = pContext.GetSharedPreferences(name, FileCreationMode.Private);
             prefsEditor = prefs.Edit();
-            foreach (KeyValuePair<string, object> entry in prefs.All)
-            {
-                itemCounter += 1;
-            }
         }
 
         public List<string> GetPreferencesToList()
         {
-            if (items == null)
-            {
-                items = new List<string> { };
-            }
+            // TODO: change to LINQ
+            List<string> items = new List<string> { };
             foreach (KeyValuePair<string, object> entry in prefs.All)
             {
                 items.Add(entry.Value.ToString());
@@ -37,8 +29,7 @@ namespace ShopLens.Droid.Source
 
         public void AddString(string name)
         {
-            itemCounter += 1;
-            prefsEditor.PutString("item" + itemCounter.ToString(), name);
+            prefsEditor.PutString("item" + prefs.All.Count.ToString(), name);
             prefsEditor.Apply();
         }
     }
