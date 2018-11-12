@@ -21,6 +21,7 @@ using File = Java.IO.File;
 using Android.Runtime;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
+using ShopLens.Droid.Source;
 
 namespace ShopLens.Droid
 {
@@ -28,6 +29,9 @@ namespace ShopLens.Droid
     [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        ActivityPreferences prefs;
+
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
@@ -190,8 +194,12 @@ namespace ShopLens.Droid
                             ConfigurationManager.AppSettings["cvPredictionKey"],
                             ConfigurationManager.AppSettings["cvRequestUri"]);
 
+                        prefs = new ActivityPreferences(this, PREFS_NAME);
+                        string guess = results.OrderByDescending(x => x.Value).First().Key;
+                        prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+
                         tts.Speak(
-                            $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
+                            $"This is. {guess}",
                             QueueMode.Flush,
                             null,
                             null);
