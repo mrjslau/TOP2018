@@ -8,6 +8,8 @@ using Android.Speech.Tts;
 using Java.Util;
 using Android.Runtime;
 
+using ShopLens.Droid.Source;
+
 namespace ShopLens.Droid
 {
     [Activity(Label = "SpeechActivity")]
@@ -16,12 +18,14 @@ namespace ShopLens.Droid
         bool isRecording;
         readonly int REQUEST_VOICE = (int) ActivityIds.VoiceRequest;
 
-        private TextView textBox;
-        private Button recButton;
-        private Button recAndVoiceButton;
+        TextView textBox;
+        Button recButton;
+        Button recAndVoiceButton;
 
-        private TextToSpeech textVoicer;
-        private bool voicerIsEnabled;
+        TextToSpeech textVoicer;
+        bool voicerIsEnabled;
+
+        Recording recording = new Recording();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,8 +46,7 @@ namespace ShopLens.Droid
             textBox = FindViewById<TextView>(Resource.Id.textYourText);
 
             // Check to see if we can actually record - if we can, assign the event to the button.
-            string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
-            if (rec != "android.hardware.microphone")
+            if (recording.CanRecord())
             {
                 // No microphone, no recording. Disable the button and output an alert.
                 var alert = new AlertDialog.Builder(recButton.Context);
@@ -84,7 +87,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void EnableVoicer()
+        void EnableVoicer()
         {
             if (!voicerIsEnabled)
             {
@@ -92,7 +95,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void DisableVoicer()
+        void DisableVoicer()
         {
             if (voicerIsEnabled)
             {
@@ -100,7 +103,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void RecordVoice(Button recordButton)
+        void RecordVoice(Button recordButton)
         {
             // Change the text on the button.
             recordButton.Text = "End Recording";
@@ -108,22 +111,7 @@ namespace ShopLens.Droid
             if (isRecording)
             {
                 // Create the intent and start the activity.
-                var voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
-                voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
-
-                // Put a message on the modal dialog.
-                voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, Application.Context.GetString(Resource.String.messageSpeakNow));
-
-                // If there is more then 1.5s of silence, consider the speech over.
-                voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
-                voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
-                voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
-                voiceIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
-
-                // You can specify other languages recognised here, for example:
-                // voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.German).
-
-                voiceIntent.PutExtra(RecognizerIntent.ExtraLanguage, Locale.Default);
+                var voiceIntent = recording.CreateRecordingIntent();
                 StartActivityForResult(voiceIntent, REQUEST_VOICE);
             }
         }
