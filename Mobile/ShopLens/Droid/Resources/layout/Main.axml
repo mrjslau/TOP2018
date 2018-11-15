@@ -13,11 +13,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="10dp">
-
-        <Button 
+        <Button
             android:text="Voice Commands"
-            android:id="@+id/mainRecordingButton" 
-            android:layout_width="fill_parent" 
+            android:id="@+id/MainRecordingButton"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_centerInParent="true"/>
 

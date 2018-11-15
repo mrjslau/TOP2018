@@ -95,7 +95,6 @@
     <Compile Include="Activities\SpeechActivity.cs" />
     <Compile Include="Activities\TextVoicerActivity.cs" />
     <Compile Include="Activities\AppPreferences.cs" />
-    <Compile Include="Activities\Recording.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">

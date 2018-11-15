@@ -8,7 +8,7 @@ using Android.Speech.Tts;
 using Java.Util;
 using Android.Runtime;
 
-using ShopLens.Droid.Source;
+using ShopLens.Droid.Helpers;
 
 namespace ShopLens.Droid
 {
@@ -24,8 +24,6 @@ namespace ShopLens.Droid
 
         TextToSpeech textVoicer;
         bool voicerIsEnabled;
-
-        Recording recording = new Recording();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -46,7 +44,8 @@ namespace ShopLens.Droid
             textBox = FindViewById<TextView>(Resource.Id.textYourText);
 
             // Check to see if we can actually record - if we can, assign the event to the button.
-            if (recording.CanRecord())
+            string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
+            if (rec != "android.hardware.microphone")
             {
                 // No microphone, no recording. Disable the button and output an alert.
                 var alert = new AlertDialog.Builder(recButton.Context);
@@ -111,7 +110,7 @@ namespace ShopLens.Droid
             if (isRecording)
             {
                 // Create the intent and start the activity.
-                var voiceIntent = recording.CreateRecordingIntent();
+                var voiceIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
                 StartActivityForResult(voiceIntent, REQUEST_VOICE);
             }
         }

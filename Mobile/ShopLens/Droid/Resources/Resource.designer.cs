@@ -3095,6 +3095,9 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c0057
 			public const int ImgTakeimg = 2131492951;
 			
+			// aapt resource value: 0x7f0c005b
+			public const int MainRecordingButton = 2131492955;
+			
 			// aapt resource value: 0x7f0c005a
 			public const int RelativeLayout01 = 2131492954;
 			
@@ -3319,9 +3322,6 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f0c002b
 			public const int list_item = 2131492907;
-			
-			// aapt resource value: 0x7f0c005b
-			public const int mainRecordingButton = 2131492955;
 			
 			// aapt resource value: 0x7f0c0067
 			public const int media_actions = 2131492967;
