@@ -92,17 +92,17 @@ namespace ShopLens.Droid
             var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
             if (matches.Count > 0)
             {
-                if (matches[0] == ConfigurationManager.AppSettings["cmdOpenCamera"])
+                if (matches[0] == ConfigurationManager.AppSettings["CmdOpenCamera"])
                 {
                     var intent = new Intent(this, typeof(CameraActivity));
                     StartActivity(intent);
                 }
-                else if (matches[0] == ConfigurationManager.AppSettings["cmdOpenCart"])
+                else if (matches[0] == ConfigurationManager.AppSettings["CmdOpenCart"])
                 {
                     var intent = new Intent(this, typeof(ShoppingCartActivity));
                     StartActivity(intent);
                 }
-                else if (matches[0] == ConfigurationManager.AppSettings["cmdOpenList"])
+                else if (matches[0] == ConfigurationManager.AppSettings["CmdOpenList"])
                 {
                     var intent = new Intent(this, typeof(ShoppingListActivity));
                     StartActivity(intent);
