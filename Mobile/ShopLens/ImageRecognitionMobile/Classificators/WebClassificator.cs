@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ImageRecognitionMobile.Classificators;
 using ImageRecognitionMobile.Classificators.Helpers;
+using PCLAppConfig;
 
 namespace ImageRecognition.Classificators
 {
@@ -20,16 +21,16 @@ namespace ImageRecognition.Classificators
         /// <inheritdoc/>
         public Dictionary<string, float> ClassifyImage(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
         {
-            return ClassifyImageAsync(image, cvProjectId, cvPredictionKey, cvRequestUri).GetAwaiter().GetResult();
+            return ClassifyImageAsync(image).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc cref="ClassifyImage" />
         /// <summary>Same as <see cref="ClassifyImage"/> but performed asynchronously.</summary>
-        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
+        public async Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image)
         {
-            var projectId = Guid.Parse(cvProjectId);
-            var predictionKey = cvPredictionKey;
-            var uri = cvRequestUri;
+            var projectId = Guid.Parse(ConfigurationManager.AppSettings["cvProjectId"]);
+            var predictionKey = ConfigurationManager.AppSettings["cvPredictionKey"];
+            var uri = ConfigurationManager.AppSettings["cvRequestUri"];
 
             // Form request
             var client = new HttpClient();

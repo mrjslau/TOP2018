@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Widget;
 using Android.OS;
 using PCLAppConfig;
+using ShopLens.Droid.Helpers;
 
 public enum ActivityIds
 {
@@ -21,6 +22,7 @@ namespace ShopLens.Droid
             base.OnCreate(savedInstanceState);
 
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+            DependencyInjection.RegisterInterfaces();
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
