@@ -1,4 +1,5 @@
 ﻿using Java.IO;
+using Java.Lang;
 
 namespace ShopLens.Droid
 {
@@ -16,7 +17,7 @@ namespace ShopLens.Droid
             {
                 if (!pictureDirectory.Mkdirs())
                 {
-                    throw new System.IO.DirectoryNotFoundException("Unable to create directory for pictures.");  
+                    throw new SecurityException("Unable to create directory for pictures.");  
                 }
             }
         }

@@ -74,7 +74,7 @@ namespace ShopLens.Droid
                 {
                     shopLensPictureDirectoryCreator.CreateDirectory(_dir);
                 }
-                catch (DirectoryNotFoundException e)
+                catch (Java.Lang.SecurityException e)
                 {
                     System.Diagnostics.Debug.WriteLine(e);
                     RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
