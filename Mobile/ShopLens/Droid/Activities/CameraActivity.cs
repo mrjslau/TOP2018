@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Android;
 using Android.Provider;
 using Android.Graphics;
 using Android.Content.PM;
@@ -29,7 +30,6 @@ namespace ShopLens.Droid
     [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
-        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         ActivityPreferences prefs;
 
         Button BtnTakeImg;
@@ -45,11 +45,13 @@ namespace ShopLens.Droid
         public File productPhoto;
         public File _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
 
+        public readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
+        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
         private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
         private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
@@ -68,7 +70,15 @@ namespace ShopLens.Droid
                 commandRecognizer.SetRecognitionListener(this);
 
                 shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
-                shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                try
+                {
+                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                }
+                catch (Java.Lang.SecurityException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                }
 
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
@@ -126,8 +136,6 @@ namespace ShopLens.Droid
             {
                 Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
                 takePictureIntent.PutExtra(MediaStore.ExtraOutput, photoUri);
-                takePictureIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                takePictureIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
             }
             // If there's a working camera on the device.
             if (takePictureIntent.ResolveActivity(PackageManager) != null)
@@ -189,7 +197,7 @@ namespace ShopLens.Droid
                         // 0 because compression quality is not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(), 
+                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
                             ConfigurationManager.AppSettings["cvProjectId"],
                             ConfigurationManager.AppSettings["cvPredictionKey"],
                             ConfigurationManager.AppSettings["cvRequestUri"]);
@@ -226,6 +234,21 @@ namespace ShopLens.Droid
                 else if (matches[0] == choosePicCmd)
                 {
                     PickOnClick(this, new EventArgs());
+                }
+            }
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            if (requestCode == REQUEST_PERMISSION)
+            {
+                if (grantResults[0] == Permission.Denied)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                }
+                else
+                {
+                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
                 }
             }
         }
