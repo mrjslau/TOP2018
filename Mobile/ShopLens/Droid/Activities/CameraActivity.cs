@@ -19,8 +19,10 @@ using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
 using Android.Runtime;
+using ImageRecognitionMobile.Classificators;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
+using Unity;
 
 namespace ShopLens.Droid
 {
@@ -63,7 +65,7 @@ namespace ShopLens.Droid
                 commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
                 commandRecognizer.SetRecognitionListener(this);
 
-                shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
+                shopLensPictureDirectoryCreator = DependencyInjection.Container.Resolve<IDirectoryCreator>();
                 shopLensPictureDirectoryCreator.CreateDirectory(_dir);
 
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
@@ -175,8 +177,6 @@ namespace ShopLens.Droid
             // Run the image recognition task
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
             Task.Run(async () =>
-            {
-                try
                 {
                     var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
                     image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
@@ -185,10 +185,8 @@ namespace ShopLens.Droid
                         // 0 because compression quality is not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(), 
-                            ConfigurationManager.AppSettings["cvProjectId"],
-                            ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]);
+                        var classificator = DependencyInjection.Container.Resolve<IAsyncImageClassificator>();
+                        var results = await classificator.ClassifyImageAsync(stream.ToArray());
 
                         tts.Speak(
                             $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
@@ -196,12 +194,10 @@ namespace ShopLens.Droid
                             null,
                             null);
                     }
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                }
-            });
+                })
+                .ContinueWith(
+                    t => System.Diagnostics.Debug.WriteLine(t.Exception),
+                    TaskContinuationOptions.OnlyOnFaulted);
         }
 
         // When the current voice recognition session stops.
