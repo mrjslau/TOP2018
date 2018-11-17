@@ -178,7 +178,10 @@ namespace ShopLens.Droid
             int width = ImgView.Width;
             var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
             image = BitmapHelper.ScaleDown(image, Math.Min(height, width));
-            ImgView.RecycleBitmap();
+            if (ImgView == null)
+            {
+                ImgView.RecycleBitmap();
+            }
             ImgView.SetImageBitmap(image);
         }
 
