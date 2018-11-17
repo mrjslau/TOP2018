@@ -246,6 +246,10 @@ namespace ShopLens.Droid
                 {
                     RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
                 }
+                else
+                {
+                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                }
             }
         }
 
