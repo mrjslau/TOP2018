@@ -22,6 +22,7 @@ using Android.Runtime;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
+using Android.Views;
 
 namespace ShopLens.Droid
 {
@@ -36,6 +37,8 @@ namespace ShopLens.Droid
         ImageView ImgView;
         Button BtnPickImg;
         Button RecVoice;
+        ProgressBar progressBar;
+        string guess;
 
         SpeechRecognizer commandRecognizer;
         Intent speechIntent;
@@ -56,10 +59,12 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Camera);
+
+            progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+            progressBar.Visibility = ViewStates.Gone;
 
             if (IsThereAnAppToTakePictures())
             {
@@ -188,26 +193,32 @@ namespace ShopLens.Droid
                     {
                         // 0 because compression quality is not applicable to .png
                         image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                        progressBar.Visibility = ViewStates.Visible;
 
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(), 
-                            ConfigurationManager.AppSettings["cvProjectId"],
-                            ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]);
+                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
+                        ConfigurationManager.AppSettings["cvProjectId"],
+                        ConfigurationManager.AppSettings["cvPredictionKey"],
+                        ConfigurationManager.AppSettings["cvRequestUri"]);
 
                         prefs = new ActivityPreferences(this, PREFS_NAME);
-                        string guess = results.OrderByDescending(x => x.Value).First().Key;
+                        guess = results.OrderByDescending(x => x.Value).First().Key;
                         prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
-
-                        tts.Speak(
-                            $"This is. {guess}",
-                            QueueMode.Flush,
-                            null,
-                            null);
                     }
+
                 }
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e);
+                }
+                finally
+                {
+                    progressBar.Visibility = ViewStates.Gone;
+                    tts.Speak(
+                        $"This is. {guess}",
+                        QueueMode.Flush,
+                        null,
+                        null);
+
                 }
             });
         }
