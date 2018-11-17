@@ -24,7 +24,7 @@ namespace ShopLens.Droid
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : Activity, IRecognitionListener
     {
-        SpeechRecognizer commandRecognizer;
+        Lazy<SpeechRecognizer> commandRecognizer;
         Intent speechIntent;
 
         public readonly string[] ShopLensPermissions =
@@ -39,6 +39,7 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
             // We need to request user permissions.
             if ((int)Build.VERSION.SdkInt >= 23)
             {
@@ -55,15 +56,18 @@ namespace ShopLens.Droid
 
                 RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
-            base.OnCreate(savedInstanceState);
-
+            
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
-            commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
-            commandRecognizer.SetRecognitionListener(this);
+            commandRecognizer = new Lazy<SpeechRecognizer>(() => SpeechRecognizer.CreateSpeechRecognizer(this));
+
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]))
+            {
+                commandRecognizer.Value.SetRecognitionListener(this);
+            }
 
             // Get our button from the layout resource,
             // and attach an event to it.
@@ -110,8 +114,11 @@ namespace ShopLens.Droid
 
         void RecogniseVoice(object sender, EventArgs e)
         {
-            speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
-            commandRecognizer.StartListening(speechIntent);
+            if (commandRecognizer.IsValueCreated)
+            {
+                speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
+                commandRecognizer.Value.StartListening(speechIntent);
+            }
         }
 
         // When the current voice recognition session stops.
