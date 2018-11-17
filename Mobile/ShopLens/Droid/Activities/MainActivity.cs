@@ -25,13 +25,9 @@ namespace ShopLens.Droid
         Intent speechIntent;
         private Button voiceCommandButton;
 
-        private bool IsVoiceRecEnabled;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
-
-            IsVoiceRecEnabled = Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]);
 
             base.OnCreate(savedInstanceState);
 
@@ -40,7 +36,7 @@ namespace ShopLens.Droid
 
             commandRecognizer = new Lazy<SpeechRecognizer>(() => SpeechRecognizer.CreateSpeechRecognizer(this));
 
-            if (IsVoiceRecEnabled)
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]))
             {
                 commandRecognizer.Value.SetRecognitionListener(this);
             }
