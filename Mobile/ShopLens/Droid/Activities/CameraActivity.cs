@@ -76,7 +76,7 @@ namespace ShopLens.Droid
                 }
                 catch (DirectoryNotFoundException e)
                 {
-                    System.Diagnostics.Debug.WriteLine(e.ToString());
+                    System.Diagnostics.Debug.WriteLine(e);
                     RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
                 }
 
