@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ShoppingListActivity">
+    tools:context=".ShoppingListActivity"
+    android:background="#B3B3B3">
     
     <LinearLayout
         android:id="@+id/ShopListLinearLayout"
@@ -20,10 +21,13 @@
             android:layout_weight="1"
             android:layout_width="fill_parent" />
         <Button
+            android:layout_margin="10dp"
             android:id="@+id/ShopListAddItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add" />
+            android:text="Add"
+            android:background="@drawable/buttons"
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
     
     <ListView

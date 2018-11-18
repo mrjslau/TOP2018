@@ -141,6 +141,7 @@
     <AndroidResource Include="Resources\values\Styles.xml" />
     <AndroidResource Include="Resources\drawable\main_button.xml" />
     <AndroidResource Include="Resources\drawable\nav_menu.xml" />
+    <AndroidResource Include="Resources\drawable\buttons.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
