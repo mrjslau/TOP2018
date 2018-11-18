@@ -217,25 +217,28 @@ namespace ShopLens.Droid
                         QueueMode.Flush,
                         null,
                         null);
-                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
-                        addToShoppingCart, doNotAddToShoppingCart);
-                    new MessageBarCreator(rootView, "Product was added.");
+                    
                 }
             })
                 .ContinueWith(task =>
                 {
                     progressBar.Visibility = ViewStates.Gone;
-                    
                     if (task.IsFaulted)
                     {
                         System.Diagnostics.Debug.WriteLine(task.Exception);
                     }
-                });
+                    if (task.IsCompletedSuccessfully)
+                    {
+                        new ErrorDialogCreator(this, "Shopping cart", "Would you like to add this product to your shopping cart?", "Yes", "No",
+                                    addToShoppingCart, doNotAddToShoppingCart);
+                        
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public void addToShoppingCart()
         {
-
+            new MessageBarCreator(rootView, "Product was added.");
         }
 
         public void doNotAddToShoppingCart()
