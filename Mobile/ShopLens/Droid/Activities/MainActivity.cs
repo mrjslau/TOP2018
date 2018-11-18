@@ -1,7 +1,9 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content;
 using Android.Widget;
 using Android.OS;
+using Android.Content.PM;
 using PCLAppConfig;
 using Android.Speech;
 using System;
@@ -15,7 +17,8 @@ public enum ActivityIds
 {
     VoiceRequest = 101,
     ImageRequest = 201,
-    PickImageRequest = 202
+    PickImageRequest = 202,
+    PermissionRequest = 501
 }
 
 namespace ShopLens.Droid
@@ -23,22 +26,52 @@ namespace ShopLens.Droid
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : Activity, IRecognitionListener
     {
-        SpeechRecognizer commandRecognizer;
+        Lazy<SpeechRecognizer> commandRecognizer;
         Intent speechIntent;
+
+        public readonly string[] ShopLensPermissions =
+        {
+            Manifest.Permission.RecordAudio,
+            Manifest.Permission.Camera
+        };
+
         private Button voiceCommandButton;
         CoordinatorLayout rootView;
+
+        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
+            // We need to request user permissions.
+            if ((int)Build.VERSION.SdkInt >= 23)
+            {
+                foreach (string permission in ShopLensPermissions)
+                {
+                    if (CheckSelfPermission(permission) == Permission.Denied)
+                    {
+                        if (ShouldShowRequestPermissionRationale(permission))
+                        {
+                            // TO DO: a snackbar needs to explain why we need certain permissions.
+                        }
+                    }
+                }
+
+                RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
+            }
+            
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
-            commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
-            commandRecognizer.SetRecognitionListener(this);
+            commandRecognizer = new Lazy<SpeechRecognizer>(() => SpeechRecognizer.CreateSpeechRecognizer(this));
+
+            if (Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]))
+            {
+                commandRecognizer.Value.SetRecognitionListener(this);
+            }
 
             // Get our button from the layout resource,
             // and attach an event to it.
@@ -85,8 +118,11 @@ namespace ShopLens.Droid
 
         void RecogniseVoice(object sender, EventArgs e)
         {
-            speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
-            commandRecognizer.StartListening(speechIntent);
+            if (commandRecognizer.IsValueCreated)
+            {
+                speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
+                commandRecognizer.Value.StartListening(speechIntent);
+            }
         }
 
         // When the current voice recognition session stops.
@@ -110,7 +146,7 @@ namespace ShopLens.Droid
                     var intent = new Intent(this, typeof(ShoppingListActivity));
                     StartActivity(intent);
                 }
-                //debug
+                // For debugging purposes.
                 else
                 {
                     voiceCommandButton.Text = matches[0];
@@ -118,6 +154,19 @@ namespace ShopLens.Droid
             }
         }
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            if(requestCode == REQUEST_PERMISSION)
+            {
+                for (int i = 0; i <= permissions.Length - 1; i++)
+                {
+                    if(grantResults[i] == Permission.Denied)
+                    {
+                        RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
+                    }
+                }
+            }
+        }
 
         #region Unimplemented Speech Recognizer Methods
 
