@@ -194,45 +194,44 @@ namespace ShopLens.Droid
         {
             // Run the image recognition task
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
+            
+            progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
             {
-                try
+                var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
+                using (var stream = new MemoryStream())
                 {
-                    var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                    image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
-                    using (var stream = new MemoryStream())
-                    {
-                        // 0 because compression quality is not applicable to .png
-                        image.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                        progressBar.Visibility = ViewStates.Visible;
+                    // 0 because compression quality is not applicable to .png
+                    image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
-                            ConfigurationManager.AppSettings["cvProjectId"],
-                            ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]);
+                    var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
+                        ConfigurationManager.AppSettings["cvProjectId"],
+                        ConfigurationManager.AppSettings["cvPredictionKey"],
+                        ConfigurationManager.AppSettings["cvRequestUri"]);
 
-                        prefs = new ActivityPreferences(this, PREFS_NAME);
-                        string guess = results.OrderByDescending(x => x.Value).First().Key;
-                        prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
-                        tts.Speak(
-                            $"This is. {guess}",
-                            QueueMode.Flush,
-                            null,
-                            null);
-                        new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
-                            addToShoppingCart, doNotAddToShoppingCart);
-                        new MessageBarCreator(rootView, "Product was added.");
-                    }
+                    prefs = new ActivityPreferences(this, PREFS_NAME);
+                    string guess = results.OrderByDescending(x => x.Value).First().Key;
+                    prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+                    tts.Speak(
+                        $"This is. {guess}",
+                        QueueMode.Flush,
+                        null,
+                        null);
+                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
+                        addToShoppingCart, doNotAddToShoppingCart);
+                    new MessageBarCreator(rootView, "Product was added.");
                 }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                }
-                finally
+            })
+                .ContinueWith(task =>
                 {
                     progressBar.Visibility = ViewStates.Gone;
-                }
-            });
+                    
+                    if (task.IsFaulted)
+                    {
+                        System.Diagnostics.Debug.WriteLine(task.Exception);
+                    }
+                });
         }
 
         public void addToShoppingCart()
