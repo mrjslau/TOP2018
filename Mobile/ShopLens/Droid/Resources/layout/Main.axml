@@ -26,9 +26,9 @@
             android:id="@+id/RelativeLayout01" 
             android:layout_width="fill_parent" 
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp">
+            android:layout_weight="1">
             <Button
+                android:layout_margin="20dp"
                 android:textSize="20sp"
                 android:text="Press to enable Voice Commands"
                 android:id="@+id/MainRecordingButton"
