@@ -27,7 +27,7 @@ using ShopLens.Droid.Source;
 namespace ShopLens.Droid
 {
 
-    [Activity(Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
         ActivityPreferences prefs;

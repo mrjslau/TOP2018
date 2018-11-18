@@ -6,7 +6,7 @@ using Android.Widget;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingListActivity")]
+    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingListActivity : Activity
     {
         EditText addItemEditText;

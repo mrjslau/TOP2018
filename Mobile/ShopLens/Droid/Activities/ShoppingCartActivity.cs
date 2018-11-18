@@ -7,7 +7,7 @@ using PCLAppConfig;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingCartActivity")]
+    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingCartActivity : Activity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];

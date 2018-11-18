@@ -1,7 +1,5 @@
-﻿using Android.App;
-using Android.Support.V4.Widget;
+﻿using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using Android.Support.V7.Widget;
 using SupportActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 
 namespace ShopLens.Droid.Activities
@@ -13,14 +11,14 @@ namespace ShopLens.Droid.Activities
         readonly int closedResource;
 
 
-        public ActionBarDrawerToggle(AppCompatActivity activity, DrawerLayout drawerLayout, Toolbar toolbar,
-                                     int openDrawerContentDescRes, int closeDrawerContentDescRes)
-            : base(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes) 
+        public ActionBarDrawerToggle(AppCompatActivity host, DrawerLayout drawerLayout, int openedResource, int closedResource)
+            : base(host, drawerLayout, openedResource, closedResource)
         {
-            hostActivity = activity;
-            openedResource = openDrawerContentDescRes;
-            closedResource = closeDrawerContentDescRes;
+            hostActivity = host;
+            this.openedResource = openedResource;
+            this.closedResource = closedResource;
         }
+
 
         public override void OnDrawerOpened(Android.Views.View drawerView)
         {
