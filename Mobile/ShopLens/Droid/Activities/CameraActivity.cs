@@ -15,13 +15,14 @@ using Android.Speech.Tts;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
-using ImageRecognition.Classificators;
 using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
 using Android.Runtime;
+using ImageRecognitionMobile.Classificators;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
+using Unity;
 using ShopLens.Droid.Source;
 using Android.Views;
 using ShopLens.Droid.Notifications;
@@ -77,7 +78,7 @@ namespace ShopLens.Droid
                 commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
                 commandRecognizer.SetRecognitionListener(this);
 
-                shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
+                shopLensPictureDirectoryCreator = DependencyInjection.Container.Resolve<IDirectoryCreator>();
                 try
                 {
                     shopLensPictureDirectoryCreator.CreateDirectory(_dir);
@@ -205,13 +206,11 @@ namespace ShopLens.Droid
                     // 0 because compression quality is not applicable to .png
                     image.Compress(Bitmap.CompressFormat.Png, 0, stream);
 
-                    var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
-                        ConfigurationManager.AppSettings["cvProjectId"],
-                        ConfigurationManager.AppSettings["cvPredictionKey"],
-                        ConfigurationManager.AppSettings["cvRequestUri"]);
+                    var classificator = DependencyInjection.Container.Resolve<IAsyncImageClassificator>();
+                    var results = await classificator.ClassifyImageAsync(stream.ToArray());
 
                     prefs = new ActivityPreferences(this, PREFS_NAME);
-                    string guess = results.OrderByDescending(x => x.Value).First().Key;
+                    var guess = results.OrderByDescending(x => x.Value).First().Key;
                     prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
                     tts.Speak(
                         $"This is. {guess}",

@@ -7,11 +7,10 @@ using Android.Content.PM;
 using PCLAppConfig;
 using Android.Speech;
 using System;
-
-using ShopLens.Droid.Helpers;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using ShopLens.Droid.Notifications;
+using ShopLens.Droid.Helpers;
 
 public enum ActivityIds
 {
@@ -63,6 +62,7 @@ namespace ShopLens.Droid
             }
             
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+            DependencyInjection.RegisterInterfaces();
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
