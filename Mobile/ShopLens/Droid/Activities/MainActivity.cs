@@ -10,6 +10,8 @@ using System;
 
 using ShopLens.Droid.Helpers;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using ShopLens.Droid.Notifications;
 
 public enum ActivityIds
 {
@@ -34,6 +36,7 @@ namespace ShopLens.Droid
         };
 
         private Button voiceCommandButton;
+        CoordinatorLayout rootView;
 
         private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
@@ -77,6 +80,7 @@ namespace ShopLens.Droid
             Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);
             Button shoppingListButton = FindViewById<Button>(Resource.Id.ShoppingListButton);
             Button shoppingCartButton = FindViewById<Button>(Resource.Id.ShoppingCartButton);
+            rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
             voiceCommandButton = FindViewById<Button>(Resource.Id.MainRecordingButton);
 
             textVoicerButton.Click += (sender, e) =>
@@ -111,7 +115,6 @@ namespace ShopLens.Droid
 
             voiceCommandButton.Click += RecogniseVoice;
         }
-
 
         void RecogniseVoice(object sender, EventArgs e)
         {

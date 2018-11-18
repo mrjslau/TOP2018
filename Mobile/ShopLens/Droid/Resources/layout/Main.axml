@@ -1,4 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/root_view">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -6,7 +11,7 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px" >
-    
+   
     <RelativeLayout 
         android:id="@+id/RelativeLayout01" 
         android:layout_width="fill_parent" 
@@ -41,16 +46,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/CameraButton"
 	    android:contentDescription="Camera."/>
-	<Button
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/ShoppingListButton"
-		android:text="Shopping List"
-		android:contentDescription="Shopping list." />
-	<Button
-		android:text="Shopping Cart"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/ShoppingCartButton"
-		android:contentDescription="Shopping cart." />
+    <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/ShoppingListButton"
+      android:text="Shopping List"
+      android:contentDescription="Shopping list." />
+    <Button
+      android:text="Shopping Cart"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/ShoppingCartButton"
+      android:contentDescription="Shopping cart." />
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

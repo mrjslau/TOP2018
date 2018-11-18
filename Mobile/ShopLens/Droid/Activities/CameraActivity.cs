@@ -23,6 +23,9 @@ using Android.Runtime;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
+using Android.Views;
+using ShopLens.Droid.Notifications;
+using Android.Support.Design.Widget;
 
 namespace ShopLens.Droid
 {
@@ -30,12 +33,14 @@ namespace ShopLens.Droid
     [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         ActivityPreferences prefs;
 
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
         Button RecVoice;
+        ProgressBar progressBar;
 
         SpeechRecognizer commandRecognizer;
         Intent speechIntent;
@@ -45,10 +50,10 @@ namespace ShopLens.Droid
         public File productPhoto;
         public File _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
 
-        public readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
+        private CoordinatorLayout rootView;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
         private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
@@ -62,6 +67,9 @@ namespace ShopLens.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Camera);
+
+            progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+            progressBar.Visibility = ViewStates.Gone;
 
             if (IsThereAnAppToTakePictures())
             {
@@ -82,6 +90,7 @@ namespace ShopLens.Droid
 
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
@@ -185,38 +194,54 @@ namespace ShopLens.Droid
         {
             // Run the image recognition task
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
+            
+            progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
             {
-                try
+                var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
+                using (var stream = new MemoryStream())
                 {
-                    var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                    image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
-                    using (var stream = new MemoryStream())
+                    // 0 because compression quality is not applicable to .png
+                    image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+
+                    var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
+                        ConfigurationManager.AppSettings["cvProjectId"],
+                        ConfigurationManager.AppSettings["cvPredictionKey"],
+                        ConfigurationManager.AppSettings["cvRequestUri"]);
+
+                    prefs = new ActivityPreferences(this, PREFS_NAME);
+                    string guess = results.OrderByDescending(x => x.Value).First().Key;
+                    prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+                    tts.Speak(
+                        $"This is. {guess}",
+                        QueueMode.Flush,
+                        null,
+                        null);
+                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
+                        addToShoppingCart, doNotAddToShoppingCart);
+                    new MessageBarCreator(rootView, "Product was added.");
+                }
+            })
+                .ContinueWith(task =>
+                {
+                    progressBar.Visibility = ViewStates.Gone;
+                    
+                    if (task.IsFaulted)
                     {
-                        // 0 because compression quality is not applicable to .png
-                        image.Compress(Bitmap.CompressFormat.Png, 0, stream);
-
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
-                            ConfigurationManager.AppSettings["cvProjectId"],
-                            ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]);
-
-                        prefs = new ActivityPreferences(this, PREFS_NAME);
-                        string guess = results.OrderByDescending(x => x.Value).First().Key;
-                        prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
-
-                        tts.Speak(
-                            $"This is. {guess}",
-                            QueueMode.Flush,
-                            null,
-                            null);
+                        System.Diagnostics.Debug.WriteLine(task.Exception);
                     }
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                }
-            });
+                });
+        }
+
+        public void addToShoppingCart()
+        {
+
+        }
+
+        public void doNotAddToShoppingCart()
+        {
+
         }
 
         // When the current voice recognition session stops.
