@@ -1,53 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px" >
     
-    <RelativeLayout 
-        android:id="@+id/RelativeLayout01" 
-        android:layout_width="fill_parent" 
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="10dp">
-        <Button
-            android:text="Voice Commands"
-            android:id="@+id/MainRecordingButton"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true"/>
-
-    </RelativeLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/Toolbar"
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/actionBarSize"
+        android:background="?android:attr/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
     
-    <Button
-        android:text="Text voicer"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/DrawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TextVoicerButton"
-	    android:contentDescription="Text voicer."/>
-    <Button
-        android:text="Speech Recognizer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SpeechButton"
-	    android:contentDescription="Speech recognizer and recording voicer."/>
-    <Button
-        android:text="Camera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/CameraButton"
-	    android:contentDescription="Camera."/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ShoppingListButton"
-        android:text="Shopping List" />
-    <Button
-        android:text="Shopping Cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ShoppingCartButton" />
+        android:layout_height="match_parent">
+        
+        <RelativeLayout 
+            android:id="@+id/RelativeLayout01" 
+            android:layout_width="fill_parent" 
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp">
+            <Button
+                android:textSize="20sp"
+                android:text="Press to enable Voice Commands"
+                android:id="@+id/MainRecordingButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/main_button"
+                android:textColor="#FFFFFF"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+        
+        
+        <ListView
+            android:id="@+id/LeftDrawerListView"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:divider="#818181"
+            android:dividerHeight="1dp"
+            android:background="#E3F2FD"/>
+    </android.support.v4.widget.DrawerLayout>
+    
+    
+        <Button
+            android:text="Text voicer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TextVoicerButton"
+            android:contentDescription="Text voicer."/>
+        <Button
+            android:text="Speech Recognizer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SpeechButton"
+            android:contentDescription="Speech recognizer and recording voicer."/>
+        <Button
+            android:text="Camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/CameraButton"
+            android:contentDescription="Camera."/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ShoppingListButton"
+            android:text="Shopping List" />
+        <Button
+            android:text="Shopping Cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ShoppingCartButton" />
+    
 </LinearLayout>

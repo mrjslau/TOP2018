@@ -11,6 +11,11 @@ using System;
 using ShopLens.Droid.Helpers;
 using Android.Runtime;
 
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.V7.App;
+using Android.Support.V4.Widget;
+using System.Collections.Generic;
+
 public enum ActivityIds
 {
     VoiceRequest = 101,
@@ -21,8 +26,8 @@ public enum ActivityIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : Activity, IRecognitionListener
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme")]
+    public class MainActivity : AppCompatActivity, IRecognitionListener
     {
         Lazy<SpeechRecognizer> commandRecognizer;
         Intent speechIntent;
@@ -33,9 +38,16 @@ namespace ShopLens.Droid
             Manifest.Permission.Camera
         };
 
-        private Button voiceCommandButton;
+        static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
-        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
+        Button voiceCommandButton;
+        SupportToolbar toolbar;
+        ActionBarDrawerToggle drawerToggle;
+        DrawerLayout drawerLayout;
+        ListView leftDrawer;
+        List<String> menuSet = new List<String>();
+        ArrayAdapter menuAdapter;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -72,6 +84,29 @@ namespace ShopLens.Droid
 
             // Get our button from the layout resource,
             // and attach an event to it.
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
+            leftDrawer = FindViewById<ListView>(Resource.Id.LeftDrawerListView);
+            toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
+            SetSupportActionBar(toolbar);
+
+            menuSet.Add("Shopping list");
+            menuSet.Add("Shopping cart");
+            menuAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, menuSet);
+            leftDrawer.Adapter = menuAdapter;
+
+            drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                Resource.String.openDrawer,
+                Resource.String.closeDrawer
+            );
+            drawerLayout.AddDrawerListener(drawerToggle);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            drawerToggle.SyncState();
+
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+
             Button textVoicerButton = FindViewById<Button>(Resource.Id.TextVoicerButton);
             Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);
             Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);

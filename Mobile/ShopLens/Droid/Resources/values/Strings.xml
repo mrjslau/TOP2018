@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ShopLens.Droid</string>
-    
+    <string name="openDrawer">Menu</string>
+    <string name="closeDrawer">ShopLens</string>
     <string name="messageSpeakNow">Speak now!</string>
 </resources>
