@@ -4149,6 +4149,26 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f0900bb
 			public const int ShopCartAddItemEditText = 2131296443;
+			// aapt resource value: 0x7f0c007d
+			public const int ShopCartList = 2131492989;
+			
+			// aapt resource value: 0x7f0c007c
+			public const int ShopCartRecVoice = 2131492988;
+			
+			// aapt resource value: 0x7f0c0081
+			public const int ShopListAddItemButton = 2131492993;
+			
+			// aapt resource value: 0x7f0c0080
+			public const int ShopListAddItemEditText = 2131492992;
+			
+			// aapt resource value: 0x7f0c007f
+			public const int ShopListLinearLayout = 2131492991;
+			
+			// aapt resource value: 0x7f0c0083
+			public const int ShopListListView = 2131492995;
+			
+			// aapt resource value: 0x7f0c0082
+			public const int ShopListRecVoice = 2131492994;
 			
 			// aapt resource value: 0x7f0900ba
 			public const int ShopCartLinearLayout = 2131296442;
@@ -4161,6 +4181,9 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f0900c0
 			public const int ShopListAddItemEditText = 2131296448;
+
+      // aapt resource value: 0x7f0c008d
+			public const int TextToVoiceButton = 2131493005;
 			
 			// aapt resource value: 0x7f0900bf
 			public const int ShopListLinearLayout = 2131296447;
@@ -4293,6 +4316,12 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f090045
 			public const int center = 2131296325;
+      
+			// aapt resource value: 0x7f0c0085
+			public const int btnRecord = 2131492997;
+			
+			// aapt resource value: 0x7f0c0086
+			public const int btnRecordAndVoice = 2131492998;
 			
 			// aapt resource value: 0x7f090046
 			public const int center_horizontal = 2131296326;
@@ -4332,6 +4361,9 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f09007a
 			public const int decor_content_parent = 2131296378;
+
+			// aapt resource value: 0x7f0c008c
+			public const int editTextToVoice = 2131493004;
 			
 			// aapt resource value: 0x7f090060
 			public const int default_activity_button = 2131296352;
@@ -4545,6 +4577,15 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f090029
 			public const int screen = 2131296297;
+
+			// aapt resource value: 0x7f0c0084
+			public const int linearLayout1 = 2131492996;
+			
+			// aapt resource value: 0x7f0c0087
+			public const int linearLayout2 = 2131492999;
+			
+			// aapt resource value: 0x7f0c008a
+			public const int linearLayout3 = 2131493002;
 			
 			// aapt resource value: 0x7f090042
 			public const int scroll = 2131296322;
@@ -4602,6 +4643,9 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f090024
 			public const int showHome = 2131296292;
+
+			// aapt resource value: 0x7f0c007e
+			public const int rlshlist = 2131492990;
 			
 			// aapt resource value: 0x7f090025
 			public const int showTitle = 2131296293;
@@ -4704,6 +4748,11 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f09000f
 			public const int transition_current_scene = 2131296271;
+			// aapt resource value: 0x7f0c0088
+			public const int textView1 = 2131493000;
+			
+			// aapt resource value: 0x7f0c0089
+			public const int textYourText = 2131493001;
 			
 			// aapt resource value: 0x7f090010
 			public const int transition_layout_save = 2131296272;
@@ -4719,6 +4768,9 @@ namespace ShopLens.Droid
 			
 			// aapt resource value: 0x7f09002d
 			public const int uniform = 2131296301;
+
+			// aapt resource value: 0x7f0c008b
+			public const int toolbar = 2131493003;
 			
 			// aapt resource value: 0x7f090009
 			public const int up = 2131296265;
