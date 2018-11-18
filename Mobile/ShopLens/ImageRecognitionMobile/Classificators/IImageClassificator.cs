@@ -17,6 +17,6 @@ namespace ImageRecognitionMobile.Classificators
         /// The Value is a float in range 0 to 1.
         /// Ex.: {'tomato', 0.95f}
         /// </returns>
-        Dictionary<string, float> ClassifyImage(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri);
+        Dictionary<string, float> ClassifyImage(byte[] image);
     }
 }

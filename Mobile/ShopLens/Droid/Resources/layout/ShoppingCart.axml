@@ -19,7 +19,8 @@
             android:id="@+id/ShopCartAddItemEditText"
             android:layout_height="wrap_content" 
             android:layout_weight="1"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="Product to be added." />
         <Button
             android:layout_margin="10dp"
             android:id="@+id/ShopCartAddItemButton"
@@ -27,7 +28,15 @@
             android:layout_height="wrap_content"
             android:text="Add"
             android:background="@drawable/buttons"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:contentDescription="Add item to cart." />
+        <Button
+			android:id="@+id/ShopCartRecVoice"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Voice"
+            android:background="@drawable/buttons"
+			android:contentDescription="Voice commands." />
     </LinearLayout>
     
     <ListView

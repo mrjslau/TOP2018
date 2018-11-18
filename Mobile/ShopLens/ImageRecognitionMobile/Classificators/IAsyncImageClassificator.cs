@@ -18,6 +18,6 @@ namespace ImageRecognitionMobile.Classificators
         /// The Value is a float in range 0 to 1.
         /// Ex.: {'tomato', 0.95f}
         /// </returns>
-        Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri);
+        Task<Dictionary<string, float>> ClassifyImageAsync(byte[] image);
     }
 }

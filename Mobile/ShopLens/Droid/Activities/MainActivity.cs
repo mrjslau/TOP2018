@@ -13,6 +13,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
+using ShopLens.Droid.Notifications;
 using ShopLens.Droid.Helpers;
 using Android.Views;
 
@@ -40,8 +41,12 @@ namespace ShopLens.Droid
         public readonly string[] ShopLensPermissions =
         {
             Manifest.Permission.RecordAudio,
-            Manifest.Permission.Camera
+            Manifest.Permission.Camera,
+            Manifest.Permission.WriteExternalStorage
         };
+
+        private Button voiceCommandButton;
+        CoordinatorLayout rootView;
 
         static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
@@ -67,6 +72,7 @@ namespace ShopLens.Droid
             }
             
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+            DependencyInjection.RegisterInterfaces();
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
@@ -82,6 +88,7 @@ namespace ShopLens.Droid
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
             toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
             navView = FindViewById<NavigationView>(Resource.Id.NavView);
+            rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
             voiceCommandButton = FindViewById<Button>(Resource.Id.MainRecordingButton);
 
             drawerToggle = new ActionBarDrawerToggle(
@@ -126,7 +133,6 @@ namespace ShopLens.Droid
                 }
             };
         }
-
 
         void RecogniseVoice(object sender, EventArgs e)
         {
