@@ -1,3 +1,4 @@
+using ImageRecognition.Classificators;
 using ImageRecognitionMobile.Classificators;
 using Unity;
 using Unity.Lifetime;
