@@ -19,7 +19,7 @@ namespace ImageRecognition.Classificators
     public class WebClassificator : IImageClassificator, IAsyncImageClassificator
     {
         /// <inheritdoc/>
-        public Dictionary<string, float> ClassifyImage(byte[] image, string cvProjectId, string cvPredictionKey, string cvRequestUri)
+        public Dictionary<string, float> ClassifyImage(byte[] image)
         {
             return ClassifyImageAsync(image).GetAwaiter().GetResult();
         }

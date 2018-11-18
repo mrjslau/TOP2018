@@ -14,7 +14,6 @@ using Android.Speech.Tts;
 using Android.Widget;
 using Camera;
 using Android.Support.V4.Content;
-using ImageRecognition.Classificators;
 using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
