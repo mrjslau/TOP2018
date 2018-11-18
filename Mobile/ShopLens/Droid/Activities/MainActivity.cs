@@ -40,6 +40,7 @@ namespace ShopLens.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
             // We need to request user permissions.
             if ((int)Build.VERSION.SdkInt >= 23)
             {
