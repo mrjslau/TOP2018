@@ -4,11 +4,10 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLens.Droid", "Droid\ShopLens.Droid.csproj", "{C9A1F13C-C165-4F1A-9B77-494622B5657B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionMobile", "ImageRecognitionMobile\ImageRecognitionMobile.csproj", "{DE6726C1-E1F5-40D8-8583-D3C519F85EBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRecognitionMobile", "ImageRecognitionMobile\ImageRecognitionMobile.csproj", "{DE6726C1-E1F5-40D8-8583-D3C519F85EBE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ShopLens\ShopLens.projitems*{96116e4f-89d6-4260-8a3f-e358dc24b460}*SharedItemsImports = 13
 		ShopLens\ShopLens.projitems*{c9a1f13c-c165-4f1a-9b77-494622b5657b}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
