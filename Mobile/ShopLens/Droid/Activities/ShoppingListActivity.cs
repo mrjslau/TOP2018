@@ -157,7 +157,7 @@ namespace ShopLens.Droid
                             System.Diagnostics.Debug.WriteLine(t.Exception);
                         }
                         addItemButton.Enabled = true;
-                    });
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }
