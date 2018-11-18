@@ -56,6 +56,8 @@ namespace ShopLens.Droid
         private IDirectoryCreator shopLensPictureDirectoryCreator;
         private CoordinatorLayout rootView;
         private string guess;
+        private ErrorDialogCreator shoppingCartErrorDialog;
+        private MessageBarCreator shoppingCartMessageBar;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
         private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
@@ -100,6 +102,10 @@ namespace ShopLens.Droid
 
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
                 RecVoice.Click += RecogniseVoice;
+
+                shoppingCartErrorDialog = new ErrorDialogCreator(this, "Shopping cart", "Would you like to add this product to your shopping cart?",
+                    "Yes", "No", addToShoppingCart, doNotAddToShoppingCart);
+                shoppingCartMessageBar = new MessageBarCreator(rootView, "Product was added.");
             }
 
             tts = new TextToSpeech(this, this);
@@ -230,9 +236,7 @@ namespace ShopLens.Droid
                     }
                     if (task.IsCompletedSuccessfully)
                     {
-                        new ErrorDialogCreator(this, "Shopping cart", "Would you like to add this product to your shopping cart?", "Yes", "No",
-                                    addToShoppingCart, doNotAddToShoppingCart);
-                        
+                        shoppingCartErrorDialog.Show();                        
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -240,7 +244,7 @@ namespace ShopLens.Droid
         public void addToShoppingCart()
         {
             prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
-            new MessageBarCreator(rootView, "Product was added.");
+            shoppingCartMessageBar.Show();
         }
 
         public void doNotAddToShoppingCart()
