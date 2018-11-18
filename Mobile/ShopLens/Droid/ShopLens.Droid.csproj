@@ -104,8 +104,8 @@
   <ItemGroup>
     <Compile Include="Helpers\VoiceRecognizerHelper.cs" />
     <Compile Include="IO\IDirectoryCreator.cs" />
-    <Compile Include="Notifications\ErrorDialog.cs" />
-    <Compile Include="Notifications\MessageBar.cs" />
+    <Compile Include="Notifications\ErrorDialogCreator.cs" />
+    <Compile Include="Notifications\MessageBarCreator.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\ShopLensPictureDirectoryCreator.cs" />

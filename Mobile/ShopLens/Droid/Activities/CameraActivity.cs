@@ -23,6 +23,8 @@ using PCLAppConfig;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
 using Android.Views;
+using ShopLens.Droid.Notifications;
+using Android.Support.Design.Widget;
 
 namespace ShopLens.Droid
 {
@@ -51,6 +53,7 @@ namespace ShopLens.Droid
         public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
+        private CoordinatorLayout rootView;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
         private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
@@ -77,6 +80,7 @@ namespace ShopLens.Droid
 
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
@@ -218,9 +222,21 @@ namespace ShopLens.Droid
                         QueueMode.Flush,
                         null,
                         null);
-
+                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
+                        addToShoppingCart, doNotAddToShoppingCart);
+                    new MessageBarCreator(rootView, "Product was added.");
                 }
             });
+        }
+
+        public void addToShoppingCart()
+        {
+
+        }
+
+        public void doNotAddToShoppingCart()
+        {
+
         }
 
         // When the current voice recognition session stops.

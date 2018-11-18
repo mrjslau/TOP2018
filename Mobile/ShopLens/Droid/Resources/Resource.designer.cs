@@ -4126,8 +4126,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090034
 			public const int FUNCTION = 2131296308;
 			
-			// aapt resource value: 0x7f09008c
-			public const int ImgTakeimg = 2131296396;
+			// aapt resource value: 0x7f09008d
+			public const int ImgTakeimg = 2131296397;
 			
 			// aapt resource value: 0x7f090035
 			public const int META = 2131296309;
@@ -4270,11 +4270,11 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f09003d
 			public const int bottom = 2131296317;
 			
-			// aapt resource value: 0x7f09008d
-			public const int btnPickImage = 2131296397;
-			
 			// aapt resource value: 0x7f09008e
-			public const int btnRecVoiceCamera = 2131296398;
+			public const int btnPickImage = 2131296398;
+			
+			// aapt resource value: 0x7f09008f
+			public const int btnRecVoiceCamera = 2131296399;
 			
 			// aapt resource value: 0x7f0900c4
 			public const int btnRecord = 2131296452;
@@ -4282,8 +4282,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0900c5
 			public const int btnRecordAndVoice = 2131296453;
 			
-			// aapt resource value: 0x7f09008b
-			public const int btntakepicture = 2131296395;
+			// aapt resource value: 0x7f09008c
+			public const int btntakepicture = 2131296396;
 			
 			// aapt resource value: 0x7f090063
 			public const int buttonPanel = 2131296355;
@@ -4315,14 +4315,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090039
 			public const int collapseActionView = 2131296313;
 			
-			// aapt resource value: 0x7f090092
-			public const int container = 2131296402;
+			// aapt resource value: 0x7f090093
+			public const int container = 2131296403;
 			
 			// aapt resource value: 0x7f090066
 			public const int contentPanel = 2131296358;
 			
-			// aapt resource value: 0x7f090093
-			public const int coordinator = 2131296403;
+			// aapt resource value: 0x7f090094
+			public const int coordinator = 2131296404;
 			
 			// aapt resource value: 0x7f09006d
 			public const int custom = 2131296365;
@@ -4336,20 +4336,20 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090060
 			public const int default_activity_button = 2131296352;
 			
-			// aapt resource value: 0x7f090095
-			public const int design_bottom_sheet = 2131296405;
+			// aapt resource value: 0x7f090096
+			public const int design_bottom_sheet = 2131296406;
+			
+			// aapt resource value: 0x7f09009d
+			public const int design_menu_item_action_area = 2131296413;
 			
 			// aapt resource value: 0x7f09009c
-			public const int design_menu_item_action_area = 2131296412;
+			public const int design_menu_item_action_area_stub = 2131296412;
 			
 			// aapt resource value: 0x7f09009b
-			public const int design_menu_item_action_area_stub = 2131296411;
+			public const int design_menu_item_text = 2131296411;
 			
 			// aapt resource value: 0x7f09009a
-			public const int design_menu_item_text = 2131296410;
-			
-			// aapt resource value: 0x7f090099
-			public const int design_navigation_view = 2131296409;
+			public const int design_navigation_view = 2131296410;
 			
 			// aapt resource value: 0x7f090020
 			public const int disableHome = 2131296288;
@@ -4426,8 +4426,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090000
 			public const int item_touch_helper_previous_elevation = 2131296256;
 			
-			// aapt resource value: 0x7f090091
-			public const int largeLabel = 2131296401;
+			// aapt resource value: 0x7f090092
+			public const int largeLabel = 2131296402;
 			
 			// aapt resource value: 0x7f090049
 			public const int left = 2131296329;
@@ -4471,8 +4471,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090028
 			public const int multiply = 2131296296;
 			
-			// aapt resource value: 0x7f090098
-			public const int navigation_header_container = 2131296408;
+			// aapt resource value: 0x7f090099
+			public const int navigation_header_container = 2131296409;
 			
 			// aapt resource value: 0x7f09003b
 			public const int never = 2131296315;
@@ -4504,8 +4504,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f09004d
 			public const int pin = 2131296333;
 			
-			// aapt resource value: 0x7f09008f
-			public const int progressBar = 2131296399;
+			// aapt resource value: 0x7f090090
+			public const int progressBar = 2131296400;
 			
 			// aapt resource value: 0x7f090006
 			public const int progress_circular = 2131296262;
@@ -4531,8 +4531,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0900be
 			public const int rlshlist = 2131296446;
 			
-			// aapt resource value: 0x7f09009e
-			public const int root_view = 2131296414;
+			// aapt resource value: 0x7f09008b
+			public const int root_view = 2131296395;
 			
 			// aapt resource value: 0x7f09000c
 			public const int save_image_matrix = 2131296268;
@@ -4606,14 +4606,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090025
 			public const int showTitle = 2131296293;
 			
-			// aapt resource value: 0x7f090090
-			public const int smallLabel = 2131296400;
+			// aapt resource value: 0x7f090091
+			public const int smallLabel = 2131296401;
+			
+			// aapt resource value: 0x7f090098
+			public const int snackbar_action = 2131296408;
 			
 			// aapt resource value: 0x7f090097
-			public const int snackbar_action = 2131296407;
-			
-			// aapt resource value: 0x7f090096
-			public const int snackbar_text = 2131296406;
+			public const int snackbar_text = 2131296407;
 			
 			// aapt resource value: 0x7f090043
 			public const int snap = 2131296323;
@@ -4669,8 +4669,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0900c8
 			public const int textYourText = 2131296456;
 			
-			// aapt resource value: 0x7f09009d
-			public const int text_input_password_toggle = 2131296413;
+			// aapt resource value: 0x7f09009e
+			public const int text_input_password_toggle = 2131296414;
 			
 			// aapt resource value: 0x7f090014
 			public const int textinput_counter = 2131296276;
@@ -4699,8 +4699,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f09006e
 			public const int topPanel = 2131296366;
 			
-			// aapt resource value: 0x7f090094
-			public const int touch_outside = 2131296404;
+			// aapt resource value: 0x7f090095
+			public const int touch_outside = 2131296405;
 			
 			// aapt resource value: 0x7f09000f
 			public const int transition_current_scene = 2131296271;
