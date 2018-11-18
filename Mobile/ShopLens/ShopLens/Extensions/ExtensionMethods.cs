@@ -12,10 +12,10 @@ namespace ShopLens.Extensions
             switch (input)
             {
                 case null:
-                    throw new ArgumentNullException(nameof(input));
+                    throw new ArgumentNullException("Null value was passed.");
 
                 case "":
-                    throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                    return string.Empty;
 
                 default:
                     return input.First().ToString().ToUpper() + input.Substring(1);

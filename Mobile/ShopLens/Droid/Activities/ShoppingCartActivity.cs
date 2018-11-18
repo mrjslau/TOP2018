@@ -14,6 +14,8 @@ using Android.Speech.Tts;
 using Java.Util;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopLens.Droid
 {
@@ -55,7 +57,7 @@ namespace ShopLens.Droid
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
             recogniseVoice = FindViewById<Button>(Resource.Id.ShopCartRecVoice);
 
-            listAdapter = 
+            listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
             listView.Adapter = listAdapter;
             listView.ChoiceMode = ChoiceMode.Multiple;
@@ -89,8 +91,11 @@ namespace ShopLens.Droid
             {
                 tts.Speak(message, QueueMode.Flush, null, null);
 
-                while (tts.IsSpeaking) { }
-            }       
+                while (tts.IsSpeaking)
+                {
+                    Thread.Sleep(200);
+                }
+            }
         }
 
         private void AddTextBoxProductToList(object sender, EventArgs e)
@@ -113,24 +118,36 @@ namespace ShopLens.Droid
             var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
             if (matches.Count > 0)
             {
-                Regex addProductRegex = new Regex(@"^" + @ConfigurationManager.AppSettings["CmdAddCartList"] + @"(?:\s\w+)+");
+                string cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
+                Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
                 if (matches[0] == voiceCartCmd)
                 {
+                    int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
                     string endMessage = "Voicing of cart complete.";
 
-                    foreach (string item in prefs.GetPreferencesToList())
+                    Task.Run(() =>
                     {
-                        SpeakOut(item);
-                        Thread.Sleep(int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]));
-                    }
+                        foreach (string item in prefs.GetPreferencesToList())
+                        {
+                            SpeakOut(item);
+                            Thread.Sleep(voicerAwaitTime);
+                        }
 
-                    SpeakOut(endMessage);
+                        SpeakOut(endMessage);
+
+                    }).ContinueWith((t) =>
+                    {
+                        if (t.IsFaulted)
+                        {
+                            System.Diagnostics.Debug.WriteLine(t.Exception);
+                        }
+                    });
                 }
-                
+
                 if (addProductRegex.IsMatch(matches[0]))
                 {
-                    string itemToAdd = ProductNameHelper.GetProductNameFromString(matches[0]).FirstCharToUpper();
+                    string itemToAdd = string.Join("", matches[0].Skip(cmdAddProduct.Length + 1)).FirstCharToUpper();
                     string endMessage = itemToAdd + " was added to your cart.";
 
                     AddStringToList(itemToAdd);
