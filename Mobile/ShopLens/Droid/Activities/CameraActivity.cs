@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Android;
 using Android.Provider;
 using Android.Graphics;
 using Android.Content.PM;
@@ -21,6 +22,10 @@ using File = Java.IO.File;
 using Android.Runtime;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
+using ShopLens.Droid.Source;
+using Android.Views;
+using ShopLens.Droid.Notifications;
+using Android.Support.Design.Widget;
 
 namespace ShopLens.Droid
 {
@@ -28,10 +33,14 @@ namespace ShopLens.Droid
     [Activity(Label = "CameraActivity")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        ActivityPreferences prefs;
+
         Button BtnTakeImg;
         ImageView ImgView;
         Button BtnPickImg;
         Button RecVoice;
+        ProgressBar progressBar;
 
         SpeechRecognizer commandRecognizer;
         Intent speechIntent;
@@ -44,8 +53,10 @@ namespace ShopLens.Droid
         public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
+        private CoordinatorLayout rootView;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
+        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
         private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
         private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
@@ -57,6 +68,9 @@ namespace ShopLens.Droid
 
             SetContentView(Resource.Layout.Camera);
 
+            progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+            progressBar.Visibility = ViewStates.Gone;
+
             if (IsThereAnAppToTakePictures())
             {
                 // Set up a custom speech recognizer in this activity.
@@ -64,10 +78,19 @@ namespace ShopLens.Droid
                 commandRecognizer.SetRecognitionListener(this);
 
                 shopLensPictureDirectoryCreator = new ShopLensPictureDirectoryCreator();
-                shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                try
+                {
+                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                }
+                catch (Java.Lang.SecurityException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e);
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                }
 
                 BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
                 ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
                 BtnTakeImg.Click += TakeAPicture;
 
                 BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
@@ -122,8 +145,6 @@ namespace ShopLens.Droid
             {
                 Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
                 takePictureIntent.PutExtra(MediaStore.ExtraOutput, photoUri);
-                takePictureIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
-                takePictureIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
             }
             // If there's a working camera on the device.
             if (takePictureIntent.ResolveActivity(PackageManager) != null)
@@ -166,7 +187,6 @@ namespace ShopLens.Droid
             int width = ImgView.Width;
             var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
             image = BitmapHelper.ScaleDown(image, Math.Min(height, width));
-            ImgView.RecycleBitmap();
             ImgView.SetImageBitmap(image);
         }
 
@@ -174,34 +194,54 @@ namespace ShopLens.Droid
         {
             // Run the image recognition task
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
+            
+            progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
             {
-                try
+                var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
+                image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
+                using (var stream = new MemoryStream())
                 {
-                    var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                    image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
-                    using (var stream = new MemoryStream())
+                    // 0 because compression quality is not applicable to .png
+                    image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+
+                    var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(),
+                        ConfigurationManager.AppSettings["cvProjectId"],
+                        ConfigurationManager.AppSettings["cvPredictionKey"],
+                        ConfigurationManager.AppSettings["cvRequestUri"]);
+
+                    prefs = new ActivityPreferences(this, PREFS_NAME);
+                    string guess = results.OrderByDescending(x => x.Value).First().Key;
+                    prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+                    tts.Speak(
+                        $"This is. {guess}",
+                        QueueMode.Flush,
+                        null,
+                        null);
+                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
+                        addToShoppingCart, doNotAddToShoppingCart);
+                    new MessageBarCreator(rootView, "Product was added.");
+                }
+            })
+                .ContinueWith(task =>
+                {
+                    progressBar.Visibility = ViewStates.Gone;
+                    
+                    if (task.IsFaulted)
                     {
-                        // 0 because compression quality is not applicable to .png
-                        image.Compress(Bitmap.CompressFormat.Png, 0, stream);
-
-                        var results = await new WebClassificator().ClassifyImageAsync(stream.ToArray(), 
-                            ConfigurationManager.AppSettings["cvProjectId"],
-                            ConfigurationManager.AppSettings["cvPredictionKey"],
-                            ConfigurationManager.AppSettings["cvRequestUri"]);
-
-                        tts.Speak(
-                            $"This is. {results.OrderByDescending(x => x.Value).First().Key}",
-                            QueueMode.Flush,
-                            null,
-                            null);
+                        System.Diagnostics.Debug.WriteLine(task.Exception);
                     }
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                }
-            });
+                });
+        }
+
+        public void addToShoppingCart()
+        {
+
+        }
+
+        public void doNotAddToShoppingCart()
+        {
+
         }
 
         // When the current voice recognition session stops.
@@ -218,6 +258,21 @@ namespace ShopLens.Droid
                 else if (matches[0] == choosePicCmd)
                 {
                     PickOnClick(this, new EventArgs());
+                }
+            }
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            if (requestCode == REQUEST_PERMISSION)
+            {
+                if (grantResults[0] == Permission.Denied)
+                {
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                }
+                else
+                {
+                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
                 }
             }
         }
