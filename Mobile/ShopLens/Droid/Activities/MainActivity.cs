@@ -13,7 +13,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
-using ShopLens.Droid.Notifications;
 using ShopLens.Droid.Helpers;
 using Android.Views;
 
@@ -37,6 +36,7 @@ namespace ShopLens.Droid
         ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
+        CoordinatorLayout rootView;
 
         public readonly string[] ShopLensPermissions =
         {
@@ -45,8 +45,6 @@ namespace ShopLens.Droid
             Manifest.Permission.WriteExternalStorage
         };
 
-        private Button voiceCommandButton;
-        CoordinatorLayout rootView;
 
         static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
