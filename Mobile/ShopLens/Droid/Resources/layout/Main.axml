@@ -1,4 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/root_view">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -6,32 +11,52 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px" >
+   
+    <RelativeLayout 
+        android:id="@+id/RelativeLayout01" 
+        android:layout_width="fill_parent" 
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp">
+		<Button
+			android:text="Voice Commands"
+			android:id="@+id/MainRecordingButton"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_centerInParent="true"
+			android:contentDescription="Voice commands." />
+
+    </RelativeLayout>
+    
     <Button
         android:text="Text voicer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TextVoicerButton"
-	  android:contentDescription="Text voicer."/>
+	    android:contentDescription="Text voicer."/>
     <Button
         android:text="Speech Recognizer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/SpeechButton"
-	  android:contentDescription="Speech recognizer and recording voicer."/>
+	    android:contentDescription="Speech recognizer and recording voicer."/>
     <Button
         android:text="Camera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/CameraButton"
-	  android:contentDescription="Camera."/>
+	    android:contentDescription="Camera."/>
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ShoppingListButton"
-        android:text="Shopping List" />
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/ShoppingListButton"
+      android:text="Shopping List"
+      android:contentDescription="Shopping list." />
     <Button
-        android:text="Shopping Cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ShoppingCartButton" />
+      android:text="Shopping Cart"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/ShoppingCartButton"
+      android:contentDescription="Shopping cart." />
 </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
