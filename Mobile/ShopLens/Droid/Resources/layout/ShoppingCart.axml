@@ -13,17 +13,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_width="fill_parent">
-        <EditText 
-            android:hint="Item's name" 
-            android:id="@+id/ShopCartAddItemEditText"
-            android:layout_height="wrap_content" 
-            android:layout_weight="1"
-            android:layout_width="fill_parent" />
-        <Button
-            android:id="@+id/ShopCartAddItemButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add" />
+		<EditText
+			android:hint="Item's name"
+			android:id="@+id/ShopCartAddItemEditText"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_width="fill_parent"
+			android:contentDescription="Product to be added." />
+		<Button
+			android:id="@+id/ShopCartAddItemButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Add"
+			android:contentDescription="Add item to cart." />
+		<Button
+			android:id="@+id/ShopCartRecVoice"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Voice"
+			android:contentDescription="Voice commands." />
     </LinearLayout>
     
     <ListView
