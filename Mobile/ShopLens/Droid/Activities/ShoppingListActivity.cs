@@ -140,12 +140,24 @@ namespace ShopLens.Droid
 
                 if (addProductRegex.IsMatch(matches[0]))
                 {
+                    addItemButton.Enabled = false;
                     string itemToAdd = string.Join("", matches[0].Skip(cmdAddProduct.Length + 1)).FirstCharToUpper();
                     string endMessage = itemToAdd + " was added to your shopping list.";
 
                     AddStringToList(itemToAdd);
 
-                    SpeakOut(endMessage);
+                    Task.Run(() =>
+                    { 
+                        SpeakOut(endMessage);
+
+                    }).ContinueWith((t) =>
+                    {
+                        if (t.IsFaulted)
+                        {
+                            System.Diagnostics.Debug.WriteLine(t.Exception);
+                        }
+                        addItemButton.Enabled = true;
+                    });
                 }
             }
         }

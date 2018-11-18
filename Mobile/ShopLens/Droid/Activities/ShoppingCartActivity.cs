@@ -124,7 +124,7 @@ namespace ShopLens.Droid
                 if (matches[0] == voiceCartCmd)
                 {
                     int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
-                    string endMessage = "Voicing of cart complete.";
+                    string endMessage = "Voicing of shopping cart complete.";
 
                     Task.Run(() =>
                     {
@@ -147,12 +147,24 @@ namespace ShopLens.Droid
 
                 if (addProductRegex.IsMatch(matches[0]))
                 {
+                    addItemButton.Enabled = false;
                     string itemToAdd = string.Join("", matches[0].Skip(cmdAddProduct.Length + 1)).FirstCharToUpper();
-                    string endMessage = itemToAdd + " was added to your cart.";
+                    string endMessage = itemToAdd + " was added to your shopping cart.";
 
                     AddStringToList(itemToAdd);
 
-                    SpeakOut(endMessage);
+                    Task.Run(() =>
+                    {
+                        SpeakOut(endMessage);
+
+                    }).ContinueWith((t) =>
+                    {
+                        if (t.IsFaulted)
+                        {
+                            System.Diagnostics.Debug.WriteLine(t.Exception);
+                        }
+                        addItemButton.Enabled = true;
+                    });
                 }
             }
         }
