@@ -55,6 +55,7 @@ namespace ShopLens.Droid
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
         private CoordinatorLayout rootView;
+        private string guess;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
         private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
@@ -210,8 +211,8 @@ namespace ShopLens.Droid
                     var results = await classificator.ClassifyImageAsync(stream.ToArray());
 
                     prefs = new ActivityPreferences(this, PREFS_NAME);
-                    var guess = results.OrderByDescending(x => x.Value).First().Key;
-                    prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+                    guess = results.OrderByDescending(x => x.Value).First().Key;
+                    
                     tts.Speak(
                         $"This is. {guess}",
                         QueueMode.Flush,
@@ -238,6 +239,7 @@ namespace ShopLens.Droid
 
         public void addToShoppingCart()
         {
+            prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
             new MessageBarCreator(rootView, "Product was added.");
         }
 
