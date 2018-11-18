@@ -32,7 +32,8 @@ namespace ShopLens.Droid
         public readonly string[] ShopLensPermissions =
         {
             Manifest.Permission.RecordAudio,
-            Manifest.Permission.Camera
+            Manifest.Permission.Camera,
+            Manifest.Permission.WriteExternalStorage
         };
 
         private Button voiceCommandButton;

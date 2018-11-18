@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShopLens", "ShopLens\ShopLens.shproj", "{96116E4F-89D6-4260-8A3F-E358DC24B460}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLens.Droid", "Droid\ShopLens.Droid.csproj", "{C9A1F13C-C165-4F1A-9B77-494622B5657B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRecognitionMobile", "ImageRecognitionMobile\ImageRecognitionMobile.csproj", "{DE6726C1-E1F5-40D8-8583-D3C519F85EBE}"

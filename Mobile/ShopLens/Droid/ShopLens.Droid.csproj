@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\VoiceRecognizerHelper.cs" />
     <Compile Include="IO\IDirectoryCreator.cs" />
     <Compile Include="Notifications\ErrorDialogCreator.cs" />
