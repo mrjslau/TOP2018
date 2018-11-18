@@ -11,6 +11,7 @@ using System;
 using ShopLens.Droid.Helpers;
 using Android.Runtime;
 
+using Android.Support.Design.Widget;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using Android.Support.V4.Widget;
@@ -47,7 +48,7 @@ namespace ShopLens.Droid
         ListView leftDrawer;
         List<String> menuSet = new List<String>();
         ArrayAdapter menuAdapter;
-
+        NavigationView navView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -85,14 +86,14 @@ namespace ShopLens.Droid
             // Get our button from the layout resource,
             // and attach an event to it.
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
-            leftDrawer = FindViewById<ListView>(Resource.Id.LeftDrawerListView);
+            //leftDrawer = FindViewById<ListView>(Resource.Id.LeftDrawerListView);
             toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
             SetSupportActionBar(toolbar);
 
             menuSet.Add("Shopping list");
             menuSet.Add("Shopping cart");
             menuAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, menuSet);
-            leftDrawer.Adapter = menuAdapter;
+            //leftDrawer.Adapter = menuAdapter;
 
             drawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -105,7 +106,26 @@ namespace ShopLens.Droid
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             drawerToggle.SyncState();
 
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            navView = FindViewById<NavigationView>(Resource.Id.NavView);
+
+            navView.NavigationItemSelected += (sender, e) =>
+            {
+                switch(e.MenuItem.ItemId)
+                {
+                    case Resource.Id.nav_camera:
+                        var intentCam = new Intent(this, typeof(CameraActivity));
+                        StartActivity(intentCam);
+                        break;
+                    case Resource.Id.nav_shoppin_cart:
+                        var intentCart = new Intent(this, typeof(ShoppingCartActivity));
+                        StartActivity(intentCart);
+                        break;
+                    case Resource.Id.nav_shoppin_list:
+                        var intent = new Intent(this, typeof(ShoppingListActivity));
+                        StartActivity(intent);
+                        break;
+                }
+            };
 
             Button textVoicerButton = FindViewById<Button>(Resource.Id.TextVoicerButton);
             Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);

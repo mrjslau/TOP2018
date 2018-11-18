@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_camera"
+          android:title="Camera"></item>
+    <item android:id="@+id/nav_shoppin_cart"
+          android:title="Shopping Cart"></item>
+    <item android:id="@+id/nav_shoppin_list"
+          android:title="Shopping List"></item>
+</menu>
