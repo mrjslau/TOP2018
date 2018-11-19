@@ -55,17 +55,6 @@ namespace ShopLens.Droid
             // We need to request user permissions.
             if ((int)Build.VERSION.SdkInt >= 23)
             {
-                foreach (string permission in ShopLensPermissions)
-                {
-                    if (CheckSelfPermission(permission) == Permission.Denied)
-                    {
-                        if (ShouldShowRequestPermissionRationale(permission))
-                        {
-                            // TO DO: a snackbar needs to explain why we need certain permissions.
-                        }
-                    }
-                }
-
                 RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
             
