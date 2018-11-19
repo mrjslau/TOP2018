@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/NavItemCamera"
+          android:title="Camera"/>
+    <item android:id="@+id/NavItemShoppingCart"
+          android:title="Shopping Cart"/>
+    <item android:id="@+id/NavItemShoppingList"
+          android:title="Shopping List"/>
+    <item android:id="@+id/NavItemTextToSpeech"
+          android:title="Text to Speech"/>
+    <item android:id="@+id/NavItemSpeechRecogniser"
+          android:title="Speech Recogniser"/>
+</menu>

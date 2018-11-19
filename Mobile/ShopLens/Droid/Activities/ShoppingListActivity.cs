@@ -18,7 +18,7 @@ using ShopLens.Extensions;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingListActivity")]
+    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingListActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
     {
         EditText addItemEditText;
@@ -108,13 +108,13 @@ namespace ShopLens.Droid
 
         public void OnResults(Bundle results)
         {
-            var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)[0];
-            if (!string.IsNullOrEmpty(matches))
+            var recognitionResults = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)[0];
+            if (!string.IsNullOrEmpty(recognitionResults))
             {
                 string cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
                 Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
-                if (matches == voiceListCmd)
+                if (recognitionResults == voiceListCmd)
                 {
                     int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
                     string endMessage = "Voicing of shopping list complete.";
@@ -138,10 +138,10 @@ namespace ShopLens.Droid
                     }); 
                 }
 
-                if (addProductRegex.IsMatch(matches))
+                if (addProductRegex.IsMatch(recognitionResults))
                 {
                     addItemButton.Enabled = false;
-                    string itemToAdd = matches.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
+                    string itemToAdd = recognitionResults.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
                     string endMessage = itemToAdd + " was added to your shopping list.";
 
                     AddStringToList(itemToAdd);
@@ -157,7 +157,7 @@ namespace ShopLens.Droid
                             System.Diagnostics.Debug.WriteLine(t.Exception);
                         }
                         addItemButton.Enabled = true;
-                    });
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }

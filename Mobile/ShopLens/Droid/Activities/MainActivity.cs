@@ -3,14 +3,18 @@ using Android.App;
 using Android.Content;
 using Android.Widget;
 using Android.OS;
+using Android.Runtime;
 using Android.Content.PM;
-using PCLAppConfig;
 using Android.Speech;
 using System;
-using Android.Runtime;
+
+using PCLAppConfig;
 using Android.Support.Design.Widget;
-using ShopLens.Droid.Notifications;
+using Android.Support.V4.Widget;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.V7.App;
 using ShopLens.Droid.Helpers;
+using Android.Views;
 
 public enum ActivityIds
 {
@@ -22,11 +26,17 @@ public enum ActivityIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : Activity, IRecognitionListener
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme")]
+    public class MainActivity : AppCompatActivity, IRecognitionListener
     {
         Lazy<SpeechRecognizer> commandRecognizer;
         Intent speechIntent;
+        Button voiceCommandButton;
+        SupportToolbar toolbar;
+        ActionBarDrawerToggle drawerToggle;
+        DrawerLayout drawerLayout;
+        NavigationView navView;
+        CoordinatorLayout rootView;
 
         public readonly string[] ShopLensPermissions =
         {
@@ -35,10 +45,8 @@ namespace ShopLens.Droid
             Manifest.Permission.WriteExternalStorage
         };
 
-        private Button voiceCommandButton;
-        CoordinatorLayout rootView;
 
-        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
+        static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -74,47 +82,54 @@ namespace ShopLens.Droid
                 commandRecognizer.Value.SetRecognitionListener(this);
             }
 
-            // Get our button from the layout resource,
-            // and attach an event to it.
-            Button textVoicerButton = FindViewById<Button>(Resource.Id.TextVoicerButton);
-            Button cameraButton = FindViewById<Button>(Resource.Id.CameraButton);
-            Button speechButton = FindViewById<Button>(Resource.Id.SpeechButton);
-            Button shoppingListButton = FindViewById<Button>(Resource.Id.ShoppingListButton);
-            Button shoppingCartButton = FindViewById<Button>(Resource.Id.ShoppingCartButton);
+            // Find Resources
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
+            toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
+            navView = FindViewById<NavigationView>(Resource.Id.NavView);
             rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
             voiceCommandButton = FindViewById<Button>(Resource.Id.MainRecordingButton);
 
-            textVoicerButton.Click += (sender, e) =>
-            {
-                var intent = new Intent(this, typeof(TextVoicerActivity));
-                StartActivity(intent);
-            };
+            drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                Resource.String.openDrawer,
+                Resource.String.closeDrawer
+            );
+            drawerLayout.AddDrawerListener(drawerToggle);
+            SetSupportActionBar(toolbar);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            drawerToggle.SyncState();
 
-            cameraButton.Click += (sender, e) =>
-            {
-                var intent = new Intent(this, typeof(CameraActivity));
-                StartActivity(intent);
-            };
-
-            speechButton.Click += (sender, e) =>
-            {
-                var intent = new Intent(this, typeof(SpeechActivity));
-                StartActivity(intent);
-            };
-
-            shoppingListButton.Click += (sender, e) =>
-            {
-                var intent = new Intent(this, typeof(ShoppingListActivity));
-                StartActivity(intent);
-            };
-
-            shoppingCartButton.Click += (sender, e) =>
-            {
-                var intent = new Intent(this, typeof(ShoppingCartActivity));
-                StartActivity(intent);
-            };
-
+            // Events
             voiceCommandButton.Click += RecogniseVoice;
+
+            navView.NavigationItemSelected += (sender, e) =>
+            {
+                switch (e.MenuItem.ItemId)
+                {
+                    case Resource.Id.NavItemCamera:
+                        var intentCam = new Intent(this, typeof(CameraActivity));
+                        StartActivity(intentCam);
+                        break;
+                    case Resource.Id.NavItemShoppingCart:
+                        var intentCart = new Intent(this, typeof(ShoppingCartActivity));
+                        StartActivity(intentCart);
+                        break;
+                    case Resource.Id.NavItemShoppingList:
+                        var intentList = new Intent(this, typeof(ShoppingListActivity));
+                        StartActivity(intentList);
+                        break;
+                    case Resource.Id.NavItemTextToSpeech:
+                        var intentTTS = new Intent(this, typeof(TextVoicerActivity));
+                        StartActivity(intentTTS);
+                        break;
+                    case Resource.Id.NavItemSpeechRecogniser:
+                        var intentSpeech = new Intent(this, typeof(SpeechActivity));
+                        StartActivity(intentSpeech);
+                        break;
+                }
+            };
         }
 
         void RecogniseVoice(object sender, EventArgs e)
@@ -153,6 +168,12 @@ namespace ShopLens.Droid
                     voiceCommandButton.Text = matches[0];
                 }
             }
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            drawerToggle.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(item);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
