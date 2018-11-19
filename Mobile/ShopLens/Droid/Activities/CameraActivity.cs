@@ -105,7 +105,7 @@ namespace ShopLens.Droid
 
                 shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart), 
                     Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage), 
-                    Resources.GetString(Resource.String.negativeMessage), addToShoppingCart, doNotAddToShoppingCart);
+                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate {});
                 shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
@@ -246,11 +246,6 @@ namespace ShopLens.Droid
         {
             prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
             shoppingCartMessageBar.Show();
-        }
-
-        public void DoNotAddToShoppingCart()
-        {
-
         }
 
         // When the current voice recognition session stops.

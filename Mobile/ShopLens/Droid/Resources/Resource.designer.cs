@@ -5150,14 +5150,17 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0a0020
 			public const int character_counter_pattern = 2131361824;
 			
-			// aapt resource value: 0x7f0a002c
-			public const int closeDrawer = 2131361836;
+			// aapt resource value: 0x7f0a0031
+			public const int closeDrawer = 2131361841;
 			
 			// aapt resource value: 0x7f0a002a
 			public const int messageSpeakNow = 2131361834;
 			
-			// aapt resource value: 0x7f0a002b
-			public const int openDrawer = 2131361835;
+			// aapt resource value: 0x7f0a002e
+			public const int negativeMessage = 2131361838;
+			
+			// aapt resource value: 0x7f0a0030
+			public const int openDrawer = 2131361840;
 			
 			// aapt resource value: 0x7f0a0021
 			public const int password_toggle_content_description = 2131361825;
@@ -5174,11 +5177,23 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0a0025
 			public const int path_password_strike_through = 2131361829;
 			
+			// aapt resource value: 0x7f0a002d
+			public const int positiveMessage = 2131361837;
+			
 			// aapt resource value: 0x7f0a0011
 			public const int search_menu_title = 2131361809;
 			
+			// aapt resource value: 0x7f0a002b
+			public const int shoppingCart = 2131361835;
+			
+			// aapt resource value: 0x7f0a002c
+			public const int shoppingCartQuestion = 2131361836;
+			
 			// aapt resource value: 0x7f0a0026
 			public const int status_bar_notification_info_overflow = 2131361830;
+			
+			// aapt resource value: 0x7f0a002f
+			public const int successMessage = 2131361839;
 			
 			static String()
 			{
