@@ -79,15 +79,15 @@ namespace ShopLens.Droid
             }
         }
 
-        private void SpeakOut(string message)
-        {
+        private void SpeakOut(string message, int checkDelay)
+        {                
             if (!string.IsNullOrEmpty(message))
             {
                 tts.Speak(message, QueueMode.Flush, null, null);
 
                 while (tts.IsSpeaking)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(checkDelay);
                 }
             }
         }
@@ -112,6 +112,7 @@ namespace ShopLens.Droid
             if (!string.IsNullOrEmpty(recognitionResults))
             {
                 string cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
+                int sessionCheckDelay = int.Parse(ConfigurationManager.AppSettings["VoicerCheckDelay"]);
                 Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
                 if (recognitionResults == voiceListCmd)
@@ -123,11 +124,11 @@ namespace ShopLens.Droid
                     {
                         foreach (string item in items)
                         {
-                            SpeakOut(item);
+                            SpeakOut(item, sessionCheckDelay);
                             Thread.Sleep(voicerAwaitTime);
                         }
 
-                        SpeakOut(endMessage);
+                        SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
                     {
@@ -148,7 +149,7 @@ namespace ShopLens.Droid
 
                     Task.Run(() =>
                     { 
-                        SpeakOut(endMessage);
+                        SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
                     {
