@@ -3,4 +3,9 @@
     <string name="app_name">ShopLens.Droid</string>
     
     <string name="messageSpeakNow">Speak now!</string>
+    <string name="shoppingCart">ShoppingCart</string>
+    <string name="shoppingCartQuestion">Would you like to add this product to your shopping cart?</string>
+    <string name="positiveMessage">Yes</string>
+    <string name="negativeMessage">No</string>
+    <string name="successMessage">Product was added.</string>
 </resources>

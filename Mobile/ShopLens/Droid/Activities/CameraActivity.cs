@@ -103,9 +103,10 @@ namespace ShopLens.Droid
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
                 RecVoice.Click += RecogniseVoice;
 
-                shoppingCartErrorDialog = new ErrorDialogCreator(this, "Shopping cart", "Would you like to add this product to your shopping cart?",
-                    "Yes", "No", addToShoppingCart, doNotAddToShoppingCart);
-                shoppingCartMessageBar = new MessageBarCreator(rootView, "Product was added.");
+                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart), 
+                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage), 
+                    Resources.GetString(Resource.String.negativeMessage), addToShoppingCart, doNotAddToShoppingCart);
+                shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
             tts = new TextToSpeech(this, this);
@@ -241,13 +242,13 @@ namespace ShopLens.Droid
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        public void addToShoppingCart()
+        public void AddToShoppingCart()
         {
             prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
             shoppingCartMessageBar.Show();
         }
 
-        public void doNotAddToShoppingCart()
+        public void DoNotAddToShoppingCart()
         {
 
         }
