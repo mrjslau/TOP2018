@@ -9,12 +9,12 @@ using Java.Util;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "TextVoicerActivity", Theme = "@style/MyTheme")]
+    [Activity(Label = "TextVoicerActivity", Theme = "@style/ShopLensTheme")]
     public class TextVoicerActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
-        private EditText editTextToVoice;
-        private Button textToVoiceButton;
-        private TextToSpeech tts;
+        EditText editTextToVoice;
+        Button textToVoiceButton;
+        TextToSpeech tts;
 
         public void OnInit([GeneratedEnum] OperationResult status)
         {
@@ -30,7 +30,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void SpeakOut()
+        void SpeakOut()
         {
             string text = editTextToVoice.Text;
             if (!string.IsNullOrEmpty(text))

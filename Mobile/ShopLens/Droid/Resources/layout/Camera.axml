@@ -19,13 +19,16 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<Button
+        android:layout_margin="10dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:minWidth="25px"
 		android:minHeight="25px"
 		android:id="@+id/btntakepicture"
 		android:text="Take image"
-		android:contentDescription="Take photo."/>
+		android:contentDescription="Take photo."
+        android:background="@drawable/buttons"
+        android:textColor="#FFFFFF"/>
 	<ImageView
 		android:src="@android:drawable/ic_menu_gallery"
 		android:layout_width="match_parent"
@@ -33,17 +36,23 @@
 		android:id="@+id/ImgTakeimg"
 		android:contentDescription="The shown photo."/>
 	<Button
+        android:layout_margin="10dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/btnPickImage"
 		android:text="Pick image"
-		android:contentDescription="Pick an image from your device."/>
+		android:contentDescription="Pick an image from your device."
+        android:background="@drawable/buttons"
+        android:textColor="#FFFFFF"/>
 	<Button
+        android:layout_margin="10dp"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/btnRecVoiceCamera"
 		android:text="Recognize voice commands"
-		android:contentDescription="Recognize voice commands."/>
+		android:contentDescription="Recognize voice commands."
+        android:background="@drawable/buttons"
+        android:textColor="#FFFFFF"/>
 </LinearLayout>
 
 	<ProgressBar

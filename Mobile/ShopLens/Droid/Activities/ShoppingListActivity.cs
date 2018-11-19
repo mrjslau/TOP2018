@@ -18,7 +18,7 @@ using ShopLens.Extensions;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingListActivity")]
+    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingListActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
     {
         EditText addItemEditText;

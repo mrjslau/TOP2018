@@ -31,7 +31,7 @@ using Android.Support.Design.Widget;
 namespace ShopLens.Droid
 {
 
-    [Activity(Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
