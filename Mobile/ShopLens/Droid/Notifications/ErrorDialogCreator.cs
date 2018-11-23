@@ -7,13 +7,15 @@ namespace ShopLens.Droid.Notifications
     public class ErrorDialogCreator
     {
         private AlertDialog.Builder alertDialog;
+        private Context context;
+        private string title;
+        private string message;
 
         public ErrorDialogCreator (Context context, string title, string message, string neutralButton) : this(context, title, message)
         {
             alertDialog.SetNeutralButton(neutralButton, delegate {
                 alertDialog.Dispose();
             });
-            alertDialog.Show();
         }
 
         public ErrorDialogCreator(Context context, string title, string message, string positiveButton, string negativeButton, 
@@ -24,15 +26,22 @@ namespace ShopLens.Droid.Notifications
             });
             alertDialog.SetNegativeButton(negativeButton, delegate {
                 negativeMethod();
-            });
-            alertDialog.Show();
+            });  
         }
 
         private ErrorDialogCreator(Context context, string title, string message)
         {
+            this.context = context;
+            this.title = title;
+            this.message = message;
             alertDialog = new AlertDialog.Builder(context);
             alertDialog.SetTitle(title);
             alertDialog.SetMessage(message);
+        }
+
+        public void Show()
+        {
+            alertDialog.Show();
         }
     }
 }

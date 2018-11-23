@@ -31,7 +31,7 @@ using Android.Support.Design.Widget;
 namespace ShopLens.Droid
 {
 
-    [Activity(Label = "CameraActivity")]
+    [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
     public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
@@ -55,6 +55,9 @@ namespace ShopLens.Droid
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
         private CoordinatorLayout rootView;
+        private string guess;
+        private ErrorDialogCreator shoppingCartErrorDialog;
+        private MessageBarCreator shoppingCartMessageBar;
 
         private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
         private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
@@ -99,6 +102,11 @@ namespace ShopLens.Droid
 
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
                 RecVoice.Click += RecogniseVoice;
+
+                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart), 
+                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage), 
+                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate {});
+                shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
             tts = new TextToSpeech(this, this);
@@ -210,37 +218,34 @@ namespace ShopLens.Droid
                     var results = await classificator.ClassifyImageAsync(stream.ToArray());
 
                     prefs = new ActivityPreferences(this, PREFS_NAME);
-                    var guess = results.OrderByDescending(x => x.Value).First().Key;
-                    prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+                    guess = results.OrderByDescending(x => x.Value).First().Key;
+                    
                     tts.Speak(
                         $"This is. {guess}",
                         QueueMode.Flush,
                         null,
                         null);
-                    new ErrorDialogCreator(this, "Shopping cart", "Would you like to add to thid product to your shopping cart?", "Yes", "No", 
-                        addToShoppingCart, doNotAddToShoppingCart);
-                    new MessageBarCreator(rootView, "Product was added.");
+                    
                 }
             })
                 .ContinueWith(task =>
                 {
                     progressBar.Visibility = ViewStates.Gone;
-                    
                     if (task.IsFaulted)
                     {
                         System.Diagnostics.Debug.WriteLine(task.Exception);
                     }
-                });
+                    if (task.IsCompletedSuccessfully)
+                    {
+                        shoppingCartErrorDialog.Show();                        
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        public void addToShoppingCart()
+        public void AddToShoppingCart()
         {
-
-        }
-
-        public void doNotAddToShoppingCart()
-        {
-
+            prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
+            shoppingCartMessageBar.Show();
         }
 
         // When the current voice recognition session stops.

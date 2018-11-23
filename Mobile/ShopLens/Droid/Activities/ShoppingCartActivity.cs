@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingCartActivity")]
+    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingCartActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
@@ -85,7 +85,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void SpeakOut(string message)
+        private void SpeakOut(string message, int checkDelay)
         {
             if (!string.IsNullOrEmpty(message))
             {
@@ -93,7 +93,7 @@ namespace ShopLens.Droid
 
                 while (tts.IsSpeaking)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(checkDelay);
                 }
             }
         }
@@ -115,13 +115,14 @@ namespace ShopLens.Droid
 
         public void OnResults(Bundle results)
         {
-            var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)[0];
-            if (!string.IsNullOrEmpty(matches))
+            var recognitionResults = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)[0];
+            if (!string.IsNullOrEmpty(recognitionResults))
             {
                 string cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
+                int sessionCheckDelay = int.Parse(ConfigurationManager.AppSettings["VoicerCheckDelay"]);
                 Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
-                if (matches == voiceCartCmd)
+                if (recognitionResults == voiceCartCmd)
                 {
                     int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
                     string endMessage = "Voicing of shopping cart complete.";
@@ -130,11 +131,11 @@ namespace ShopLens.Droid
                     {
                         foreach (string item in prefs.GetPreferencesToList())
                         {
-                            SpeakOut(item);
+                            SpeakOut(item, sessionCheckDelay);
                             Thread.Sleep(voicerAwaitTime);
                         }
 
-                        SpeakOut(endMessage);
+                        SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
                     {
@@ -145,17 +146,17 @@ namespace ShopLens.Droid
                     });
                 }
 
-                if (addProductRegex.IsMatch(matches))
+                if (addProductRegex.IsMatch(recognitionResults))
                 {
                     addItemButton.Enabled = false;
-                    string itemToAdd = matches.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
+                    string itemToAdd = recognitionResults.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
                     string endMessage = itemToAdd + " was added to your shopping cart.";
 
                     AddStringToList(itemToAdd);
 
                     Task.Run(() =>
                     {
-                        SpeakOut(endMessage);
+                        SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
                     {
@@ -164,7 +165,7 @@ namespace ShopLens.Droid
                             System.Diagnostics.Debug.WriteLine(t.Exception);
                         }
                         addItemButton.Enabled = true;
-                    });
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
         }

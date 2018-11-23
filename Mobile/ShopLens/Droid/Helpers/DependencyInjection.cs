@@ -11,11 +11,11 @@ namespace ShopLens.Droid.Helpers
 
         public static void RegisterInterfaces()
         {
-            // Singleton-like
+            // Singleton-like.
             Container.RegisterType<IDirectoryCreator, ShopLensPictureDirectoryCreator>(
                 new ContainerControlledLifetimeManager());
 
-            // New instance each time resolved
+            // New instance each time resolved.
             Container.RegisterType<IAsyncImageClassificator, WebClassificator>(
                 new ContainerControlledTransientManager());
         }

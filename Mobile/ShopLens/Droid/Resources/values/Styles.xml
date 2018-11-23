@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    
+    <style name="ShopLensTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#219653</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+    
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">#F5F5F5</item>
+        <item name="spinBars">true</item>
+    </style>
+    
+</resources>

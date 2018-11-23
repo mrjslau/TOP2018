@@ -12,7 +12,7 @@ using ShopLens.Droid.Helpers;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "SpeechActivity")]
+    [Activity(Label = "SpeechActivity", Theme = "@style/ShopLensTheme")]
     public class SpeechActivity : Activity, TextToSpeech.IOnInitListener
     {
         bool isRecording;
