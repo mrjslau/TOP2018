@@ -151,11 +151,6 @@ namespace ShopLens.Droid
                     var intent = new Intent(this, typeof(ShoppingListActivity));
                     StartActivity(intent);
                 }
-                // For debugging purposes.
-                else
-                {
-                    voiceCommandButton.Text = matches[0];
-                }
             }
         }
 
@@ -167,7 +162,7 @@ namespace ShopLens.Droid
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            if(requestCode == REQUEST_PERMISSION)
+            if (requestCode == REQUEST_PERMISSION)
             {
                 for (int i = 0; i <= permissions.Length - 1; i++)
                 {
