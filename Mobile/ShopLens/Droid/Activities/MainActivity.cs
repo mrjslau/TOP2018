@@ -117,6 +117,10 @@ namespace ShopLens.Droid
                         var intentSpeech = new Intent(this, typeof(SpeechActivity));
                         StartActivity(intentSpeech);
                         break;
+                    case Resource.Id.NavItemCamera2:
+                        var intentCamera2 = new Intent(this, typeof(Camera2Activity));
+                        StartActivity(intentCamera2);
+                        break;
                 }
             };
         }
