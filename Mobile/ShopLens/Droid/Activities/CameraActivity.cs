@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Android;
 using Android.Provider;
@@ -10,6 +11,8 @@ using Android.Graphics;
 using Android.Content.PM;
 using Android.App;
 using Android.Content;
+using Android.Gms.Vision;
+using Android.Gms.Vision.Texts;
 using Android.OS;
 using Android.Speech.Tts;
 using Android.Widget;
@@ -44,6 +47,7 @@ namespace ShopLens.Droid
         ProgressBar progressBar;
 
         SpeechRecognizer commandRecognizer;
+        private TextRecognizer textRecognizer;
         Intent speechIntent;
 
         TextToSpeech tts;
@@ -110,6 +114,7 @@ namespace ShopLens.Droid
             }
 
             tts = new TextToSpeech(this, this);
+            textRecognizer = new TextRecognizer.Builder(ApplicationContext).Build();
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -209,6 +214,28 @@ namespace ShopLens.Droid
             {
                 var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
                 image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
+                
+                if (!textRecognizer.IsOperational)
+                {
+                    System.Diagnostics.Debug.WriteLine("[Warning]: Text recognizer not operational.");
+                }
+                else
+                {
+                    var frame = new Frame.Builder().SetBitmap(image).Build();
+                    var items = textRecognizer.Detect(frame);
+                    var ocrResultBuilder = new StringBuilder();
+                    for (var i = 0; i < items.Size(); i++)
+                    {
+                        var item = (TextBlock)items.ValueAt(i);
+                        ocrResultBuilder.Append(item.Value);
+                        ocrResultBuilder.Append("/");
+                    }
+
+                    var ocrResult = ocrResultBuilder.ToString();
+                    if (!string.IsNullOrEmpty(ocrResult))
+                        new MessageBarCreator(rootView, ocrResultBuilder.ToString()).Show();
+                }
+                
                 using (var stream = new MemoryStream())
                 {
                     // 0 because compression quality is not applicable to .png
