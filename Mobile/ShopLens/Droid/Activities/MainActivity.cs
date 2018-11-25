@@ -48,6 +48,7 @@ namespace ShopLens.Droid
 
         string needUserAnswerId;
         string askUserToRepeat;
+        string noTalkBackIntentKey;
 
         public readonly string[] ShopLensPermissions =
         {
@@ -67,6 +68,8 @@ namespace ShopLens.Droid
             DependencyInjection.RegisterInterfaces();
 
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
             // Check if TalkBack is Enabled.
             if (!IsTalkBackEnabled())
@@ -106,22 +109,16 @@ namespace ShopLens.Droid
 
             navView.NavigationItemSelected += (sender, e) =>
             {
-                var noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
                 switch (e.MenuItem.ItemId)
                 {
                     case Resource.Id.NavItemCamera:
-                        var intentCam = new Intent(this, typeof(CameraActivity));
-                        StartActivity(intentCam);
+                        StartCameraIntent();
                         break;
                     case Resource.Id.NavItemShoppingCart:
-                        var intentCart = new Intent(this, typeof(ShoppingCartActivity));
-                        intentCart.PutExtra(noTalkBackIntentKey, noTalkBack);
-                        StartActivity(intentCart);
+                        StartCartIntent();
                         break;
                     case Resource.Id.NavItemShoppingList:
-                        var intentList = new Intent(this, typeof(ShoppingListActivity));
-                        intentList.PutExtra(noTalkBackIntentKey, noTalkBack);
-                        StartActivity(intentList);
+                        StartListIntent();
                         break;
                 }
             };
@@ -174,10 +171,7 @@ namespace ShopLens.Droid
                 prefs.Edit().PutBoolean("FirstTime", false).Commit();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            else return false;
         }
 
         private void RunUserTutorial()
@@ -229,18 +223,15 @@ namespace ShopLens.Droid
 
             if (results == ConfigurationManager.AppSettings["CmdOpenCamera"])
             {
-                var intent = new Intent(this, typeof(CameraActivity));
-                StartActivity(intent);
+                StartCameraIntent();
             }
             else if (results == ConfigurationManager.AppSettings["CmdOpenCart"])
             {
-                var intent = new Intent(this, typeof(ShoppingCartActivity));
-                StartActivity(intent);
+                StartCartIntent();
             }
             else if (results == ConfigurationManager.AppSettings["CmdOpenList"])
             {
-                var intent = new Intent(this, typeof(ShoppingListActivity));
-                StartActivity(intent);
+                StartListIntent();
             }
             else if (results == ConfigurationManager.AppSettings["CmdHelp"])
             {
@@ -255,6 +246,26 @@ namespace ShopLens.Droid
             {
                 tts.Speak(askUserToRepeat, QueueMode.Flush, null, needUserAnswerId);
             }
+        }
+
+        private void StartCameraIntent()
+        {
+            var intentCam = new Intent(this, typeof(CameraActivity));
+            StartActivity(intentCam);
+        }
+
+        private void StartCartIntent()
+        {
+            var intentCart = new Intent(this, typeof(ShoppingCartActivity));
+            intentCart.PutExtra(noTalkBackIntentKey, noTalkBack);
+            StartActivity(intentCart);
+        }
+
+        private void StartListIntent()
+        {
+            var intentList = new Intent(this, typeof(ShoppingListActivity));
+            intentList.PutExtra(noTalkBackIntentKey, noTalkBack);
+            StartActivity(intentList);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
