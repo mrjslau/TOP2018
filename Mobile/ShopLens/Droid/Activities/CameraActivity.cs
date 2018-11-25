@@ -57,9 +57,9 @@ namespace ShopLens.Droid
         private ErrorDialogCreator shoppingCartErrorDialog;
         private MessageBarCreator shoppingCartMessageBar;
 
-        private static readonly int REQUEST_IMAGE = (int)IntentIds.ImageRequest;
-        private static readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
-        private static readonly int PickImageId = (int)IntentIds.PickImageRequest;
+        private static readonly int REQUEST_IMAGE = (int) IntentIds.ImageRequest;
+        private static readonly int REQUEST_PERMISSION = (int) IntentIds.PermissionRequest;
+        private static readonly int PickImageId = (int) IntentIds.PickImageRequest;
         private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
 

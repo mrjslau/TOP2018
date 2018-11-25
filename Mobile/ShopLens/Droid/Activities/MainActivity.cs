@@ -57,7 +57,7 @@ namespace ShopLens.Droid
         };
 
 
-        static readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
+        static readonly int REQUEST_PERMISSION = (int) IntentIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -82,7 +82,7 @@ namespace ShopLens.Droid
             SetContentView(Resource.Layout.Main);
 
             // We need to request user permissions.
-            if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
+            if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
             {
                 RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
