@@ -15,8 +15,10 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using ShopLens.Droid.Helpers;
 using Android.Views;
+using Android.Speech.Tts;
+using Java.Util;
 
-public enum ActivityIds
+public enum IntentIds
 {
     VoiceRequest = 101,
     ImageRequest = 201,
@@ -27,16 +29,21 @@ public enum ActivityIds
 namespace ShopLens.Droid
 {
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme")]
-    public class MainActivity : AppCompatActivity, IRecognitionListener
+    public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
-        Lazy<SpeechRecognizer> commandRecognizer;
-        Intent speechIntent;
-        Button voiceCommandButton;
         SupportToolbar toolbar;
         ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
         CoordinatorLayout rootView;
+
+        ShopLensSpeechRecognizer voiceRecognizer;
+
+        TextToSpeech tts;
+        ShopLensUtteranceProgressListener ttsListener;
+
+        string needUserAnswerId;
+        string askUserToRepeat;
 
         public readonly string[] ShopLensPermissions =
         {
@@ -46,37 +53,38 @@ namespace ShopLens.Droid
         };
 
 
-        static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
+        static readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // We need to request user permissions.
-            if ((int)Build.VERSION.SdkInt >= 23)
-            {
-                RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
-            }
-            
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             DependencyInjection.RegisterInterfaces();
+
+            needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
+            askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
-            commandRecognizer = new Lazy<SpeechRecognizer>(() => SpeechRecognizer.CreateSpeechRecognizer(this));
+            voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
 
-            if (Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]))
+            ttsListener = new ShopLensUtteranceProgressListener(TtsStoppedSpeaking);
+
+            tts = new TextToSpeech(this, this);
+            tts.SetOnUtteranceProgressListener(ttsListener);
+
+            // We need to request user permissions.
+            if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
             {
-                commandRecognizer.Value.SetRecognitionListener(this);
+                RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
-
-            // Find Resources
+           
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
             toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
             navView = FindViewById<NavigationView>(Resource.Id.NavView);
             rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
-            voiceCommandButton = FindViewById<Button>(Resource.Id.MainRecordingButton);
 
             drawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -89,9 +97,6 @@ namespace ShopLens.Droid
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
             drawerToggle.SyncState();
-
-            // Events
-            voiceCommandButton.Click += RecogniseVoice;
 
             navView.NavigationItemSelected += (sender, e) =>
             {
@@ -109,48 +114,76 @@ namespace ShopLens.Droid
                         var intentList = new Intent(this, typeof(ShoppingListActivity));
                         StartActivity(intentList);
                         break;
-                    case Resource.Id.NavItemTextToSpeech:
-                        var intentTTS = new Intent(this, typeof(TextVoicerActivity));
-                        StartActivity(intentTTS);
-                        break;
-                    case Resource.Id.NavItemSpeechRecogniser:
-                        var intentSpeech = new Intent(this, typeof(SpeechActivity));
-                        StartActivity(intentSpeech);
-                        break;
                 }
             };
+            
         }
 
-        void RecogniseVoice(object sender, EventArgs e)
+        public void OnInit([GeneratedEnum] OperationResult status)
         {
-            if (commandRecognizer.IsValueCreated)
+            if (status == OperationResult.Error)
             {
-                speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
-                commandRecognizer.Value.StartListening(speechIntent);
+                tts.SetLanguage(Locale.Default);
+            }
+            else if (status == OperationResult.Success)
+            {
+                tts.SetLanguage(Locale.Us);
+            }
+            // TODO: Make it so that the tutorial only runs when the app is launched for the first time.
+            RunUserTutorial();
+        }
+
+        private void RunUserTutorial()
+        {
+            var message = ConfigurationManager.AppSettings["InitialTutorialMsg"];
+            tts.Speak(message, QueueMode.Flush, null, needUserAnswerId);
+        }
+
+        private void ContinueUserTutorial()
+        {
+            var message = ConfigurationManager.AppSettings["FollowUpTutorialMsg"];
+            tts.Speak(message, QueueMode.Flush, null, needUserAnswerId);
+        }
+
+        private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
+        {
+            if (e.UtteranceId == needUserAnswerId)
+            {
+                voiceRecognizer.RecognizePhrase(this);
             }
         }
 
-        // When the current voice recognition session stops.
-        public void OnResults(Bundle results)
+        private void OnVoiceRecognitionResults(object sender, ShopLensSpeechRecognizedEventArgs e)
         {
-            var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            if (matches.Count > 0)
+            var results = e.Phrase;
+
+            if (results == ConfigurationManager.AppSettings["CmdOpenCamera"])
             {
-                if (matches[0] == ConfigurationManager.AppSettings["CmdOpenCamera"])
-                {
-                    var intent = new Intent(this, typeof(CameraActivity));
-                    StartActivity(intent);
-                }
-                else if (matches[0] == ConfigurationManager.AppSettings["CmdOpenCart"])
-                {
-                    var intent = new Intent(this, typeof(ShoppingCartActivity));
-                    StartActivity(intent);
-                }
-                else if (matches[0] == ConfigurationManager.AppSettings["CmdOpenList"])
-                {
-                    var intent = new Intent(this, typeof(ShoppingListActivity));
-                    StartActivity(intent);
-                }
+                var intent = new Intent(this, typeof(CameraActivity));
+                StartActivity(intent);
+            }
+            else if (results == ConfigurationManager.AppSettings["CmdOpenCart"])
+            {
+                var intent = new Intent(this, typeof(ShoppingCartActivity));
+                StartActivity(intent);
+            }
+            else if (results == ConfigurationManager.AppSettings["CmdOpenList"])
+            {
+                var intent = new Intent(this, typeof(ShoppingListActivity));
+                StartActivity(intent);
+            }
+            else if (results == ConfigurationManager.AppSettings["CmdHelp"])
+            {
+                var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
+                tts.Speak(helpMessage, QueueMode.Flush, null, needUserAnswerId);
+            }
+            else if (results == ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"])
+            {
+                ContinueUserTutorial();
+            }
+            else
+            {
+                tts.Speak(askUserToRepeat, QueueMode.Flush, null, needUserAnswerId);
             }
         }
 
@@ -173,34 +206,6 @@ namespace ShopLens.Droid
                 }
             }
         }
-
-        #region Unimplemented Speech Recognizer Methods
-
-        // When the user starts to speak.
-        public void OnBeginningOfSpeech() { }
-
-        // After the user stops speaking.
-        public void OnEndOfSpeech() { }
-
-        // When a network or recognition error occurs.
-        public void OnError([GeneratedEnum] SpeechRecognizerError error) { }
-
-        // When the app is ready for the user to start speaking.
-        public void OnReadyForSpeech(Bundle @params) { }
-
-        // This method is reserved for adding future events.
-        public void OnEvent(int eventType, Bundle @params) { }
-
-        // When more sound has been received.
-        public void OnBufferReceived(byte[] buffer) { }
-
-        // When the sound level of the voice input stream has changed.
-        public void OnRmsChanged(float rmsdB) { }
-
-        // When partial recognition results are available.
-        public void OnPartialResults(Bundle partialResults) { }
-
-        #endregion
     }
 }
 

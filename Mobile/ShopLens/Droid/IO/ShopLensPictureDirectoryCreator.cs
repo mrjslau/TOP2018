@@ -15,10 +15,7 @@ namespace ShopLens.Droid
         {
             if (!pictureDirectory.Exists())
             {
-                if (!pictureDirectory.Mkdirs())
-                {
-                    throw new SecurityException("Unable to create directory for pictures.");  
-                }
+                pictureDirectory.Mkdirs();
             }
         }
     }

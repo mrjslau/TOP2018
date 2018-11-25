@@ -1,53 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rlshlist"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".ShoppingListActivity"
-    android:background="#B3B3B3">
-    
-    <Button
-        android:layout_margin="10dp"
-        android:id="@+id/ShopListRecVoice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Voice"
-        android:background="@drawable/buttons"
-        android:textColor="#FFFFFF"
-        android:contentDescription="Voice commands."/>
-    
-    <LinearLayout
-        android:id="@+id/ShopListLinearLayout"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/ShopListRecVoice">
-
-        <EditText 
-            android:hint="Item's name" 
-            android:id="@+id/ShopListAddItemEditText"
-            android:layout_height="wrap_content" 
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:contentDescription="Product to be added."/>
-        <Button
-            android:layout_margin="10dp"
-            android:id="@+id/ShopListAddItemButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:background="@drawable/buttons"
-            android:textColor="#FFFFFF"
-            android:contentDescription="Add product to list."/>
-
-    </LinearLayout>
-    
-    <ListView
-        android:id="@+id/ShopListListView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ShopListLinearLayout" />
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/rlshlist"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="10dp"
+	tools:context=".ShoppingListActivity"
+	android:background="#B3B3B3">
+	<LinearLayout
+		android:id="@+id/ShopListLinearLayout"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_below="@id/ShopListRecVoice">
+		<EditText
+			android:hint="Item's name"
+			android:id="@+id/ShopListAddItemEditText"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:layout_width="fill_parent"
+			android:contentDescription="Product to be added."/>
+		<Button
+			android:layout_margin="10dp"
+			android:id="@+id/ShopListAddItemButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Add"
+			android:background="@drawable/buttons"
+			android:textColor="#FFFFFF"
+			android:contentDescription="Add product to list."/>
+	</LinearLayout>
+	<ListView
+		android:id="@+id/ShopListListView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/ShopListLinearLayout" />
 </RelativeLayout>

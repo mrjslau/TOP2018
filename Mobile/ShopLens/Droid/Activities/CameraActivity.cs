@@ -27,12 +27,13 @@ using ShopLens.Droid.Source;
 using Android.Views;
 using ShopLens.Droid.Notifications;
 using Android.Support.Design.Widget;
+using Plugin.SpeechRecognition;
 
 namespace ShopLens.Droid
 {
 
     [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
-    public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
+    public class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         ActivityPreferences prefs;
@@ -42,9 +43,6 @@ namespace ShopLens.Droid
         Button BtnPickImg;
         Button RecVoice;
         ProgressBar progressBar;
-
-        SpeechRecognizer commandRecognizer;
-        Intent speechIntent;
 
         TextToSpeech tts;
 
@@ -59,11 +57,13 @@ namespace ShopLens.Droid
         private ErrorDialogCreator shoppingCartErrorDialog;
         private MessageBarCreator shoppingCartMessageBar;
 
-        private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
-        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
-        private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
+        private static readonly int REQUEST_IMAGE = (int)IntentIds.ImageRequest;
+        private static readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
+        private static readonly int PickImageId = (int)IntentIds.PickImageRequest;
         private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
+        ShopLensSpeechRecognizer contSpeechRecognizer;
+        string recognisedPhrase;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -77,11 +77,8 @@ namespace ShopLens.Droid
 
             if (IsThereAnAppToTakePictures())
             {
-                // Set up a custom speech recognizer in this activity.
-                commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
-                commandRecognizer.SetRecognitionListener(this);
-
                 shopLensPictureDirectoryCreator = DependencyInjection.Container.Resolve<IDirectoryCreator>();
+
                 try
                 {
                     shopLensPictureDirectoryCreator.CreateDirectory(_dir);
@@ -101,15 +98,16 @@ namespace ShopLens.Droid
                 BtnPickImg.Click += PickOnClick;
 
                 RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
-                RecVoice.Click += RecogniseVoice;
 
-                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart), 
-                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage), 
-                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate {});
+                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart),
+                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage),
+                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate { });
                 shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
             tts = new TextToSpeech(this, this);
+            contSpeechRecognizer = new ShopLensSpeechRecognizer(RecogniseVoice);
+            contSpeechRecognizer.RecognizePhrase(this);
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -125,10 +123,9 @@ namespace ShopLens.Droid
             }
         }
 
-        private void RecogniseVoice(object sender, EventArgs e)
+        private void RecogniseVoice(object sender, ShopLensSpeechRecognizedEventArgs e)
         {
-            speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
-            commandRecognizer.StartListening(speechIntent);
+            RecVoice.Text = e.Phrase;
         }
 
         private void PickOnClick(object sender, EventArgs e)
@@ -203,7 +200,7 @@ namespace ShopLens.Droid
         {
             // Run the image recognition task
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
-            
+
             progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
             {
@@ -219,13 +216,13 @@ namespace ShopLens.Droid
 
                     prefs = new ActivityPreferences(this, PREFS_NAME);
                     guess = results.OrderByDescending(x => x.Value).First().Key;
-                    
+
                     tts.Speak(
                         $"This is. {guess}",
                         QueueMode.Flush,
                         null,
                         null);
-                    
+
                 }
             })
                 .ContinueWith(task =>
@@ -237,7 +234,7 @@ namespace ShopLens.Droid
                     }
                     if (task.IsCompletedSuccessfully)
                     {
-                        shoppingCartErrorDialog.Show();                        
+                        shoppingCartErrorDialog.Show();
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -247,67 +244,7 @@ namespace ShopLens.Droid
             prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
             shoppingCartMessageBar.Show();
         }
-
-        // When the current voice recognition session stops.
-        public void OnResults(Bundle results)
-        {
-            var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            if (matches.Count > 0)
-            {
-                if (matches[0] == whatIsThisCmd)
-                {
-                    TakeAPicture(this, new EventArgs());
-                }
-
-                else if (matches[0] == choosePicCmd)
-                {
-                    PickOnClick(this, new EventArgs());
-                }
-            }
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            if (requestCode == REQUEST_PERMISSION)
-            {
-                if (grantResults[0] == Permission.Denied)
-                {
-                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
-                }
-                else
-                {
-                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
-                }
-            }
-        }
-
-        #region Unimplemented Speech Recognizer Methods
-
-        // When the user starts to speak.
-        public void OnBeginningOfSpeech() { }
-
-        // After the user stops speaking.
-        public void OnEndOfSpeech() { }
-
-        // When a network or recognition error occurs.
-        public void OnError([GeneratedEnum] SpeechRecognizerError error) { }
-
-        // When the app is ready for the user to start speaking.
-        public void OnReadyForSpeech(Bundle @params) { }
-
-        // This method is reserved for adding future events.
-        public void OnEvent(int eventType, Bundle @params) { }
-
-        // When more sound has been received.
-        public void OnBufferReceived(byte[] buffer) { }
-
-        // When the sound level of the voice input stream has changed.
-        public void OnRmsChanged(float rmsdB) { }
-
-        // When partial recognition results are available.
-        public void OnPartialResults(Bundle partialResults) { }
-
-        #endregion
+        
     }
 }
 
