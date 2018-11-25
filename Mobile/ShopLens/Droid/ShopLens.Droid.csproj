@@ -173,6 +173,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Camera\CameraActivity.cs" />
+    <Compile Include="Activities\Camera\CameraActivity.Helpers.cs" />
     <Compile Include="Helpers\DependencyInjection.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\VoiceRecognizerHelper.cs" />
@@ -183,7 +185,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\ShopLensPictureDirectoryCreator.cs" />
     <Compile Include="Helpers\BitmapHelper.cs" />
-    <Compile Include="Activities\CameraActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\ShoppingCartActivity.cs" />
     <Compile Include="Activities\ShoppingListActivity.cs" />
