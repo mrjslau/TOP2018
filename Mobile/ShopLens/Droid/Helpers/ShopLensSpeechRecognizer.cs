@@ -4,13 +4,13 @@ using Plugin.SpeechRecognition;
 
 namespace ShopLens.Droid.Helpers
 {
-    public class ShopLensSpeechRecognizer
+    public class ShopLensSpeechRecognizer : ISpeechRecognizer
     {
         public event EventHandler<ShopLensSpeechRecognizedEventArgs> OnPhraseRecognized;
 
-        public ShopLensSpeechRecognizer(Action<object, ShopLensSpeechRecognizedEventArgs> ReactToSpeechInput)
+        public ShopLensSpeechRecognizer(Action<object, ShopLensSpeechRecognizedEventArgs> reactToSpeechInput)
         {
-            OnPhraseRecognized += (obj, eargs) => ReactToSpeechInput(obj, eargs);
+            OnPhraseRecognized += (obj, eargs) => reactToSpeechInput(obj, eargs);
         }
 
         public void RecognizePhrase(Activity activity)
@@ -19,11 +19,11 @@ namespace ShopLens.Droid.Helpers
             activity.RunOnUiThread(ListenForAPhrase);
         }
 
-        private void ListenForAPhrase()
+        public void ListenForAPhrase()
         {
             CrossSpeechRecognition.Current.ListenUntilPause().Subscribe(phrase =>
             {
-                OnPhraseRecognized(this, new ShopLensSpeechRecognizedEventArgs(phrase));
+                OnPhraseRecognized?.Invoke(this, new ShopLensSpeechRecognizedEventArgs(phrase));
             });
         }
     }

@@ -7,14 +7,14 @@ namespace ShopLens.Droid.Helpers
     {
         public event EventHandler<UtteranceIdArgs> OnEndOfSpeaking;
 
-        public ShopLensUtteranceProgressListener(Action<object, UtteranceIdArgs> ReactToEndOfSpeaking)
+        public ShopLensUtteranceProgressListener(Action<object, UtteranceIdArgs> reactToEndOfSpeaking)
         {
-            OnEndOfSpeaking += (obj, eargs) => ReactToEndOfSpeaking(obj, eargs);
+            OnEndOfSpeaking += (obj, eargs) => reactToEndOfSpeaking(obj, eargs);
         }
 
         public override void OnDone(string utteranceId)
         {
-            OnEndOfSpeaking(this, new UtteranceIdArgs(utteranceId));
+            OnEndOfSpeaking?.Invoke(this, new UtteranceIdArgs(utteranceId));
         }
 
         #region Unimplemented UtteranceProgressListener methods
