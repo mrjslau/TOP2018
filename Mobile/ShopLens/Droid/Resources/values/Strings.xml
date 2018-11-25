@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ShopLens.Droid</string>
-  
     <string name="messageSpeakNow">Speak now!</string>
     <string name="shoppingCart">ShoppingCart</string>
     <string name="shoppingCartQuestion">Would you like to add this product to your shopping cart?</string>
@@ -10,5 +8,4 @@
     <string name="successMessage">Product was added.</string>
     <string name="openDrawer">Menu</string>
     <string name="closeDrawer">ShopLens</string>
-
 </resources>

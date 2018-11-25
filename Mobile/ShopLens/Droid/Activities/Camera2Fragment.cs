@@ -1,28 +1,9 @@
-﻿/*
- * Copyright 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -42,12 +23,12 @@ using Android;
 
 namespace ShopLens.Droid
 {
-    public class Camera2RawFragment : Fragment, View.IOnClickListener
+    public class Camera2Fragment : Fragment, View.IOnClickListener
     {
         // Conversion from screen rotation to JPEG orientation.
         static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
 
-        static Camera2RawFragment()
+        static Camera2Fragment()
         {
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 0);
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 90);
@@ -544,16 +525,16 @@ namespace ShopLens.Droid
         /// </summary>
         static Handler mMessageHandler;
 
-        public static Camera2RawFragment Create()
+        public static Camera2Fragment Create()
         {
-            Camera2RawFragment fragment = new Camera2RawFragment();
+            Camera2Fragment fragment = new Camera2Fragment();
             fragment.RetainInstance = true;
             return fragment;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.fragment_camera2_basic, container, false);
+            return inflater.Inflate(Resource.Layout.Camera2F, container, false);
         }
 
         class OrientationListener : OrientationEventListener
@@ -577,7 +558,6 @@ namespace ShopLens.Droid
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             view.FindViewById(Resource.Id.picture).SetOnClickListener(this);
-            view.FindViewById(Resource.Id.info).SetOnClickListener(this);
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture);
 
             // Setup a new OrientationEventListener.  This is used to handle rotation events like a
