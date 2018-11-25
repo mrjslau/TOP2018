@@ -1,12 +1,9 @@
 ﻿using Android;
 using Android.App;
 using Android.Content;
-using Android.Widget;
 using Android.OS;
 using Android.Runtime;
 using Android.Content.PM;
-using Android.Speech;
-using System;
 
 using PCLAppConfig;
 using Android.Support.Design.Widget;
@@ -17,6 +14,8 @@ using ShopLens.Droid.Helpers;
 using Android.Views;
 using Android.Speech.Tts;
 using Java.Util;
+using Android.Preferences;
+using Android.Views.Accessibility;
 
 public enum IntentIds
 {
@@ -42,6 +41,11 @@ namespace ShopLens.Droid
         TextToSpeech tts;
         ShopLensUtteranceProgressListener ttsListener;
 
+        ISharedPreferences prefs;
+
+        bool tutorialNeeded;
+        bool noTalkBack;
+
         string needUserAnswerId;
         string askUserToRepeat;
 
@@ -62,18 +66,20 @@ namespace ShopLens.Droid
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             DependencyInjection.RegisterInterfaces();
 
-            needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
-            askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            // Check if TalkBack is Enabled.
+            if (!IsTalkBackEnabled())
+            {
+                InitiateNoTalkBackMode();
+            }
+            else
+            {
+                noTalkBack = false;
+            }
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
-
-            voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
-
-            ttsListener = new ShopLensUtteranceProgressListener(TtsStoppedSpeaking);
-
-            tts = new TextToSpeech(this, this);
-            tts.SetOnUtteranceProgressListener(ttsListener);
 
             // We need to request user permissions.
             if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
@@ -100,6 +106,7 @@ namespace ShopLens.Droid
 
             navView.NavigationItemSelected += (sender, e) =>
             {
+                var noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
                 switch (e.MenuItem.ItemId)
                 {
                     case Resource.Id.NavItemCamera:
@@ -108,29 +115,69 @@ namespace ShopLens.Droid
                         break;
                     case Resource.Id.NavItemShoppingCart:
                         var intentCart = new Intent(this, typeof(ShoppingCartActivity));
+                        intentCart.PutExtra(noTalkBackIntentKey, noTalkBack);
                         StartActivity(intentCart);
                         break;
                     case Resource.Id.NavItemShoppingList:
                         var intentList = new Intent(this, typeof(ShoppingListActivity));
+                        intentList.PutExtra(noTalkBackIntentKey, noTalkBack);
                         StartActivity(intentList);
                         break;
                 }
             };
-            
         }
 
-        public void OnInit([GeneratedEnum] OperationResult status)
+        protected override void OnStart()
         {
-            if (status == OperationResult.Error)
+            base.OnStart();
+            tutorialNeeded = IsTutorialNeeded();
+        }
+
+        protected override void OnStop()
+        {
+            // Get rid of TTS.
+            if (tts != null)
             {
-                tts.SetLanguage(Locale.Default);
+                tts.Stop();
+                tts.Shutdown();
             }
-            else if (status == OperationResult.Success)
+            base.OnStop();
+        }
+
+        private bool IsTalkBackEnabled()
+        {
+            var accessManager = (AccessibilityManager)GetSystemService(AccessibilityService);
+            return accessManager.IsTouchExplorationEnabled;
+        }
+
+        private void InitiateNoTalkBackMode()
+        {
+            needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
+            askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
+
+            ttsListener = new ShopLensUtteranceProgressListener(TtsStoppedSpeaking);
+
+            tts = new TextToSpeech(this, this);
+            tts.SetOnUtteranceProgressListener(ttsListener);
+
+            voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
+
+            noTalkBack = true;
+        }
+
+        private bool IsTutorialNeeded()
+        {
+            bool firstTime = prefs.GetBoolean("FirstTime", true);
+
+            if (firstTime)
             {
-                tts.SetLanguage(Locale.Us);
+                prefs.Edit().PutBoolean("FirstTime", false).Commit();
+                return true;
             }
-            // TODO: Make it so that the tutorial only runs when the app is launched for the first time.
-            RunUserTutorial();
+            else
+            {
+                return false;
+            }
         }
 
         private void RunUserTutorial()
@@ -143,6 +190,29 @@ namespace ShopLens.Droid
         {
             var message = ConfigurationManager.AppSettings["FollowUpTutorialMsg"];
             tts.Speak(message, QueueMode.Flush, null, needUserAnswerId);
+        }
+
+        // TTS Engine method called when TTS is initialized.
+        public void OnInit([GeneratedEnum] OperationResult status)
+        {
+            if (status == OperationResult.Error)
+            {
+                tts.SetLanguage(Locale.Default);
+            }
+            else if (status == OperationResult.Success)
+            {
+                tts.SetLanguage(Locale.Us);
+            }
+
+            if (tutorialNeeded)
+            {
+                RunUserTutorial();
+            }
+            else
+            {
+                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+                tts.Speak(welcomeMsg, QueueMode.Flush, null, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -177,7 +247,7 @@ namespace ShopLens.Droid
                 var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
                 tts.Speak(helpMessage, QueueMode.Flush, null, needUserAnswerId);
             }
-            else if (results == ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"])
+            else if (results == ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"] && tutorialNeeded)
             {
                 ContinueUserTutorial();
             }

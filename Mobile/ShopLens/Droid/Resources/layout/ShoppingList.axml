@@ -12,8 +12,7 @@
 		android:id="@+id/ShopListLinearLayout"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_below="@id/ShopListRecVoice">
+		android:layout_width="fill_parent">
 		<EditText
 			android:hint="Item's name"
 			android:id="@+id/ShopListAddItemEditText"

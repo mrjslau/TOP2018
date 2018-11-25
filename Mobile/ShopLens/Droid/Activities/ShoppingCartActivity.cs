@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace ShopLens.Droid
 {
+    // TODO: Make voice interaction in shopping cart fluent.
     [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingCartActivity : Activity, TextToSpeech.IOnInitListener
     {
@@ -26,30 +27,34 @@ namespace ShopLens.Droid
 
         EditText addItemEditText;
         Button addItemButton;
-        Button recogniseVoice;
         ListView listView;
         ActivityPreferences prefs;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
 
-        private TextToSpeech tts;
-        private readonly string voiceCartCmd = ConfigurationManager.AppSettings["CmdVoiceCart"];
+        ShopLensSpeechRecognizer voiceRecognizer;
+
+        TextToSpeech tts;
+
+        readonly string voiceCartCmd = ConfigurationManager.AppSettings["CmdVoiceCart"];
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingCart);
 
+            if (!IsTalkBackEnabled())
+            {
+                InitiateNoTalkBackMode();
+            }
+
             prefs = new ActivityPreferences(this, PREFS_NAME);
             items = prefs.GetPreferencesToList();
-
-            tts = new TextToSpeech(this, this);
 
             listView = FindViewById<ListView>(Resource.Id.ShopCartList);
             addItemButton = FindViewById<Button>(Resource.Id.ShopCartAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
-            recogniseVoice = FindViewById<Button>(Resource.Id.ShopCartRecVoice);
 
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
@@ -57,6 +62,19 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
+        }
+
+        private bool IsTalkBackEnabled()
+        {
+            var noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
+            return Intent.GetBooleanExtra(noTalkBackIntentKey, false);
+        }
+
+        private void InitiateNoTalkBackMode()
+        {
+            tts = new TextToSpeech(this, this);
+
+            voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -99,12 +117,12 @@ namespace ShopLens.Droid
             listAdapter.NotifyDataSetChanged();
         }
 
-        public void OnResults(Bundle results)
+        private void OnVoiceRecognitionResults(object sender, ShopLensSpeechRecognizedEventArgs e)
         {
-            var recognitionResults = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition)[0];
+            var recognitionResults = e.Phrase;
             if (!string.IsNullOrEmpty(recognitionResults))
             {
-                string cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
+                var cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
                 int sessionCheckDelay = int.Parse(ConfigurationManager.AppSettings["VoicerCheckDelay"]);
                 Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
@@ -131,8 +149,7 @@ namespace ShopLens.Droid
                         }
                     });
                 }
-
-                if (addProductRegex.IsMatch(recognitionResults))
+                else if (addProductRegex.IsMatch(recognitionResults))
                 {
                     addItemButton.Enabled = false;
                     string itemToAdd = recognitionResults.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();

@@ -62,8 +62,6 @@ namespace ShopLens.Droid
         private static readonly int PickImageId = (int)IntentIds.PickImageRequest;
         private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
-        ShopLensSpeechRecognizer contSpeechRecognizer;
-        string recognisedPhrase;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -106,8 +104,6 @@ namespace ShopLens.Droid
             }
 
             tts = new TextToSpeech(this, this);
-            contSpeechRecognizer = new ShopLensSpeechRecognizer(RecogniseVoice);
-            contSpeechRecognizer.RecognizePhrase(this);
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -121,11 +117,6 @@ namespace ShopLens.Droid
             {
                 tts.SetLanguage(Locale.Default);
             }
-        }
-
-        private void RecogniseVoice(object sender, ShopLensSpeechRecognizedEventArgs e)
-        {
-            RecVoice.Text = e.Phrase;
         }
 
         private void PickOnClick(object sender, EventArgs e)

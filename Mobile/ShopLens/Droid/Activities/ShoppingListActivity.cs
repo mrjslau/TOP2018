@@ -28,15 +28,18 @@ namespace ShopLens.Droid
         List<string> items;
         ArrayAdapter<string> listAdapter;
 
-        private TextToSpeech tts;
-        private readonly string voiceListCmd = ConfigurationManager.AppSettings["CmdVoiceList"];
+        TextToSpeech tts;
+        readonly string voiceListCmd = ConfigurationManager.AppSettings["CmdVoiceList"];
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingList);
 
-            tts = new TextToSpeech(this, this);
+            if (!IsTalkBackEnabled())
+            {
+                InitiateNoTalkBackMode();
+            }
 
             listView = FindViewById<ListView>(Resource.Id.ShopListListView);
             addItemButton = FindViewById<Button>(Resource.Id.ShopListAddItemButton);
@@ -49,6 +52,17 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
+        }
+
+        private bool IsTalkBackEnabled()
+        {
+            var noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
+            return Intent.GetBooleanExtra(noTalkBackIntentKey, false);
+        }
+
+        private void InitiateNoTalkBackMode()
+        {
+            tts = new TextToSpeech(this, this);
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
