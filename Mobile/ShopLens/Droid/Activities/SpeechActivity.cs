@@ -9,10 +9,11 @@ using Java.Util;
 using Android.Runtime;
 
 using ShopLens.Droid.Helpers;
+using Android.Content.PM;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "SpeechActivity", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "SpeechActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SpeechActivity : Activity, TextToSpeech.IOnInitListener
     {
         bool isRecording;

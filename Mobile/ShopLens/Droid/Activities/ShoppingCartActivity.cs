@@ -16,10 +16,11 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading.Tasks;
+using Android.Content.PM;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ShoppingCartActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];

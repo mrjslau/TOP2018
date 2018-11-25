@@ -1,9 +1,10 @@
 ﻿using Android.App;
+using Android.Content.PM;
 using Android.OS;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "Camera2Activity")]
+    [Activity(Label = "Camera2Activity", ScreenOrientation = ScreenOrientation.Portrait)]
     public class Camera2Activity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)

@@ -6,10 +6,11 @@ using Android.Widget;
 using Android.Speech.Tts;
 using Android.Support.V7.App;
 using Java.Util;
+using Android.Content.PM;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "TextVoicerActivity", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "TextVoicerActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class TextVoicerActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
         EditText editTextToVoice;

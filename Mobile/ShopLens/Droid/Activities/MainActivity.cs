@@ -7,7 +7,6 @@ using Android.Runtime;
 using Android.Content.PM;
 using Android.Speech;
 using System;
-
 using PCLAppConfig;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
@@ -26,7 +25,8 @@ public enum ActivityIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme")]
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity, IRecognitionListener
     {
         Lazy<SpeechRecognizer> commandRecognizer;

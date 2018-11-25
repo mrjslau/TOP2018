@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Speech;
@@ -18,7 +19,7 @@ using ShopLens.Extensions;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ShoppingListActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
     {
         EditText addItemEditText;
