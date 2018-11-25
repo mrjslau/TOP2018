@@ -127,16 +127,16 @@ namespace ShopLens.Droid
                 {
                     int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
                     string endMessage = "Voicing of shopping cart complete.";
+                    string stringToBeVoiced = "";
 
                     Task.Run(() =>
                     {
                         foreach (string item in prefs.GetPreferencesToList())
                         {
-                            SpeakOut(item, sessionCheckDelay);
-                            Thread.Sleep(voicerAwaitTime);
+                            stringToBeVoiced += char.ToUpper(item[0]) + item.Substring(1) + ". ";
                         }
-
-                        SpeakOut(endMessage, sessionCheckDelay);
+                        stringToBeVoiced += endMessage;
+                        SpeakOut(stringToBeVoiced, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
                     {
