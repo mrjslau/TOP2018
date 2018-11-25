@@ -173,8 +173,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\Camera\CameraActivity.cs" />
-    <Compile Include="Activities\Camera\CameraActivity.Helpers.cs" />
+    <Compile Include="Activities\CameraActivity.cs" />
+    <Compile Include="Activities\CameraActivity.Helpers.cs" />
     <Compile Include="Helpers\DependencyInjection.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\VoiceRecognizerHelper.cs" />
