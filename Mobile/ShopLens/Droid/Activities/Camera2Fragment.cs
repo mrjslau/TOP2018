@@ -610,25 +610,7 @@ namespace ShopLens.Droid
 
         public void OnClick(View view)
         {
-            switch (view.Id)
-            {
-                case Resource.Id.picture:
-                    {
-                        TakePicture();
-                        break;
-                    }
-                case Resource.Id.info:
-                    {
-                        var activity = Activity;
-                        if (activity != null)
-                        {
-                            new AlertDialog.Builder(activity)
-                                .SetPositiveButton(Android.Resource.String.Ok, default(IDialogInterfaceOnClickListener))
-                                .Show();
-                        }
-                        break;
-                    }
-            }
+            TakePicture();
         }
 
         /// <summary>
