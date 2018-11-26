@@ -4348,8 +4348,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090066
 			public const int contentPanel = 2131296358;
 			
-			// aapt resource value: 0x7f090094
-			public const int coordinator = 2131296404;
+			// aapt resource value: 0x7f090096
+			public const int coordinator = 2131296406;
 			
 			// aapt resource value: 0x7f09006d
 			public const int custom = 2131296365;
@@ -4363,20 +4363,20 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090060
 			public const int default_activity_button = 2131296352;
 			
-			// aapt resource value: 0x7f090096
-			public const int design_bottom_sheet = 2131296406;
+			// aapt resource value: 0x7f090098
+			public const int design_bottom_sheet = 2131296408;
+			
+			// aapt resource value: 0x7f09009f
+			public const int design_menu_item_action_area = 2131296415;
+			
+			// aapt resource value: 0x7f09009e
+			public const int design_menu_item_action_area_stub = 2131296414;
 			
 			// aapt resource value: 0x7f09009d
-			public const int design_menu_item_action_area = 2131296413;
+			public const int design_menu_item_text = 2131296413;
 			
 			// aapt resource value: 0x7f09009c
-			public const int design_menu_item_action_area_stub = 2131296412;
-			
-			// aapt resource value: 0x7f09009b
-			public const int design_menu_item_text = 2131296411;
-			
-			// aapt resource value: 0x7f09009a
-			public const int design_navigation_view = 2131296410;
+			public const int design_navigation_view = 2131296412;
 			
 			// aapt resource value: 0x7f090020
 			public const int disableHome = 2131296288;
@@ -4453,8 +4453,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090000
 			public const int item_touch_helper_previous_elevation = 2131296256;
 			
-			// aapt resource value: 0x7f090093
-			public const int largeLabel = 2131296403;
+			// aapt resource value: 0x7f090095
+			public const int largeLabel = 2131296405;
 			
 			// aapt resource value: 0x7f090049
 			public const int left = 2131296329;
@@ -4498,8 +4498,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090028
 			public const int multiply = 2131296296;
 			
-			// aapt resource value: 0x7f090099
-			public const int navigation_header_container = 2131296409;
+			// aapt resource value: 0x7f09009b
+			public const int navigation_header_container = 2131296411;
 			
 			// aapt resource value: 0x7f09003b
 			public const int never = 2131296315;
@@ -4528,8 +4528,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f09000b
 			public const int parent_matrix = 2131296267;
 			
-			// aapt resource value: 0x7f0900a0
-			public const int picture = 2131296416;
+			// aapt resource value: 0x7f090093
+			public const int picture = 2131296403;
 			
 			// aapt resource value: 0x7f09004d
 			public const int pin = 2131296333;
@@ -4636,14 +4636,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090025
 			public const int showTitle = 2131296293;
 			
-			// aapt resource value: 0x7f090092
-			public const int smallLabel = 2131296402;
+			// aapt resource value: 0x7f090094
+			public const int smallLabel = 2131296404;
 			
-			// aapt resource value: 0x7f090098
-			public const int snackbar_action = 2131296408;
+			// aapt resource value: 0x7f09009a
+			public const int snackbar_action = 2131296410;
 			
-			// aapt resource value: 0x7f090097
-			public const int snackbar_text = 2131296407;
+			// aapt resource value: 0x7f090099
+			public const int snackbar_text = 2131296409;
 			
 			// aapt resource value: 0x7f090043
 			public const int snap = 2131296323;
@@ -4699,8 +4699,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0900c9
 			public const int textYourText = 2131296457;
 			
-			// aapt resource value: 0x7f09009e
-			public const int text_input_password_toggle = 2131296414;
+			// aapt resource value: 0x7f0900a0
+			public const int text_input_password_toggle = 2131296416;
 			
 			// aapt resource value: 0x7f090014
 			public const int textinput_counter = 2131296276;
@@ -4708,8 +4708,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f090015
 			public const int textinput_error = 2131296277;
 			
-			// aapt resource value: 0x7f09009f
-			public const int texture = 2131296415;
+			// aapt resource value: 0x7f090092
+			public const int texture = 2131296402;
 			
 			// aapt resource value: 0x7f0900b0
 			public const int time = 2131296432;
@@ -4732,8 +4732,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f09006e
 			public const int topPanel = 2131296366;
 			
-			// aapt resource value: 0x7f090095
-			public const int touch_outside = 2131296405;
+			// aapt resource value: 0x7f090097
+			public const int touch_outside = 2131296407;
 			
 			// aapt resource value: 0x7f09000f
 			public const int transition_current_scene = 2131296271;
@@ -4912,49 +4912,49 @@ namespace ShopLens.Droid
 			public const int Camera2api = 2130968603;
 			
 			// aapt resource value: 0x7f04001c
-			public const int design_bottom_navigation_item = 2130968604;
+			public const int Camera2apiFrag = 2130968604;
 			
 			// aapt resource value: 0x7f04001d
-			public const int design_bottom_sheet_dialog = 2130968605;
+			public const int design_bottom_navigation_item = 2130968605;
 			
 			// aapt resource value: 0x7f04001e
-			public const int design_layout_snackbar = 2130968606;
+			public const int design_bottom_sheet_dialog = 2130968606;
 			
 			// aapt resource value: 0x7f04001f
-			public const int design_layout_snackbar_include = 2130968607;
+			public const int design_layout_snackbar = 2130968607;
 			
 			// aapt resource value: 0x7f040020
-			public const int design_layout_tab_icon = 2130968608;
+			public const int design_layout_snackbar_include = 2130968608;
 			
 			// aapt resource value: 0x7f040021
-			public const int design_layout_tab_text = 2130968609;
+			public const int design_layout_tab_icon = 2130968609;
 			
 			// aapt resource value: 0x7f040022
-			public const int design_menu_item_action_area = 2130968610;
+			public const int design_layout_tab_text = 2130968610;
 			
 			// aapt resource value: 0x7f040023
-			public const int design_navigation_item = 2130968611;
+			public const int design_menu_item_action_area = 2130968611;
 			
 			// aapt resource value: 0x7f040024
-			public const int design_navigation_item_header = 2130968612;
+			public const int design_navigation_item = 2130968612;
 			
 			// aapt resource value: 0x7f040025
-			public const int design_navigation_item_separator = 2130968613;
+			public const int design_navigation_item_header = 2130968613;
 			
 			// aapt resource value: 0x7f040026
-			public const int design_navigation_item_subheader = 2130968614;
+			public const int design_navigation_item_separator = 2130968614;
 			
 			// aapt resource value: 0x7f040027
-			public const int design_navigation_menu = 2130968615;
+			public const int design_navigation_item_subheader = 2130968615;
 			
 			// aapt resource value: 0x7f040028
-			public const int design_navigation_menu_item = 2130968616;
+			public const int design_navigation_menu = 2130968616;
 			
 			// aapt resource value: 0x7f040029
-			public const int design_text_input_password_icon = 2130968617;
+			public const int design_navigation_menu_item = 2130968617;
 			
 			// aapt resource value: 0x7f04002a
-			public const int fragment_camera2_basic = 2130968618;
+			public const int design_text_input_password_icon = 2130968618;
 			
 			// aapt resource value: 0x7f04002b
 			public const int Main = 2130968619;

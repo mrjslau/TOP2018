@@ -235,7 +235,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\fragment_camera2_basic.axml">
+    <AndroidResource Include="Resources\layout\Camera2apiFrag.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
