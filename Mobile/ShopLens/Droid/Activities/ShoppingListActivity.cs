@@ -56,8 +56,8 @@ namespace ShopLens.Droid
 
         private bool IsTalkBackEnabled()
         {
-            var noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
-            return Intent.GetBooleanExtra(noTalkBackIntentKey, false);
+            var talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
+            return Intent.GetBooleanExtra(talkBackEnabledIntentKey, false);
         }
 
         private void InitiateNoTalkBackMode()

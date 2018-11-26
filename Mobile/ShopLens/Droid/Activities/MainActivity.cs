@@ -44,11 +44,11 @@ namespace ShopLens.Droid
         ISharedPreferences prefs;
 
         bool tutorialNeeded;
-        bool noTalkBack;
+        bool talkBackEnabled;
 
         string needUserAnswerId;
         string askUserToRepeat;
-        string noTalkBackIntentKey;
+        string talkBackEnabledIntentKey;
 
         public readonly string[] ShopLensPermissions =
         {
@@ -69,16 +69,17 @@ namespace ShopLens.Droid
 
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
-            noTalkBackIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
+            talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
-            // Check if TalkBack is Enabled.
-            if (!IsTalkBackEnabled())
+            // Check if TalkBack is enabled.
+            if (IsTalkBackEnabled())
             {
-                InitiateNoTalkBackMode();
+                talkBackEnabled = true;
             }
             else
             {
-                noTalkBack = false;
+                talkBackEnabled = false;
+                InitiateNoTalkBackMode();
             }
 
             // Set our view from the "main" layout resource.
@@ -158,8 +159,6 @@ namespace ShopLens.Droid
             tts.SetOnUtteranceProgressListener(ttsListener);
 
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
-
-            noTalkBack = true;
         }
 
         private bool IsTutorialNeeded()
@@ -257,14 +256,14 @@ namespace ShopLens.Droid
         private void StartCartIntent()
         {
             var intentCart = new Intent(this, typeof(ShoppingCartActivity));
-            intentCart.PutExtra(noTalkBackIntentKey, noTalkBack);
+            intentCart.PutExtra(talkBackEnabledIntentKey, talkBackEnabled);
             StartActivity(intentCart);
         }
 
         private void StartListIntent()
         {
             var intentList = new Intent(this, typeof(ShoppingListActivity));
-            intentList.PutExtra(noTalkBackIntentKey, noTalkBack);
+            intentList.PutExtra(talkBackEnabledIntentKey, talkBackEnabled);
             StartActivity(intentList);
         }
 
