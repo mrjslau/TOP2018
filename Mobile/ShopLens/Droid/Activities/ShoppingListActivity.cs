@@ -14,6 +14,7 @@ using Android.Widget;
 using Java.Util;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
+using ShopLens.Droid.Source;
 using ShopLens.Extensions;
 
 namespace ShopLens.Droid
@@ -21,9 +22,12 @@ namespace ShopLens.Droid
     [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
     public class ShoppingListActivity : Activity, TextToSpeech.IOnInitListener
     {
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopListPrefs"];
+
         EditText addItemEditText;
         Button addItemButton;
         ListView listView;
+        ActivityPreferences prefs;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
@@ -45,7 +49,9 @@ namespace ShopLens.Droid
             addItemButton = FindViewById<Button>(Resource.Id.ShopListAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopListAddItemEditText);
 
-            items = new List<string> { "Coconut", "Banana", "Rice", "Beer" };
+            prefs = new ActivityPreferences(this, PREFS_NAME);
+            items = prefs.GetPreferencesToList();
+
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
             listView.Adapter = listAdapter;
@@ -100,6 +106,7 @@ namespace ShopLens.Droid
             if (!string.IsNullOrWhiteSpace(text))
             {
                 listAdapter.Add(text);
+                prefs.AddString(text);
             }
             listAdapter.NotifyDataSetChanged();
         }
