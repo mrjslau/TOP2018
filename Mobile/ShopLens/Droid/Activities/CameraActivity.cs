@@ -59,9 +59,9 @@ namespace ShopLens.Droid
         private static readonly string FileProviderName = ConfigurationManager.AppSettings["fileProviderName"];
         private readonly string prefsName = ConfigurationManager.AppSettings["ShopCartPrefs"];
         
-        private static readonly int RequestImageId = (int) ActivityIds.ImageRequest;
-        private static readonly int RequestPermissionId = (int) ActivityIds.PermissionRequest;
-        private static readonly int PickImageId = (int) ActivityIds.PickImageRequest;
+        private static readonly int RequestImageId = (int) IntentIds.ImageRequest;
+        private static readonly int RequestPermissionId = (int) IntentIds.PermissionRequest;
+        private static readonly int PickImageId = (int) IntentIds.PickImageRequest;
         private static readonly string CmdWhatIsThis = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string CmdPickPhoto = ConfigurationManager.AppSettings["CmdPickPhoto"];
 
@@ -99,10 +99,6 @@ namespace ShopLens.Droid
 
                 recVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
 
-                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart),
-                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage),
-                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate { });
-                shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage)); 
                 shoppingCartItemAddedMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
