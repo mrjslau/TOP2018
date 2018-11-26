@@ -28,7 +28,7 @@ namespace Camera
             var width = Math.Round(ratio * realImage.Width);
             var height = Math.Round(ratio * realImage.Height);
 
-            var newBitmap = Bitmap.CreateScaledBitmap(realImage, (int)width, (int)height, true);
+            var newBitmap = Bitmap.CreateScaledBitmap(realImage, (int) width, (int) height, true);
             return newBitmap;
         }
     }
