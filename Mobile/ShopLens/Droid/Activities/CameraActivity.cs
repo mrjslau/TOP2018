@@ -1,15 +1,13 @@
 ﻿using Uri = Android.Net.Uri;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Android;
 using Android.Provider;
-using Android.Graphics;
 using Android.Content.PM;
 using Android.App;
 using Android.Content;
+using Android.Gms.Vision.Texts;
 using Android.OS;
 using Android.Speech.Tts;
 using Android.Widget;
@@ -19,7 +17,6 @@ using Android.Speech;
 using Java.Util;
 using File = Java.IO.File;
 using Android.Runtime;
-using ImageRecognitionMobile.Classificators;
 using PCLAppConfig;
 using ShopLens.Droid.Helpers;
 using Unity;
@@ -27,43 +24,43 @@ using ShopLens.Droid.Source;
 using Android.Views;
 using ShopLens.Droid.Notifications;
 using Android.Support.Design.Widget;
+using ImageRecognitionMobile;
+using ImageRecognitionMobile.OCR;
+using ShopLens.Extensions;
 
 namespace ShopLens.Droid
 {
 
     [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
-    public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
+    public partial class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
     {
-        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
-        ActivityPreferences prefs;
+        private Button btnTakeImg;
+        private ImageView imgView;
+        private Button btnPickImg;
+        private Button recVoice;
+        private ProgressBar progressBar;
+        private CoordinatorLayout rootView;
+        private MessageBarCreator shoppingCartItemAddedMessageBar;
+        private SpeechRecognizer commandRecognizer;
+        private Intent speechIntent;
 
-        Button BtnTakeImg;
-        ImageView ImgView;
-        Button BtnPickImg;
-        Button RecVoice;
-        ProgressBar progressBar;
+        private File productPhoto;
+        private File dir =
+            new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures),
+                "DCIM");
 
-        SpeechRecognizer commandRecognizer;
-        Intent speechIntent;
-
-        TextToSpeech tts;
-
-        public File productPhoto;
-        public File _dir = new File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures), "DCIM");
-
-        public static readonly string FILE_PROVIDER_NAME = ConfigurationManager.AppSettings["fileProviderName"];
+        private static readonly string FileProviderName = ConfigurationManager.AppSettings["fileProviderName"];
+        private readonly string prefsName = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        
+        private static readonly int RequestImageId = (int) ActivityIds.ImageRequest;
+        private static readonly int RequestPermissionId = (int) ActivityIds.PermissionRequest;
+        private static readonly int PickImageId = (int) ActivityIds.PickImageRequest;
+        private static readonly string CmdWhatIsThis = ConfigurationManager.AppSettings["CmdWhatIsThis"];
+        private static readonly string CmdPickPhoto = ConfigurationManager.AppSettings["CmdPickPhoto"];
 
         private IDirectoryCreator shopLensPictureDirectoryCreator;
-        private CoordinatorLayout rootView;
-        private string guess;
-        private ErrorDialogCreator shoppingCartErrorDialog;
-        private MessageBarCreator shoppingCartMessageBar;
-
-        private static readonly int REQUEST_IMAGE = (int)ActivityIds.ImageRequest;
-        private static readonly int REQUEST_PERMISSION = (int)ActivityIds.PermissionRequest;
-        private static readonly int PickImageId = (int)ActivityIds.PickImageRequest;
-        private static readonly string whatIsThisCmd = ConfigurationManager.AppSettings["CmdWhatIsThis"];
-        private static readonly string choosePicCmd = ConfigurationManager.AppSettings["CmdPickPhoto"];
+        private TextToSpeech tts;
+        private TextRecognizer textRecognizer;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -84,32 +81,31 @@ namespace ShopLens.Droid
                 shopLensPictureDirectoryCreator = DependencyInjection.Container.Resolve<IDirectoryCreator>();
                 try
                 {
-                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                    shopLensPictureDirectoryCreator.CreateDirectory(dir);
                 }
                 catch (Java.Lang.SecurityException e)
                 {
                     System.Diagnostics.Debug.WriteLine(e);
-                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, RequestPermissionId);
                 }
 
-                BtnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
-                ImgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
+                btnTakeImg = FindViewById<Button>(Resource.Id.btntakepicture);
+                imgView = FindViewById<ImageView>(Resource.Id.ImgTakeimg);
                 rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
-                BtnTakeImg.Click += TakeAPicture;
+                btnTakeImg.Click += TakeAPicture;
 
-                BtnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
-                BtnPickImg.Click += PickOnClick;
+                btnPickImg = FindViewById<Button>(Resource.Id.btnPickImage);
+                btnPickImg.Click += PickOnClick;
 
-                RecVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
-                RecVoice.Click += RecogniseVoice;
+                recVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
+                recVoice.Click += RecogniseVoice;
 
-                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart), 
-                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage), 
-                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate {});
-                shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
+                
+                shoppingCartItemAddedMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
             tts = new TextToSpeech(this, this);
+            textRecognizer = new TextRecognizer.Builder(ApplicationContext).Build();
         }
 
         public void OnInit([GeneratedEnum] OperationResult status)
@@ -139,37 +135,30 @@ namespace ShopLens.Droid
             StartActivityForResult(Intent.CreateChooser(Intent, "Select Picture"), PickImageId);
         }
 
-        private bool IsThereAnAppToTakePictures()
-        {
-            var intent = new Intent(MediaStore.ActionImageCapture);
-            IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
-            return availableActivities != null && availableActivities.Count > 0;
-        }
-
         private void TakeAPicture(object sender, EventArgs e)
         {
             var takePictureIntent = new Intent(MediaStore.ActionImageCapture);
-            productPhoto = new File(_dir, $"Image_{Guid.NewGuid()}.jpg");
+            productPhoto = new File(dir, $"Image_{Guid.NewGuid()}.jpg");
             if (productPhoto != null)
             {
-                Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
+                var photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FileProviderName, productPhoto);
                 takePictureIntent.PutExtra(MediaStore.ExtraOutput, photoUri);
             }
             // If there's a working camera on the device.
             if (takePictureIntent.ResolveActivity(PackageManager) != null)
             {
-                StartActivityForResult(takePictureIntent, REQUEST_IMAGE);
+                StartActivityForResult(takePictureIntent, RequestImageId);
             }
 
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == REQUEST_IMAGE)
+            if (requestCode == RequestImageId)
             {
                 if (resultCode == Result.Ok && productPhoto != null)
                 {
-                    Uri photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FILE_PROVIDER_NAME, productPhoto);
+                    var photoUri = FileProvider.GetUriForFile(ApplicationContext, ApplicationContext.PackageName + FileProviderName, productPhoto);
                     PictureShowBitmap(photoUri);
                     RecogniseImage(photoUri);
                 }
@@ -187,127 +176,113 @@ namespace ShopLens.Droid
         private void PictureShowBitmap(Uri uri)
         {
             // Put image in gallery.
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            var mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
             mediaScanIntent.SetData(uri);
             SendBroadcast(mediaScanIntent);
 
             // Conversion. 
-            int height = ImgView.Height;
-            int width = ImgView.Width;
+            var height = imgView.Height;
+            var width = imgView.Width;
             var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
             image = BitmapHelper.ScaleDown(image, Math.Min(height, width));
-            ImgView.SetImageBitmap(image);
+            imgView.SetImageBitmap(image);
         }
 
         private void RecogniseImage(Uri uri)
         {
-            // Run the image recognition task
-            int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
-            
             progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
-            {
-                var image = MediaStore.Images.Media.GetBitmap(ContentResolver, uri);
-                image = BitmapHelper.ScaleDown(image, maxWebClassifierImageSize);
-                using (var stream = new MemoryStream())
                 {
-                    // 0 because compression quality is not applicable to .png
-                    image.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                    var image = GetResizedImageForClassification(uri);
 
-                    var classificator = DependencyInjection.Container.Resolve<IAsyncImageClassificator>();
-                    var results = await classificator.ClassifyImageAsync(stream.ToArray());
+                    var classifyImageTask = GetClassifyImageTask(image);
 
-                    prefs = new ActivityPreferences(this, PREFS_NAME);
-                    guess = results.OrderByDescending(x => x.Value).First().Key;
+                    if (!textRecognizer.IsOperational)
+                    {
+                        System.Diagnostics.Debug.WriteLine("[Warning]: Text recognizer not operational.");
+                        return new RecognitionResult { Predictions = await classifyImageTask };
+                    }
                     
-                    tts.Speak(
-                        $"This is. {guess}",
-                        QueueMode.Flush,
-                        null,
-                        null);
-                    
-                }
-            })
+                    var recognizeTextTask = GetTextFromImageAsync(image);
+
+                    await Task.WhenAll(classifyImageTask, recognizeTextTask);
+
+                    var ocrResult = recognizeTextTask.Result;
+                    var weightString = new RegexMetricWeightSubstringFinder().FindWeightSpecifier(ocrResult);
+
+                    var recognitionResult = new RecognitionResult
+                    {
+                        RawOcrResult = ocrResult,
+                        Predictions = classifyImageTask.Result,
+                        WeightSpecifier = weightString
+                    };
+                    return recognitionResult;
+                })
                 .ContinueWith(task =>
                 {
                     progressBar.Visibility = ViewStates.Gone;
                     if (task.IsFaulted)
                     {
                         System.Diagnostics.Debug.WriteLine(task.Exception);
+                        return;
                     }
-                    if (task.IsCompletedSuccessfully)
-                    {
-                        shoppingCartErrorDialog.Show();                        
-                    }
+
+                    var recognitionResult = task.Result;
+                    var thingsToSay = new List<string>
+                        {$"This is {recognitionResult.BestPrediction}", recognitionResult.WeightSpecifier};
+                    
+                    tts.Speak(
+                        string.Join(". ", thingsToSay),
+                        QueueMode.Flush,
+                        null,
+                        null);
+
+                    var ocrResult = recognitionResult.RawOcrResult;
+                    if (!string.IsNullOrEmpty(ocrResult))
+                        new MessageBarCreator(rootView, $"OCR: {ocrResult}").Show();
+
+                    GetShoppingCartAddItemDialog(recognitionResult).Show();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        public void AddToShoppingCart()
+        private void AddToShoppingCart(string guess)
         {
-            prefs.AddString(guess.First().ToString().ToUpper() + guess.Substring(1));
-            shoppingCartMessageBar.Show();
+            var preferences = new ActivityPreferences(this, prefsName);
+            preferences.AddString(guess.FirstCharToUpper());
+            shoppingCartItemAddedMessageBar.Show();
         }
 
         // When the current voice recognition session stops.
         public void OnResults(Bundle results)
         {
             var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            if (matches.Count > 0)
+            if (matches.Count <= 0) return;
+            
+            if (matches[0] == CmdWhatIsThis)
             {
-                if (matches[0] == whatIsThisCmd)
-                {
-                    TakeAPicture(this, new EventArgs());
-                }
+                TakeAPicture(this, new EventArgs());
+            }
 
-                else if (matches[0] == choosePicCmd)
-                {
-                    PickOnClick(this, new EventArgs());
-                }
+            else if (matches[0] == CmdPickPhoto)
+            {
+                PickOnClick(this, new EventArgs());
             }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
-            if (requestCode == REQUEST_PERMISSION)
+            if (requestCode == RequestPermissionId)
             {
                 if (grantResults[0] == Permission.Denied)
                 {
-                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, REQUEST_PERMISSION);
+                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, RequestPermissionId);
                 }
                 else
                 {
-                    shopLensPictureDirectoryCreator.CreateDirectory(_dir);
+                    shopLensPictureDirectoryCreator.CreateDirectory(dir);
                 }
             }
-        }
-
-        #region Unimplemented Speech Recognizer Methods
-
-        // When the user starts to speak.
-        public void OnBeginningOfSpeech() { }
-
-        // After the user stops speaking.
-        public void OnEndOfSpeech() { }
-
-        // When a network or recognition error occurs.
-        public void OnError([GeneratedEnum] SpeechRecognizerError error) { }
-
-        // When the app is ready for the user to start speaking.
-        public void OnReadyForSpeech(Bundle @params) { }
-
-        // This method is reserved for adding future events.
-        public void OnEvent(int eventType, Bundle @params) { }
-
-        // When more sound has been received.
-        public void OnBufferReceived(byte[] buffer) { }
-
-        // When the sound level of the voice input stream has changed.
-        public void OnRmsChanged(float rmsdB) { }
-
-        // When partial recognition results are available.
-        public void OnPartialResults(Bundle partialResults) { }
-
-        #endregion
+        }    
     }
 }
 
