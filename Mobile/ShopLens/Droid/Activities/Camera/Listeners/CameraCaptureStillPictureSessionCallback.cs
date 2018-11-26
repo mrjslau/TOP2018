@@ -1,15 +1,15 @@
 ﻿using Android.Hardware.Camera2;
 using Android.Util;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
     public class CameraCaptureStillPictureSessionCallback : CameraCaptureSession.CaptureCallback
     {
         private static readonly string TAG = "CameraCaptureStillPictureSessionCallback";
 
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
-        public CameraCaptureStillPictureSessionCallback(Camera2BasicFragment owner)
+        public CameraCaptureStillPictureSessionCallback(Camera2Fragment owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");

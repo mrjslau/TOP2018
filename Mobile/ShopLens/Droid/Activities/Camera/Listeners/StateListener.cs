@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.Hardware.Camera2;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
-    public class CameraStateListener : CameraDevice.StateCallback
+    public class StateListener : CameraDevice.StateCallback
     {
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
-        public CameraStateListener(Camera2BasicFragment owner)
+        public StateListener(Camera2Fragment owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");

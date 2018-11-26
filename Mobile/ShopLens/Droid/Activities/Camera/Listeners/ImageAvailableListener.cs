@@ -3,11 +3,11 @@ using Java.IO;
 using Java.Lang;
 using Java.Nio;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {
-        public ImageAvailableListener(Camera2BasicFragment fragment, File file)
+        public ImageAvailableListener(Camera2Fragment fragment, File file)
         {
             if (fragment == null)
                 throw new System.ArgumentNullException("fragment");
@@ -19,10 +19,10 @@ namespace ShopLens.Droid.Listeners
         }
 
         private readonly File file;
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
         //public File File { get; private set; }
-        //public Camera2BasicFragment Owner { get; private set; }
+        //public Camera2Fragment Owner { get; private set; }
 
         public void OnImageAvailable(ImageReader reader)
         {

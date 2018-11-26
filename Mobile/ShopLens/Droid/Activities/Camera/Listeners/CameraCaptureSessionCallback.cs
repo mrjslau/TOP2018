@@ -1,12 +1,12 @@
 ﻿using Android.Hardware.Camera2;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
     public class CameraCaptureSessionCallback : CameraCaptureSession.StateCallback
     {
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
-        public CameraCaptureSessionCallback(Camera2BasicFragment owner)
+        public CameraCaptureSessionCallback(Camera2Fragment owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");

@@ -1,9 +1,8 @@
-﻿
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
 
-namespace ShopLens.Droid
+namespace ShopLens.Droid.Notifications
 {
     public class ErrorDialog : DialogFragment
     {

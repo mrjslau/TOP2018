@@ -1,12 +1,12 @@
 ﻿using Android.Views;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
-    public class Camera2SurfaceTextureListener : Java.Lang.Object, TextureView.ISurfaceTextureListener
+    public class SurfaceTextureListener : Java.Lang.Object, TextureView.ISurfaceTextureListener
     {
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
-        public Camera2SurfaceTextureListener(Camera2BasicFragment owner)
+        public SurfaceTextureListener(Camera2Fragment owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");

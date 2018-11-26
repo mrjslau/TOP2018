@@ -21,18 +21,19 @@ using Java.Util.Concurrent;
 using Boolean = Java.Lang.Boolean;
 using Math = Java.Lang.Math;
 using Orientation = Android.Content.Res.Orientation;
-using ShopLens.Droid.Listeners;
+using ShopLens.Droid.Notifications;
+using ShopLens.Droid.Camera.Listeners;
 
 namespace ShopLens.Droid
 {
-    public class Camera2BasicFragment : Fragment, View.IOnClickListener, FragmentCompat.IOnRequestPermissionsResultCallback
+    public class Camera2Fragment : Fragment, View.IOnClickListener, FragmentCompat.IOnRequestPermissionsResultCallback
     {
         private static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
         public static readonly int REQUEST_CAMERA_PERMISSION = 1;
         private static readonly string FRAGMENT_DIALOG = "dialog";
 
         // Tag for the {@link Log}.
-        private static readonly string TAG = "Camera2BasicFragment";
+        private static readonly string TAG = "Camera2Fragment";
 
         // Camera state: Showing camera preview.
         public const int STATE_PREVIEW = 0;
@@ -56,7 +57,7 @@ namespace ShopLens.Droid
         private static readonly int MAX_PREVIEW_HEIGHT = 1080;
 
         // TextureView.ISurfaceTextureListener handles several lifecycle events on a TextureView
-        private Camera2SurfaceTextureListener mSurfaceTextureListener;
+        private SurfaceTextureListener mSurfaceTextureListener;
 
         // ID of the current {@link CameraDevice}.
         private string mCameraId;
@@ -74,7 +75,7 @@ namespace ShopLens.Droid
         private Size mPreviewSize;
 
         // CameraDevice.StateListener is called when a CameraDevice changes its state
-        private CameraStateListener mStateCallback;
+        private StateListener mStateCallback;
 
         // An additional thread for running tasks that shouldn't block the UI.
         private HandlerThread mBackgroundThread;
@@ -111,7 +112,7 @@ namespace ShopLens.Droid
         private int mSensorOrientation;
 
         // A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
-        public CameraCaptureListener mCaptureCallback;
+        public CaptureListener mCaptureCallback;
 
         // Shows a {@link Toast} on the UI thread.
         public void ShowToast(string text)
@@ -184,16 +185,16 @@ namespace ShopLens.Droid
             }
         }
 
-        public static Camera2BasicFragment NewInstance()
+        public static Camera2Fragment NewInstance()
         {
-            return new Camera2BasicFragment();
+            return new Camera2Fragment();
         }
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mStateCallback = new CameraStateListener(this);
-            mSurfaceTextureListener = new Camera2SurfaceTextureListener(this);
+            mStateCallback = new StateListener(this);
+            mSurfaceTextureListener = new SurfaceTextureListener(this);
 
             // fill ORIENTATIONS list
             ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
@@ -218,7 +219,7 @@ namespace ShopLens.Droid
         {
             base.OnActivityCreated(savedInstanceState);
             mFile = new File(Activity.GetExternalFilesDir(null), "pic.jpg");
-            mCaptureCallback = new CameraCaptureListener(this);
+            mCaptureCallback = new CaptureListener(this);
             mOnImageAvailableListener = new ImageAvailableListener(this, mFile);
         }
 
@@ -402,7 +403,7 @@ namespace ShopLens.Droid
             }
         }
 
-        // Opens the camera specified by {@link Camera2BasicFragment#mCameraId}.
+        // Opens the camera specified by {@link Camera2Fragment#mCameraId}.
         public void OpenCamera(int width, int height)
         {
             if (ContextCompat.CheckSelfPermission(Activity, Manifest.Permission.Camera) != Permission.Granted)

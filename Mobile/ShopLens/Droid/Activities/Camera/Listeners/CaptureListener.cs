@@ -1,14 +1,13 @@
 ﻿using Android.Hardware.Camera2;
-using Java.IO;
 using Java.Lang;
 
-namespace ShopLens.Droid.Listeners
+namespace ShopLens.Droid.Camera.Listeners
 {
-    public class CameraCaptureListener : CameraCaptureSession.CaptureCallback
+    public class CaptureListener : CameraCaptureSession.CaptureCallback
     {
-        private readonly Camera2BasicFragment owner;
+        private readonly Camera2Fragment owner;
 
-        public CameraCaptureListener(Camera2BasicFragment owner)
+        public CaptureListener(Camera2Fragment owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");
@@ -29,7 +28,7 @@ namespace ShopLens.Droid.Listeners
         {
             switch (owner.mState)
             {
-                case Camera2BasicFragment.STATE_WAITING_LOCK:
+                case Camera2Fragment.STATE_WAITING_LOCK:
                     {
                         Integer afState = (Integer)result.Get(CaptureResult.ControlAfState);
                         if (afState == null)
@@ -45,7 +44,7 @@ namespace ShopLens.Droid.Listeners
                             if (aeState == null ||
                                     aeState.IntValue() == ((int)ControlAEState.Converged))
                             {
-                                owner.mState = Camera2BasicFragment.STATE_PICTURE_TAKEN;
+                                owner.mState = Camera2Fragment.STATE_PICTURE_TAKEN;
                                 owner.CaptureStillPicture();
                             }
                             else
@@ -55,7 +54,7 @@ namespace ShopLens.Droid.Listeners
                         }
                         break;
                     }
-                case Camera2BasicFragment.STATE_WAITING_PRECAPTURE:
+                case Camera2Fragment.STATE_WAITING_PRECAPTURE:
                     {
                         // ControlAeState can be null on some devices
                         Integer aeState = (Integer)result.Get(CaptureResult.ControlAeState);
@@ -63,17 +62,17 @@ namespace ShopLens.Droid.Listeners
                                 aeState.IntValue() == ((int)ControlAEState.Precapture) ||
                                 aeState.IntValue() == ((int)ControlAEState.FlashRequired))
                         {
-                            owner.mState = Camera2BasicFragment.STATE_WAITING_NON_PRECAPTURE;
+                            owner.mState = Camera2Fragment.STATE_WAITING_NON_PRECAPTURE;
                         }
                         break;
                     }
-                case Camera2BasicFragment.STATE_WAITING_NON_PRECAPTURE:
+                case Camera2Fragment.STATE_WAITING_NON_PRECAPTURE:
                     {
                         // ControlAeState can be null on some devices
                         Integer aeState = (Integer)result.Get(CaptureResult.ControlAeState);
                         if (aeState == null || aeState.IntValue() != ((int)ControlAEState.Precapture))
                         {
-                            owner.mState = Camera2BasicFragment.STATE_PICTURE_TAKEN;
+                            owner.mState = Camera2Fragment.STATE_PICTURE_TAKEN;
                             owner.CaptureStillPicture();
                         }
                         break;

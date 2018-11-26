@@ -1,11 +1,10 @@
-﻿
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V13.App;
 
-namespace ShopLens.Droid
+namespace ShopLens.Droid.Notifications
 {
     public class ConfirmationDialog : DialogFragment
     {
@@ -15,7 +14,7 @@ namespace ShopLens.Droid
             public void OnClick(IDialogInterface dialog, int which)
             {
                 FragmentCompat.RequestPermissions(mParent,
-                                new string[] { Manifest.Permission.Camera }, Camera2BasicFragment.REQUEST_CAMERA_PERMISSION);
+                                new string[] { Manifest.Permission.Camera }, Camera2Fragment.REQUEST_CAMERA_PERMISSION);
             }
         }
 

@@ -157,15 +157,15 @@
   <ItemGroup>
     <Compile Include="Activities\Camera\AutoFitTextureView.cs" />
     <Compile Include="Activities\Camera\Camera2Activity.cs" />
-    <Compile Include="Activities\Camera\Camera2BasicFragment.cs" />
+    <Compile Include="Activities\Camera\Camera2Fragment.cs" />
     <Compile Include="Activities\Camera\CompareSizesByArea.cs" />
-    <Compile Include="Activities\Camera\ConfirmationDialog.cs" />
-    <Compile Include="Activities\Camera\ErrorDialog.cs" />
-    <Compile Include="Activities\Camera\Listeners\Camera2SurfaceTextureListener.cs" />
-    <Compile Include="Activities\Camera\Listeners\CameraCaptureListener.cs" />
+    <Compile Include="Notifications\ConfirmationDialog.cs" />
+    <Compile Include="Notifications\ErrorDialog.cs" />
+    <Compile Include="Activities\Camera\Listeners\SurfaceTextureListener.cs" />
+    <Compile Include="Activities\Camera\Listeners\CaptureListener.cs" />
     <Compile Include="Activities\Camera\Listeners\CameraCaptureSessionCallback.cs" />
     <Compile Include="Activities\Camera\Listeners\CameraCaptureStillPictureSessionCallback.cs" />
-    <Compile Include="Activities\Camera\Listeners\CameraStateListener.cs" />
+    <Compile Include="Activities\Camera\Listeners\StateListener.cs" />
     <Compile Include="Activities\Camera\Listeners\ImageAvailableListener.cs" />
     <Compile Include="Helpers\DependencyInjection.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
