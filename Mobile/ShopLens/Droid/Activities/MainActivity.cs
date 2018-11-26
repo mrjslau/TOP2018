@@ -87,6 +87,11 @@ namespace ShopLens.Droid
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
+            if (savedInstanceState == null)
+            {
+                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance()).Commit();
+            }
+
             // We need to request user permissions.
             if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
             {
