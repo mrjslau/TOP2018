@@ -110,6 +110,7 @@ namespace ShopLens.Droid
 
             navView.NavigationItemSelected += (sender, e) =>
             {
+                //TODO: remove old activity items from navView.
                 switch (e.MenuItem.ItemId)
                 {
                     case Resource.Id.NavItemCamera:
@@ -142,6 +143,8 @@ namespace ShopLens.Droid
             }
             base.OnStop();
         }
+
+        //TODO: make it so that once we return to the main menu, the voicer greets us and asks questions (OnResume method).
 
         private bool IsTalkBackEnabled()
         {

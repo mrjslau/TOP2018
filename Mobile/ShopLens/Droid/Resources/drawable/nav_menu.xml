@@ -6,8 +6,4 @@
           android:title="Shopping Cart"/>
     <item android:id="@+id/NavItemShoppingList"
           android:title="Shopping List"/>
-    <item android:id="@+id/NavItemTextToSpeech"
-          android:title="Text to Speech"/>
-    <item android:id="@+id/NavItemSpeechRecogniser"
-          android:title="Speech Recogniser"/>
 </menu>
