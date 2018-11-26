@@ -25,7 +25,7 @@ public enum ActivityIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/ShopLensTheme", 
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity, IRecognitionListener
     {

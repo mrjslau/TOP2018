@@ -8,4 +8,6 @@
     <string name="successMessage">Product was added.</string>
     <string name="openDrawer">Menu</string>
     <string name="closeDrawer">ShopLens</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
 </resources>
