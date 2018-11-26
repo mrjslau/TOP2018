@@ -20,7 +20,6 @@ using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Notifications;
 using Unity;
 
-// ReSharper disable once CheckNamespace
 namespace ShopLens.Droid
 {
     public partial class CameraActivity
