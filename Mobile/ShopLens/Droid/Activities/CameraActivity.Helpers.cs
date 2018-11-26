@@ -77,7 +77,7 @@ namespace ShopLens.Droid
                 {
                     var item = (TextBlock) items.ValueAt(i);
                     ocrResultBuilder.Append(item.Value);
-                    ocrResultBuilder.Append("/");
+                    ocrResultBuilder.Append("|");
                 }
 
                 var ocrResult = ocrResultBuilder.ToString();
