@@ -24,6 +24,7 @@ using ShopLens.Droid.Source;
 using Android.Views;
 using ShopLens.Droid.Notifications;
 using Android.Support.Design.Widget;
+using Plugin.SpeechRecognition;
 using ImageRecognitionMobile;
 using ImageRecognitionMobile.OCR;
 using ShopLens.Extensions;
@@ -32,17 +33,23 @@ namespace ShopLens.Droid
 {
 
     [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme")]
-    public partial class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
+    public partial class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
+        readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        ActivityPreferences prefs;
+
         private Button btnTakeImg;
         private ImageView imgView;
         private Button btnPickImg;
         private Button recVoice;
         private ProgressBar progressBar;
+
+        private TextToSpeech tts;
+        private TextRecognizer textRecognizer;
+        private IDirectoryCreator shopLensPictureDirectoryCreator;
+        
         private CoordinatorLayout rootView;
         private MessageBarCreator shoppingCartItemAddedMessageBar;
-        private SpeechRecognizer commandRecognizer;
-        private Intent speechIntent;
 
         private File productPhoto;
         private File dir =
@@ -58,10 +65,6 @@ namespace ShopLens.Droid
         private static readonly string CmdWhatIsThis = ConfigurationManager.AppSettings["CmdWhatIsThis"];
         private static readonly string CmdPickPhoto = ConfigurationManager.AppSettings["CmdPickPhoto"];
 
-        private IDirectoryCreator shopLensPictureDirectoryCreator;
-        private TextToSpeech tts;
-        private TextRecognizer textRecognizer;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -74,11 +77,8 @@ namespace ShopLens.Droid
 
             if (IsThereAnAppToTakePictures())
             {
-                // Set up a custom speech recognizer in this activity.
-                commandRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
-                commandRecognizer.SetRecognitionListener(this);
-
                 shopLensPictureDirectoryCreator = DependencyInjection.Container.Resolve<IDirectoryCreator>();
+
                 try
                 {
                     shopLensPictureDirectoryCreator.CreateDirectory(dir);
@@ -98,9 +98,11 @@ namespace ShopLens.Droid
                 btnPickImg.Click += PickOnClick;
 
                 recVoice = FindViewById<Button>(Resource.Id.btnRecVoiceCamera);
-                recVoice.Click += RecogniseVoice;
 
-                
+                shoppingCartErrorDialog = new ErrorDialogCreator(this, Resources.GetString(Resource.String.shoppingCart),
+                    Resources.GetString(Resource.String.shoppingCartQuestion), Resources.GetString(Resource.String.positiveMessage),
+                    Resources.GetString(Resource.String.negativeMessage), AddToShoppingCart, delegate { });
+                shoppingCartMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage)); 
                 shoppingCartItemAddedMessageBar = new MessageBarCreator(rootView, Resources.GetString(Resource.String.successMessage));
             }
 
@@ -119,12 +121,6 @@ namespace ShopLens.Droid
             {
                 tts.SetLanguage(Locale.Default);
             }
-        }
-
-        private void RecogniseVoice(object sender, EventArgs e)
-        {
-            speechIntent = VoiceRecognizerHelper.SetUpVoiceRecognizerIntent();
-            commandRecognizer.StartListening(speechIntent);
         }
 
         private void PickOnClick(object sender, EventArgs e)
@@ -190,6 +186,9 @@ namespace ShopLens.Droid
 
         private void RecogniseImage(Uri uri)
         {
+            // Run the image recognition task
+            int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
+            
             progressBar.Visibility = ViewStates.Visible;
             Task.Run(async () =>
                 {
@@ -251,38 +250,6 @@ namespace ShopLens.Droid
             preferences.AddString(guess.FirstCharToUpper());
             shoppingCartItemAddedMessageBar.Show();
         }
-
-        // When the current voice recognition session stops.
-        public void OnResults(Bundle results)
-        {
-            var matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            if (matches.Count <= 0) return;
-            
-            if (matches[0] == CmdWhatIsThis)
-            {
-                TakeAPicture(this, new EventArgs());
-            }
-
-            else if (matches[0] == CmdPickPhoto)
-            {
-                PickOnClick(this, new EventArgs());
-            }
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            if (requestCode == RequestPermissionId)
-            {
-                if (grantResults[0] == Permission.Denied)
-                {
-                    RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, RequestPermissionId);
-                }
-                else
-                {
-                    shopLensPictureDirectoryCreator.CreateDirectory(dir);
-                }
-            }
-        }    
     }
 }
 
