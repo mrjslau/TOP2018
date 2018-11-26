@@ -27,24 +27,34 @@
         android:id="@+id/DrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
-        <RelativeLayout 
-            android:id="@+id/RelativeLayout01" 
-            android:layout_width="fill_parent" 
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <Button
-                android:layout_margin="20dp"
-                android:textSize="20sp"
-                android:text="Press to enable Voice Commands"
-                android:id="@+id/MainRecordingButton"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@drawable/main_button"
-                android:textColor="#FFFFFF"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
-        
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#B3B3B3" >
+        <Button
+			android:layout_margin="20dp"
+            android:textSize="20sp"
+            android:text="Press to enable Voice Commands"
+            android:id="@+id/MainRecordingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_button"
+            android:textColor="#FFFFFF"
+            android:layout_centerInParent="true"/>
+	
+		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:id="@+id/container"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="#000"
+			tools:context="ShopLens.Droid.Camera2Activity" />
+		</LinearLayout>
+
         <android.support.design.widget.NavigationView
             android:id="@+id/NavView"
             android:layout_height="match_parent"

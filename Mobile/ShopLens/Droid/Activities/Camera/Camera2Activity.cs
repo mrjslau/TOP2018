@@ -9,7 +9,7 @@ namespace ShopLens.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.activity_camera);
+            SetContentView(Resource.Layout.Camera2api);
 
             if (bundle == null)
             {

@@ -64,6 +64,11 @@ namespace ShopLens.Droid
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
+            if (savedInstanceState == null)
+            {
+                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance()).Commit();
+            }
+
             commandRecognizer = new Lazy<SpeechRecognizer>(() => SpeechRecognizer.CreateSpeechRecognizer(this));
 
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["IsVoiceRecognitionEnabled"]))
