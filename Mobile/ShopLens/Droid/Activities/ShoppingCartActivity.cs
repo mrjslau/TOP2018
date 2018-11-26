@@ -20,9 +20,8 @@ using Android.Content.PM;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     // TODO: Make voice interaction in shopping cart fluent.
-    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ShoppingCartActivity : Activity, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];

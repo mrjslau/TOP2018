@@ -33,7 +33,7 @@ namespace ShopLens.Droid
 {
 
     [Activity(Label = "CameraActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class CameraActivity : Activity, TextToSpeech.IOnInitListener, IRecognitionListener
+    public partial class CameraActivity : Activity, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         ActivityPreferences prefs;

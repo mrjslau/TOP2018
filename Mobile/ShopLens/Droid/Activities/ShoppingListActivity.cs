@@ -21,7 +21,7 @@ using ShopLens.Extensions;
 namespace ShopLens.Droid
 {
     [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class ShoppingListActivity : Activity, IRecognitionListener, TextToSpeech.IOnInitListener
+    public class ShoppingListActivity : Activity, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopListPrefs"];
 

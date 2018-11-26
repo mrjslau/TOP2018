@@ -30,7 +30,7 @@ namespace ShopLens.Droid
 {
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@drawable/icon", Theme ="@style/ShopLensTheme", 
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : AppCompatActivity, IRecognitionListener
+    public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
         SupportToolbar toolbar;
         ActionBarDrawerToggle drawerToggle;
