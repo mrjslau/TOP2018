@@ -136,6 +136,7 @@ namespace ShopLens.Droid
             // Get rid of TTS.
             if (tts != null)
             {
+                //TODO: possibly resume TTS in the OnResume method.
                 tts.Stop();
                 tts.Shutdown();
             }
@@ -197,6 +198,7 @@ namespace ShopLens.Droid
                 tts.SetLanguage(Locale.Us);
             }
 
+            //TODO: schedule a TTS init method to be run here instead of writing it to this method.
             if (tutorialNeeded)
             {
                 RunUserTutorial();
