@@ -10,6 +10,4 @@
           android:title="Text to Speech"/>
     <item android:id="@+id/NavItemSpeechRecogniser"
           android:title="Speech Recogniser"/>
-    <item android:id="@+id/NavItemCamera2"
-          android:title="Camera2"/>
 </menu>

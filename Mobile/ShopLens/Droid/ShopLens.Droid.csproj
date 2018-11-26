@@ -156,7 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Camera\AutoFitTextureView.cs" />
-    <Compile Include="Activities\Camera\Camera2Activity.cs" />
     <Compile Include="Activities\Camera\Camera2Fragment.cs" />
     <Compile Include="Activities\Camera\CompareSizesByArea.cs" />
     <Compile Include="Notifications\ConfirmationDialog.cs" />
@@ -228,11 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\Camera2api.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Camera2apiFrag.axml">

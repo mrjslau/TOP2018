@@ -40,7 +40,7 @@
             android:textSize="20sp"
             android:text="Press to enable Voice Commands"
             android:id="@+id/MainRecordingButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/main_button"
             android:textColor="#FFFFFF"
@@ -49,7 +49,7 @@
 		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			xmlns:tools="http://schemas.android.com/tools"
 			android:id="@+id/container"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="#000"
 			tools:context="ShopLens.Droid.Camera2Activity" />
