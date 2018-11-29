@@ -131,7 +131,7 @@ namespace ShopLens.Droid
         {
             if (!talkBackEnabled)
             {
-                var message = ConfigurationManager.AppSettings["OnRestartMsgMain"];
+                var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
                 shopLensTTS.Speak(message, needUserAnswerId);
             }
 
@@ -229,6 +229,11 @@ namespace ShopLens.Droid
             else if (results == ConfigurationManager.AppSettings["CmdHelp"])
             {
                 var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
+                shopLensTTS.Speak(helpMessage, needUserAnswerId);
+            }
+            else if (results == ConfigurationManager.AppSettings["CmdRemind"])
+            {
+                var helpMessage = ConfigurationManager.AppSettings["MainRemindMsg"];
                 shopLensTTS.Speak(helpMessage, needUserAnswerId);
             }
             else if (results == ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"] && tutorialNeeded)
