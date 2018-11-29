@@ -4264,12 +4264,6 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c00cc
 			public const int NavItemShoppingList = 2131493068;
 			
-			// aapt resource value: 0x7f0c00ce
-			public const int NavItemSpeechRecogniser = 2131493070;
-			
-			// aapt resource value: 0x7f0c00cd
-			public const int NavItemTextToSpeech = 2131493069;
-			
 			// aapt resource value: 0x7f0c00a9
 			public const int NavView = 2131493033;
 			
