@@ -8,9 +8,10 @@ namespace ShopLens.Droid.Helpers
 {
     class ShopLensTextToSpeech : Java.Lang.Object, TextToSpeech.IOnInitListener
     {
-        TextToSpeech tts;
         event EventHandler TTSInitialized;
         ShopLensUtteranceProgressListener uttListener;
+
+        public TextToSpeech tts;
 
         public ShopLensTextToSpeech(Context context, Action<object, EventArgs> ReactToTTSInit,
             Action<object, UtteranceIdArgs> ReactToEndOfSpeech)
@@ -39,12 +40,12 @@ namespace ShopLens.Droid.Helpers
 
         public void Speak(string message, string utteranceId)
         {
-            tts.Speak(message, QueueMode.Flush, null, utteranceId);
+            tts?.Speak(message, QueueMode.Flush, null, utteranceId);
         }
 
         public void Stop()
         {
-            tts.Stop();
+            tts?.Stop();
         }
     }
 }

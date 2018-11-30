@@ -16,7 +16,7 @@ namespace ShopLens.Droid.Helpers
         public void RecognizePhrase(Activity activity)
         {
             // According to Java, Voice Recognizer needs to be run on the Main Ui Thread.
-            activity.RunOnUiThread(ListenForAPhrase);
+            activity?.RunOnUiThread(ListenForAPhrase);
         }
 
         public void ListenForAPhrase()
