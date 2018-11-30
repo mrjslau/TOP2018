@@ -50,7 +50,7 @@ namespace ShopLens.Droid.Helpers
 
         public void Stop()
         {
-            tts?.Stop();
+            tts.Stop();
         }
     }
 }
