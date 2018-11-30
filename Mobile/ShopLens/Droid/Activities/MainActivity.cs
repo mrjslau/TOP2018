@@ -35,7 +35,7 @@ namespace ShopLens.Droid
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
-        ShopLensTextToSpeech shopLensTTS;
+        ShopLensTextToSpeech shopLensTts;
 
         ISharedPreferences prefs;
 
@@ -155,7 +155,7 @@ namespace ShopLens.Droid
             else if (!talkBackEnabled)
             {
                 var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
-                shopLensTTS.Speak(message, needUserAnswerId);
+                shopLensTts.Speak(message, needUserAnswerId);
             }
 
             base.OnRestart();
@@ -163,8 +163,8 @@ namespace ShopLens.Droid
 
         protected override void OnStop()
         {
-            // Stop TTS Speech.
-            shopLensTTS.Stop();
+            // Stop Tts Speech.
+            shopLensTts.Stop();
 
             base.OnStop();
         }
@@ -180,7 +180,7 @@ namespace ShopLens.Droid
             needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
             askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
 
-            shopLensTTS = new ShopLensTextToSpeech(this, TTSSpeakAfterInit, TTStoppedSpeaking);
+            shopLensTts = new ShopLensTextToSpeech(this, TtsSpeakAfterInit, TtsStoppedSpeaking);
 
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
@@ -200,16 +200,16 @@ namespace ShopLens.Droid
         private void RunUserTutorial()
         {
             var message = ConfigurationManager.AppSettings["InitialTutorialMsg"];
-            shopLensTTS.Speak(message, needUserAnswerId);
+            shopLensTts.Speak(message, needUserAnswerId);
         }
 
         private void ContinueUserTutorial()
         {
             var message = ConfigurationManager.AppSettings["FollowUpTutorialMsg"];
-            shopLensTTS.Speak(message, needUserAnswerId);
+            shopLensTts.Speak(message, needUserAnswerId);
         }
 
-        private void TTSSpeakAfterInit(object sender, EventArgs e)
+        private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
             if (tutorialNeeded)
             {
@@ -218,11 +218,11 @@ namespace ShopLens.Droid
             else
             {
                 var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-                shopLensTTS.Speak(welcomeMsg, needUserAnswerId);
+                shopLensTts.Speak(welcomeMsg, needUserAnswerId);
             }
         }
 
-        private void TTStoppedSpeaking(object sender, UtteranceIdArgs e)
+        private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
         {
             if (e.UtteranceId == needUserAnswerId)
             {
@@ -251,12 +251,12 @@ namespace ShopLens.Droid
                 else if (results == cmdHelp)
                 {
                     var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
-                    shopLensTTS.Speak(helpMessage, needUserAnswerId);
+                    shopLensTts.Speak(helpMessage, needUserAnswerId);
                 }
                 else if (results == cmdRemind)
                 {
                     var helpMessage = ConfigurationManager.AppSettings["MainRemindMsg"];
-                    shopLensTTS.Speak(helpMessage, needUserAnswerId);
+                    shopLensTts.Speak(helpMessage, needUserAnswerId);
                 }
                 else if (results == cmdTutorialLikeShopLens && tutorialNeeded)
                 {
@@ -264,7 +264,7 @@ namespace ShopLens.Droid
                 }
                 else
                 {
-                    shopLensTTS.Speak(askUserToRepeat, needUserAnswerId);
+                    shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
                 }
             }
         }

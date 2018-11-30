@@ -8,22 +8,27 @@ namespace ShopLens.Droid.Helpers
 {
     class ShopLensTextToSpeech : Java.Lang.Object, TextToSpeech.IOnInitListener
     {
-        event EventHandler TTSInitialized;
+        event EventHandler TtsInitialized;
+
+        TextToSpeech tts;
         ShopLensUtteranceProgressListener uttListener;
 
-        public TextToSpeech tts;
+        public bool IsSpeaking
+        {
+            get { return tts.IsSpeaking; }
+        }
 
-        public ShopLensTextToSpeech(Context context, Action<object, EventArgs> ReactToTTSInit,
+        public ShopLensTextToSpeech(Context context, Action<object, EventArgs> ReactToTtsInit,
             Action<object, UtteranceIdArgs> ReactToEndOfSpeech)
         {
             tts = new TextToSpeech(context, this);
             uttListener = new ShopLensUtteranceProgressListener(ReactToEndOfSpeech);
 
             tts.SetOnUtteranceProgressListener(uttListener);
-            TTSInitialized += (obj, eargs) => ReactToTTSInit(obj, eargs);
+            TtsInitialized += (obj, eargs) => ReactToTtsInit(obj, eargs);
         }
 
-        // TTS Engine method called when TTS is initialized.
+        // Tts Engine method called when Tts is initialized.
         public void OnInit([GeneratedEnum] OperationResult status)
         {
             if (status == OperationResult.Error)
@@ -35,12 +40,12 @@ namespace ShopLens.Droid.Helpers
                 tts.SetLanguage(Locale.English);
             }
 
-            TTSInitialized(this, new EventArgs());
+            TtsInitialized(this, new EventArgs());
         }
 
         public void Speak(string message, string utteranceId)
         {
-            tts?.Speak(message, QueueMode.Flush, null, utteranceId);
+            tts.Speak(message, QueueMode.Flush, null, utteranceId);
         }
 
         public void Stop()
