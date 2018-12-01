@@ -4,7 +4,6 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Content.PM;
-
 using PCLAppConfig;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
@@ -27,7 +26,8 @@ public enum IntentIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme")]
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
         SupportToolbar toolbar;
@@ -85,6 +85,11 @@ namespace ShopLens.Droid
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
+            if (savedInstanceState == null)
+            {
+                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance()).Commit();
+            }
+
             // We need to request user permissions.
             if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
             {
@@ -113,9 +118,6 @@ namespace ShopLens.Droid
                 //TODO: remove old activity items from navView.
                 switch (e.MenuItem.ItemId)
                 {
-                    case Resource.Id.NavItemCamera:
-                        StartCameraIntent();
-                        break;
                     case Resource.Id.NavItemShoppingCart:
                         StartCartIntent();
                         break;
@@ -225,11 +227,7 @@ namespace ShopLens.Droid
         {
             var results = e.Phrase;
 
-            if (results == ConfigurationManager.AppSettings["CmdOpenCamera"])
-            {
-                StartCameraIntent();
-            }
-            else if (results == ConfigurationManager.AppSettings["CmdOpenCart"])
+            if (results == ConfigurationManager.AppSettings["CmdOpenCart"])
             {
                 StartCartIntent();
             }
@@ -250,12 +248,6 @@ namespace ShopLens.Droid
             {
                 tts.Speak(askUserToRepeat, QueueMode.Flush, null, needUserAnswerId);
             }
-        }
-
-        private void StartCameraIntent()
-        {
-            var intentCam = new Intent(this, typeof(CameraActivity));
-            StartActivity(intentCam);
         }
 
         private void StartCartIntent()
