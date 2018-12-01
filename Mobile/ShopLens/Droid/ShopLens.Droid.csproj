@@ -190,6 +190,7 @@
     <Compile Include="Helpers\ShopLensSpeechRecognizer.cs" />
     <Compile Include="Helpers\DependencyInjection.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="Helpers\ShopLensTextToSpeech.cs" />
     <Compile Include="Helpers\ShopLensUtteranceProgressListener.cs" />
     <Compile Include="IO\IDirectoryCreator.cs" />
     <Compile Include="Notifications\ErrorDialogCreator.cs" />
@@ -209,6 +210,7 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
