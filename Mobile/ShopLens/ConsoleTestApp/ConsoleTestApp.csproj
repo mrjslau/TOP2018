@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="..\ShopLensWeb\bin\Debug\netstandard2.0\ShopLensWeb.deps.json" />
+      <Content Include="..\ShopLensWeb\bin\Debug\netstandard2.0\ShopLensWeb.dll" />
+      <Content Include="..\ShopLensWeb\bin\Debug\netstandard2.0\ShopLensWeb.pdb" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.AssemblyInfoInputs.cache" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.assets.cache" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.csproj.CoreCompileInputs.cache" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.csproj.FileListAbsolute.txt" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.csprojAssemblyReference.cache" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.dll" />
+      <Content Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.pdb" />
+      <Content Include="..\ShopLensWeb\obj\project.assets.json" />
+      <Content Include="..\ShopLensWeb\obj\project.packagespec.json" />
+      <Content Include="..\ShopLensWeb\obj\ShopLensWeb.csproj.nuget.cache" />
+      <Content Include="..\ShopLensWeb\obj\ShopLensWeb.csproj.nuget.g.props" />
+      <Content Include="..\ShopLensWeb\obj\ShopLensWeb.csproj.nuget.g.targets" />
+      <Content Include="..\ShopLensWeb\ShopLensWeb.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\ShopLensWeb\Class1.cs" />
+      <Compile Include="..\ShopLensWeb\Models\Product.cs" />
+      <Compile Include="..\ShopLensWeb\Models\Shop.cs" />
+      <Compile Include="..\ShopLensWeb\Models\ShoppingSession.cs" />
+      <Compile Include="..\ShopLensWeb\Models\User.cs" />
+      <Compile Include="..\ShopLensWeb\obj\Debug\netstandard2.0\ShopLensWeb.AssemblyInfo.cs" />
+      <Compile Include="..\ShopLensWeb\ShopLensContext.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+    </ItemGroup>
+
+</Project>
