@@ -48,6 +48,14 @@ namespace ShopLens.Droid
         public Semaphore mCameraOpenCloseLock = new Semaphore(1);
         bool mFlashSupported;
         public CaptureListener mCaptureCallback;
+        private CaptureRequest.Builder stillCaptureBuilder;
+        private Context context;
+
+
+        public Camera2Fragment(Context context)
+        {
+            this.context = context;
+        }
 
         public void ShowToast(string text)
         {
@@ -102,9 +110,9 @@ namespace ShopLens.Droid
             }
         }
 
-        public static Camera2Fragment NewInstance()
+        public static Camera2Fragment NewInstance(Context context)
         {
-            return new Camera2Fragment();
+            return new Camera2Fragment(context);
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -130,7 +138,7 @@ namespace ShopLens.Droid
             base.OnActivityCreated(savedInstanceState);
             mFile = new File(Activity.GetExternalFilesDir(null), "pic.jpg");
             mCaptureCallback = new CaptureListener(this);
-            mOnImageAvailableListener = new ImageAvailableListener(this, mFile);
+            mOnImageAvailableListener = new ImageAvailableListener(context, this, mFile);
         }
 
         public override void OnResume()
@@ -402,7 +410,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private CaptureRequest.Builder stillCaptureBuilder;
+        
 
         // Capture a still picture. This method should be called when we get a response in
         // {@link #mCaptureCallback} from both {@link #lockFocus()}.

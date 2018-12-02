@@ -190,10 +190,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fragments\Camera2Fragment.cs" />
+    <Compile Include="Helpers\ImageRecognizer.cs" />
     <Compile Include="Helpers\ISpeechRecognizer.cs" />
     <Compile Include="Helpers\ShopLensSpeechRecognizer.cs" />
     <Compile Include="Helpers\DependencyInjection.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="Helpers\ShopLensTextToSpeech.cs" />
     <Compile Include="Helpers\ShopLensUtteranceProgressListener.cs" />
     <Compile Include="IO\IDirectoryCreator.cs" />
     <Compile Include="Listeners\CaptureListener.cs" />

@@ -87,7 +87,7 @@ namespace ShopLens.Droid
 
             if (savedInstanceState == null)
             {
-                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance()).Commit();
+                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance(this)).Commit();
             }
 
             // We need to request user permissions.
