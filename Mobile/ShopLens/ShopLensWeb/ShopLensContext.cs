@@ -9,7 +9,7 @@ namespace ShopLensWeb
         private bool UseLocalDb { get; }
         private string ConnectionString { get; set; }
         
-        public ShopLensContext(string connectionString, bool useLocalDb = false)
+        public ShopLensContext(string connectionString, bool useLocalDb)
         {
             UseLocalDb = useLocalDb;
             ConnectionString = connectionString;
