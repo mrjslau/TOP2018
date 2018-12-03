@@ -6,7 +6,6 @@ using Android.Widget;
 using ShopLens.Droid.Source;
 using PCLAppConfig;
 using System;
-using Android.Speech;
 using Android.Content;
 using ShopLens.Droid.Helpers;
 using Android.Runtime;
@@ -14,14 +13,18 @@ using Android.Speech.Tts;
 using Java.Util;
 using System.Threading;
 using System.Text.RegularExpressions;
-using System.Linq;
 using System.Threading.Tasks;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.V7.App;
+using Android.Views;
 
 namespace ShopLens.Droid
 {
     // TODO: Make voice interaction in shopping cart fluent.
-    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
-    public class ShoppingCartActivity : Activity, TextToSpeech.IOnInitListener
+    [Activity(Label = "Shopping Cart", Theme = "@style/ShopLensTheme")]
+    public class ShoppingCartActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
 
@@ -29,6 +32,13 @@ namespace ShopLens.Droid
         Button addItemButton;
         ListView listView;
         ActivityPreferences prefs;
+        SupportToolbar toolbar;
+        ActionBarDrawerToggle drawerToggle;
+        DrawerLayout drawerLayout;
+        NavigationView navView;
+
+        string talkBackEnabledIntentKey;
+        bool talkBackEnabled;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
@@ -62,6 +72,48 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
+
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
+            toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
+            navView = FindViewById<NavigationView>(Resource.Id.NavView);
+
+            drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                Resource.String.openDrawer,
+                Resource.String.closeDrawer
+            );
+            drawerLayout.AddDrawerListener(drawerToggle);
+            SetSupportActionBar(toolbar);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            drawerToggle.SyncState();
+
+            navView.NavigationItemSelected += (sender, e) =>
+            {
+                switch (e.MenuItem.ItemId)
+                {
+                    case Resource.Id.NavItemShoppingCart:
+                        OnOptionsItemSelected(e.MenuItem);
+                        break;
+                    case Resource.Id.NavItemShoppingList:
+                        StartListIntent();
+                        break;
+                }
+            };
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            drawerToggle.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(item);
+        }
+
+        private void StartListIntent()
+        {
+            var intentList = new Intent(this, typeof(ShoppingListActivity));
+            intentList.PutExtra(talkBackEnabledIntentKey, talkBackEnabled);
+            StartActivity(intentList);
         }
 
         private bool IsTalkBackEnabled()

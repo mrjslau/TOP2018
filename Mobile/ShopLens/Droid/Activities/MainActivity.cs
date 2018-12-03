@@ -15,6 +15,7 @@ using Android.Speech.Tts;
 using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
+using System;
 
 public enum IntentIds
 {
@@ -115,7 +116,6 @@ namespace ShopLens.Droid
 
             navView.NavigationItemSelected += (sender, e) =>
             {
-                //TODO: remove old activity items from navView.
                 switch (e.MenuItem.ItemId)
                 {
                     case Resource.Id.NavItemShoppingCart:
