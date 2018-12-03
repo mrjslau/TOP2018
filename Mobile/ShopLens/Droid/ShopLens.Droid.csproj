@@ -324,6 +324,7 @@
     <Compile Include="Activities\ShoppingListActivity.cs" />
     <Compile Include="Activities\AppPreferences.cs" />
     <Compile Include="Activities\ActionBarDrawerToggle.cs" />
+    <Compile Include="Activities\GestureListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">

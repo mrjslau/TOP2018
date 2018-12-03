@@ -13,6 +13,8 @@ using Android.Views;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using ShopLens.Droid.Activities;
+using Android.Widget;
 
 public enum IntentIds
 {
@@ -28,10 +30,12 @@ namespace ShopLens.Droid
     public class MainActivity : AppCompatActivity
     {
         SupportToolbar toolbar;
-        ActionBarDrawerToggle drawerToggle;
+        Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
         CoordinatorLayout rootView;
+        GestureDetector gestureDetector;
+        GestureListener gestureListener;
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
@@ -104,7 +108,7 @@ namespace ShopLens.Droid
             navView = FindViewById<NavigationView>(Resource.Id.NavView);
             rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
 
-            drawerToggle = new ActionBarDrawerToggle(
+            drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 Resource.String.openDrawer,
@@ -115,6 +119,10 @@ namespace ShopLens.Droid
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
             drawerToggle.SyncState();
+
+            gestureListener = new GestureListener();
+            gestureListener.LeftEvent += GestureLeft;
+            gestureDetector = new GestureDetector(this, gestureListener);
 
             navView.NavigationItemSelected += (sender, e) =>
             {
@@ -307,6 +315,17 @@ namespace ShopLens.Droid
                     }
                 }
             }
+        }
+
+        void GestureLeft()
+        {
+            Toast.MakeText(this, "Gesture Left", ToastLength.Short).Show();
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            gestureDetector.OnTouchEvent(ev);
+            return base.DispatchTouchEvent(ev);
         }
     }
 }
