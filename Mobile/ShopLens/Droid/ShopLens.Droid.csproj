@@ -351,6 +351,7 @@
     <AndroidResource Include="Resources\drawable\main_button.xml" />
     <AndroidResource Include="Resources\drawable\nav_menu.xml" />
     <AndroidResource Include="Resources\drawable\buttons.xml" />
+    <AndroidResource Include="Resources\drawable\danger_button.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
