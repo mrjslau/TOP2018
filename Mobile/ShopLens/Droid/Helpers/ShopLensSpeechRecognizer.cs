@@ -8,7 +8,7 @@ namespace ShopLens.Droid.Helpers
     {
         public bool IsListening
         {
-            get { return voiceListener != null ? true : false; }
+            get { return voiceListener != null; }
         }
 
         public event EventHandler<ShopLensSpeechRecognizedEventArgs> OnPhraseRecognized;
