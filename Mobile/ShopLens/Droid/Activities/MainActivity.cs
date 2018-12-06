@@ -13,6 +13,11 @@ using Android.Views;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using System.Linq;
+using RandomNameGenerator;
+using ShopLensWeb;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 public enum IntentIds
 {
@@ -37,6 +42,10 @@ namespace ShopLens.Droid
 
         ShopLensTextToSpeech shopLensTts;
 
+        ShopLensContext shopLensDbContext;
+
+        User userInfo;
+
         ISharedPreferences prefs;
 
         bool tutorialNeeded;
@@ -45,6 +54,8 @@ namespace ShopLens.Droid
         string needUserAnswerId;
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
+
+        string userGuidPrefKey;
 
         string cmdOpenCamera;
         string cmdOpenCart;
@@ -55,6 +66,7 @@ namespace ShopLens.Droid
 
         public static bool goingFromCartToList = false;
         public static bool goingFromListToCart = false;
+        public static List<string> shoppingSessionItems;
 
         readonly string[] ShopLensPermissions =
         {
@@ -79,7 +91,11 @@ namespace ShopLens.Droid
             cmdRemind = ConfigurationManager.AppSettings["CmdRemind"];
             cmdTutorialLikeShopLens = ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"];
 
+            userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            ConnectToDatabase();
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
@@ -140,6 +156,16 @@ namespace ShopLens.Droid
             base.OnStart();
         }
 
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                InsertShoppingSessionInfo();
+            }
+
+            base.OnPause();
+        }
+
         protected override void OnRestart()
         {
             if (goingFromCartToList)
@@ -169,6 +195,15 @@ namespace ShopLens.Droid
             base.OnStop();
         }
 
+        private void ConnectToDatabase()
+        {
+            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
+            var connectionString = ConfigurationManager.AppSettings["DatabaseSource"];
+
+            shopLensDbContext = new ShopLensContext(connectionString, useLocalDb);
+            shopLensDbContext.Database.Migrate();
+        }
+
         private bool IsTalkBackEnabled()
         {
             var accessManager = (AccessibilityManager)GetSystemService(AccessibilityService);
@@ -187,14 +222,73 @@ namespace ShopLens.Droid
 
         private bool IsTutorialNeeded()
         {
-            bool firstTime = prefs.GetBoolean("FirstTime", true);
+            var firstLaunchPrefKey = ConfigurationManager.AppSettings["FirstTimeLaunchPrefKey"];
+            bool firstTime = prefs.GetBoolean(firstLaunchPrefKey, true);
 
             if (firstTime)
             {
-                prefs.Edit().PutBoolean("FirstTime", false).Commit();
+                prefs.Edit().PutBoolean(firstLaunchPrefKey, false).Commit();
+                GenerateUserInfo();
                 return true;
             }
             else return false;
+        }
+
+        private void GenerateUserInfo()
+        {
+            var userId = Guid.NewGuid();
+
+            prefs.Edit().PutString(userGuidPrefKey, userId.ToString());
+
+            var randomNumberGenerator = new Random();
+
+            var randomYear = randomNumberGenerator.Next(DateTime.Now.Year - 100, DateTime.Now.Year - 14);
+            var randomMonth = randomNumberGenerator.Next(1, 13);
+            var randomDay = randomNumberGenerator.Next(1, DateTime.DaysInMonth(randomYear, randomMonth) + 1);
+
+            var randomBirthday = new DateTime(randomYear, randomMonth, randomDay);
+
+            Gender userGender;
+            int genderChance = randomNumberGenerator.Next(1, 101);
+
+            if (genderChance >= 50) userGender = Gender.Female;
+
+            else userGender = Gender.Male;
+
+            var randomName = NameGenerator.GenerateFirstName(userGender);
+
+            userInfo = new User {Birthday = randomBirthday, Name = randomName, UserId = userId.ToString()};
+
+            shopLensDbContext.Users.Add(userInfo);
+            shopLensDbContext.SaveChanges();
+        }
+
+        private void InsertShoppingSessionInfo()
+        {
+            var productList = new List<Product>();
+            var userId = prefs.GetString(userGuidPrefKey, null);
+            
+            userInfo = shopLensDbContext.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (shoppingSessionItems != null)
+            {
+                foreach (string item in shoppingSessionItems)
+                {
+                    var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
+
+                    if (itemInfo != null) productList.Add(itemInfo);
+                }
+
+                if (!productList.Any())
+                {
+                    var shoppingSession = new ShoppingSession { Date = DateTime.Now, Products = productList, User = userInfo };
+                    userInfo.ShoppingSessions.Add(shoppingSession);
+
+                    shopLensDbContext.SaveChanges();
+                }
+            }
+
+            shopLensDbContext.Dispose();
         }
 
         private void RunUserTutorial()
