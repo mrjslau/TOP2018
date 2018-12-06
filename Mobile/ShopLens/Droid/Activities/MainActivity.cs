@@ -270,7 +270,7 @@ namespace ShopLens.Droid
             
             userInfo = shopLensDbContext.Users.FirstOrDefault(u => u.UserId == userId);
 
-            if (shoppingSessionItems != null)
+            if (shoppingSessionItems != null && userInfo != null)
             {
                 foreach (string item in shoppingSessionItems)
                 {
