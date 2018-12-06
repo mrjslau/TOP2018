@@ -1,73 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using RandomNameGenerator;
+using ShopLens.Droid.Helpers;
 using ShopLensWeb;
 
 namespace MigrationsConsole
 {
     class Program
     {
+        ShopLensRandomUserGenerator randUserGenerator;
+
         static void Main(string[] args)
         {
             var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
             var connectionString = ConfigurationManager.ConnectionStrings["DatabaseSource"].ConnectionString;
+
+            ShopLensRandomUserGenerator randUserGenerator = new ShopLensRandomUserGenerator();
 
             using (var dbContext = new ShopLensContext(connectionString, useLocalDb))
             {
                 dbContext.Database.Migrate();
 
                 //DeleteAllUsers(dbContext);
-                //AddTestUsers(dbContext);
-                //AddRandomUser(dbContext);
-                ListAllUsers(dbContext);
+                //var newUser = randUserGenerator.GenerateRandomUser(Guid.NewGuid().ToString(), 14, 120);
+                //AddNewUser(newUser);
+                //UpdateDatabase(dbContext);
+                //ListAllUsers(dbContext);
+                //Console.ReadLine();
             }
 
         }
 
-        public static void AddTestUsers(ShopLensContext dbContext)
+        public static void AddNewUser(ShopLensContext dbContext, User newUser)
         {
-            Console.WriteLine("Adding users...");
-
-            var user1 = new User { Name = "Marijus" };
-            var user2 = new User { Name = "Marijus" };
-            var user3 = new User { Name = "Tomus" };
-            var user4 = new User { Name = "Edus" };
-
-            var usersToAdd = new List<User> { user1, user2, user3, user4 };
-
-            dbContext.Users.AddRange(usersToAdd);
-
-            dbContext.SaveChanges();
+            dbContext.Users.Add(newUser);
         }
 
-        public static void AddRandomUser(ShopLensContext dbContext)
+        public static void DeleteAllUsers(ShopLensContext dbContext)
         {
-            var userId = Guid.NewGuid();
+            Console.WriteLine("Deleting users...");
 
-            var randomNumberGenerator = new Random();
+            var users = dbContext.Users.ToList();
 
-            var randomYear = randomNumberGenerator.Next(DateTime.Now.Year - 100, DateTime.Now.Year - 14);
-            var randomMonth = randomNumberGenerator.Next(1, 13);
-            var randomDay = randomNumberGenerator.Next(1, DateTime.DaysInMonth(randomYear, randomMonth) + 1);
+            dbContext.Users.RemoveRange(users);
+        }
 
-            var randomBirthday = new DateTime(randomYear, randomMonth, randomDay);
-
-            Gender userGender;
-            int genderChance = randomNumberGenerator.Next(1, 101);
-
-            if (genderChance >= 50) userGender = Gender.Female;
-
-            else userGender = Gender.Male;
-
-            var randomName = NameGenerator.GenerateFirstName(userGender);
-
-            var userInfo = new User { Birthday = randomBirthday, Name = randomName, UserId = userId.ToString() };
-
-            dbContext.Users.Add(userInfo);
+        public static void UpdateDatabase(DbContext dbContext)
+        {
             dbContext.SaveChanges();
         }
 
@@ -87,16 +67,6 @@ namespace MigrationsConsole
             {
                 Console.WriteLine($"User {user.UserId}: Name - {user.Name}, BDay - {user.Birthday}");
             }
-        }
-
-        public static void DeleteAllUsers(ShopLensContext dbContext)
-        {
-            Console.WriteLine("Deleting users...");
-
-            var users = dbContext.Users.ToList();
-
-            dbContext.Users.RemoveRange(users);
-            dbContext.SaveChanges();
         }
     }
 }
