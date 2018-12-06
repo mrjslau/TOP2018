@@ -23,6 +23,8 @@ namespace ShopLens.Droid
         Button addItemButton;
         ListView listView;
         ActivityPreferences prefs;
+        Button removeItemButton;
+        Button removeAllItemsButton;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
@@ -59,6 +61,8 @@ namespace ShopLens.Droid
             listView = FindViewById<ListView>(Resource.Id.ShopCartList);
             addItemButton = FindViewById<Button>(Resource.Id.ShopCartAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
+            removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
+            removeAllItemsButton = FindViewById<Button>(Resource.Id.ShopCartDeleteAllButton);
 
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
@@ -66,6 +70,8 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
+            removeItemButton.Click += RemoveTextBoxProductFromList;
+            removeAllItemsButton.Click += RemoveAllItems;
         }
 
         protected override void OnRestart()
@@ -153,6 +159,28 @@ namespace ShopLens.Droid
                 listAdapter.Add(text);
                 prefs.AddString(text);
             }
+            listAdapter.NotifyDataSetChanged();
+        }
+
+        void RemoveTextBoxProductFromList(object sender, EventArgs e)
+        {
+            RemoveStringFromList(addItemEditText.Text);
+        }
+
+        void RemoveStringFromList(string text)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                listAdapter.Remove(text);
+                prefs.RemoveString(text);
+            }
+            listAdapter.NotifyDataSetChanged();
+        }
+
+        void RemoveAllItems(object sender, EventArgs e)
+        {
+            prefs.DeleteAllPreferences();
+            listAdapter.Clear();
             listAdapter.NotifyDataSetChanged();
         }
 

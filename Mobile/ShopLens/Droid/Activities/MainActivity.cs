@@ -87,7 +87,7 @@ namespace ShopLens.Droid
 
             if (!talkBackEnabled)
             {
-                InitiateNoTalkBackMode();
+               InitiateNoTalkBackMode();
             }
 
             // Set our view from the "main" layout resource.
