@@ -279,7 +279,7 @@ namespace ShopLens.Droid
                     if (itemInfo != null) productList.Add(itemInfo);
                 }
 
-                if (!productList.Any())
+                if (productList.Any())
                 {
                     var shoppingSession = new ShoppingSession { Date = DateTime.Now, Products = productList, User = userInfo };
                     userInfo.ShoppingSessions.Add(shoppingSession);
