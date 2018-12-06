@@ -236,9 +236,9 @@ namespace ShopLens.Droid
 
         private void GenerateUserInfo()
         {
-            var userId = Guid.NewGuid();
+            var userGuid = Guid.NewGuid().ToString();
 
-            prefs.Edit().PutString(userGuidPrefKey, userId.ToString());
+            prefs.Edit().PutString(userGuidPrefKey, userGuid);
 
             var randomNumberGenerator = new Random();
 
@@ -257,7 +257,7 @@ namespace ShopLens.Droid
 
             var randomName = NameGenerator.GenerateFirstName(userGender);
 
-            userInfo = new User {Birthday = randomBirthday, Name = randomName, UserId = userId.ToString()};
+            userInfo = new User {Birthday = randomBirthday, Name = randomName, UserId = userGuid};
 
             shopLensDbContext.Users.Add(userInfo);
             shopLensDbContext.SaveChanges();
@@ -266,9 +266,9 @@ namespace ShopLens.Droid
         private void InsertShoppingSessionInfo()
         {
             var productList = new List<Product>();
-            var userId = prefs.GetString(userGuidPrefKey, null);
+            var userGuid = prefs.GetString(userGuidPrefKey, null);
             
-            userInfo = shopLensDbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            userInfo = shopLensDbContext.Users.FirstOrDefault(u => u.UserId == userGuid);
 
             if (shoppingSessionItems != null && userInfo != null)
             {
