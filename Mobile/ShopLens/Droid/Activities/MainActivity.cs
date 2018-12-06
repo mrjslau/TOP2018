@@ -39,7 +39,7 @@ namespace ShopLens.Droid
 
         ISharedPreferences prefs;
 
-        bool tutorialNeeded;
+        bool tutorialRequested = false;
         bool talkBackEnabled;
 
         string needUserAnswerId;
@@ -51,6 +51,7 @@ namespace ShopLens.Droid
         string cmdOpenList;
         string cmdHelp;
         string cmdRemind;
+        string cmdTutorialRequest;
         string cmdTutorialLikeShopLens;
 
         public static bool goingFromCartToList = false;
@@ -77,6 +78,7 @@ namespace ShopLens.Droid
             cmdOpenList = ConfigurationManager.AppSettings["CmdOpenList"];
             cmdHelp = ConfigurationManager.AppSettings["CmdHelp"];
             cmdRemind = ConfigurationManager.AppSettings["CmdRemind"];
+            cmdTutorialRequest = ConfigurationManager.AppSettings["CmdTutorialRequest"];
             cmdTutorialLikeShopLens = ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"];
 
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -87,14 +89,14 @@ namespace ShopLens.Droid
 
             if (!talkBackEnabled)
             {
-               InitiateNoTalkBackMode();
+                InitiateNoTalkBackMode();
             }
 
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);
 
             // We need to request user permissions.
-            if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
+            if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
             {
                 RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
@@ -135,8 +137,6 @@ namespace ShopLens.Droid
 
         protected override void OnStart()
         {
-            tutorialNeeded = IsTutorialNeeded();
-
             base.OnStart();
         }
 
@@ -185,41 +185,24 @@ namespace ShopLens.Droid
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
-        private bool IsTutorialNeeded()
-        {
-            bool firstTime = prefs.GetBoolean("FirstTime", true);
-
-            if (firstTime)
-            {
-                prefs.Edit().PutBoolean("FirstTime", false).Commit();
-                return true;
-            }
-            else return false;
-        }
-
         private void RunUserTutorial()
         {
+            tutorialRequested = true;
             var message = ConfigurationManager.AppSettings["InitialTutorialMsg"];
             shopLensTts.Speak(message, needUserAnswerId);
         }
 
         private void ContinueUserTutorial()
         {
+            tutorialRequested = false;
             var message = ConfigurationManager.AppSettings["FollowUpTutorialMsg"];
             shopLensTts.Speak(message, needUserAnswerId);
         }
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            if (tutorialNeeded)
-            {
-                RunUserTutorial();
-            }
-            else
-            {
-                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-                shopLensTts.Speak(welcomeMsg, needUserAnswerId);
-            }
+            var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+            shopLensTts.Speak(welcomeMsg, needUserAnswerId);
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -236,29 +219,36 @@ namespace ShopLens.Droid
 
             if (!string.IsNullOrEmpty(results))
             {
-                if (results == cmdOpenCamera)
+                if (!tutorialRequested)
                 {
-                    StartCameraIntent();
+                    if (results == cmdOpenCamera)
+                    {
+                        StartCameraIntent();
+                    }
+                    else if (results == cmdOpenCart)
+                    {
+                        StartCartIntent();
+                    }
+                    else if (results == cmdOpenList)
+                    {
+                        StartListIntent();
+                    }
+                    else if (results == cmdHelp)
+                    {
+                        var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
+                        shopLensTts.Speak(helpMessage, needUserAnswerId);
+                    }
+                    else if (results == cmdRemind)
+                    {
+                        var helpMessage = ConfigurationManager.AppSettings["MainRemindMsg"];
+                        shopLensTts.Speak(helpMessage, needUserAnswerId);
+                    }
+                    else if (results == cmdTutorialRequest)
+                    {
+                        RunUserTutorial();
+                    }
                 }
-                else if (results == cmdOpenCart)
-                {
-                    StartCartIntent();
-                }
-                else if (results == cmdOpenList)
-                {
-                    StartListIntent();
-                }
-                else if (results == cmdHelp)
-                {
-                    var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
-                    shopLensTts.Speak(helpMessage, needUserAnswerId);
-                }
-                else if (results == cmdRemind)
-                {
-                    var helpMessage = ConfigurationManager.AppSettings["MainRemindMsg"];
-                    shopLensTts.Speak(helpMessage, needUserAnswerId);
-                }
-                else if (results == cmdTutorialLikeShopLens && tutorialNeeded)
+                else if (results == cmdTutorialLikeShopLens)
                 {
                     ContinueUserTutorial();
                 }
