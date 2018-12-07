@@ -9,21 +9,17 @@ namespace MigrationsConsole
 {
     class Program
     {
-        ShopLensRandomUserGenerator randUserGenerator;
-
         static void Main(string[] args)
         {
             var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
             var connectionString = ConfigurationManager.ConnectionStrings["DatabaseSource"].ConnectionString;
-
-            ShopLensRandomUserGenerator randUserGenerator = new ShopLensRandomUserGenerator();
 
             using (var dbContext = new ShopLensContext(connectionString, useLocalDb))
             {
                 dbContext.Database.Migrate();
 
                 //DeleteAllUsers(dbContext);
-                //var newUser = randUserGenerator.GenerateRandomUser(Guid.NewGuid().ToString(), 14, 120);
+                //var newUser = ShopLensRandomUserGenerator.GenerateRandomUser(Guid.NewGuid().ToString(), 14, 120);
                 //AddNewUser(newUser);
                 //UpdateDatabase(dbContext);
                 //ListAllUsers(dbContext);

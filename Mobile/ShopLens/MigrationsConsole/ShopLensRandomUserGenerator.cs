@@ -5,16 +5,11 @@ using System.Security.Cryptography;
 
 namespace ShopLens.Droid.Helpers
 {
-    public class ShopLensRandomUserGenerator
+    public static class ShopLensRandomUserGenerator
     {
-        Random randomNumGenerator;
+        static Random randomNumGenerator = new Random();
 
-        public ShopLensRandomUserGenerator()
-        {
-            randomNumGenerator = new Random();
-        }
-
-        public User GenerateRandomUser(string userGuid, int minimumAge, int maximumAge, bool onlyMale = false, bool onlyFemale = false)
+        public static User GenerateRandomUser(string userGuid, int minimumAge, int maximumAge, bool onlyMale = false, bool onlyFemale = false)
         {
             Gender userGender;
 

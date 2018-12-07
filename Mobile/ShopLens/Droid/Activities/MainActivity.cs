@@ -41,8 +41,6 @@ namespace ShopLens.Droid
 
         ShopLensTextToSpeech shopLensTts;
 
-        ShopLensRandomUserGenerator randUserGenerator;
-
         ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
@@ -160,9 +158,9 @@ namespace ShopLens.Droid
             if (IsFinishing)
             {
                 var shopSession = GenerateShoppingSession();
-                AddShoppingSessionToShopLensDbContext(shopSession);
+                shopLensDbContext.ShoppingSessions.Add(shopSession);
+                shopLensDbContext.SaveChanges();
 
-                UpdateDatabase(shopLensDbContext);
                 CloseConnectionToDatabase(shopLensDbContext);
             }
 
@@ -209,11 +207,6 @@ namespace ShopLens.Droid
             return dbContext;
         }
 
-        private void UpdateDatabase(DbContext dbContext)
-        {
-            dbContext.SaveChanges();
-        }
-
         private void CloseConnectionToDatabase(DbContext dbContext)
         {
             dbContext.Dispose();
@@ -243,7 +236,7 @@ namespace ShopLens.Droid
             if (firstTime)
             {
                 var newUser = GenerateNewUser();
-                AddNewUserToShopLensDbContext(newUser);
+                shopLensDbContext.Users.Add(newUser);
 
                 prefs.Edit().PutBoolean(firstLaunchPrefKey, false).Commit();
                 return true;
@@ -253,8 +246,6 @@ namespace ShopLens.Droid
 
         private User GenerateNewUser()
         {
-            randUserGenerator = new ShopLensRandomUserGenerator();
-
             var userGuid = Guid.NewGuid().ToString();
             var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
             var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
@@ -262,7 +253,7 @@ namespace ShopLens.Droid
 
             prefs.Edit().PutString(guidPrefKey, userGuid);
 
-            return randUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
+            return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
         }
 
         private ShoppingSession GenerateShoppingSession()
@@ -296,16 +287,6 @@ namespace ShopLens.Droid
                     return null;
                 }
             }
-        }
-
-        private void AddNewUserToShopLensDbContext(User newUser)
-        {
-            shopLensDbContext.Users.Add(newUser);
-        }
-
-        private void AddShoppingSessionToShopLensDbContext(ShoppingSession shopSession)
-        {
-            shopLensDbContext.ShoppingSessions.Add(shopSession);
         }
 
         private void RunUserTutorial()
