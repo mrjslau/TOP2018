@@ -320,10 +320,13 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\CameraActivity.cs" />
     <Compile Include="Activities\CameraActivity.Helpers.cs" />
-    <Compile Include="Activities\ShoppingCartActivity.cs" />
     <Compile Include="Activities\ShoppingListActivity.cs" />
     <Compile Include="Activities\AppPreferences.cs" />
     <Compile Include="Activities\ActionBarDrawerToggle.cs" />
+    <Compile Include="Activities\ShoppingCartActivity.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Helpers\CartItemsAdapter.cs" />
+    <Compile Include="Helpers\CartViewHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
@@ -352,6 +355,7 @@
     <AndroidResource Include="Resources\drawable\nav_menu.xml" />
     <AndroidResource Include="Resources\drawable\buttons.xml" />
     <AndroidResource Include="Resources\drawable\danger_button.xml" />
+    <AndroidResource Include="Resources\layout\cart_item.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
@@ -368,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\values-v21\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="..\ShopLens\ShopLens.projitems" Label="Shared" Condition="Exists('..\ShopLens\ShopLens.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

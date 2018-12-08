@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:minWidth="25px"  
+    android:minHeight="25px"  
+    android:paddingBottom="4dp">
+    <TextView  
+        android:id="@+id/cartItemNameTextView"  
+        android:text="Item Name"  
+        android:textAppearance="?android:attr/textAppearanceLarge"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:paddingLeft="5dp" />
+    <TextView  
+        android:id="@+id/cartItemPriceTextView"   
+        android:text="0.00€"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:paddingLeft="5dp" />
+    <TextView  
+        android:id="@+id/cartItemCountTextView"   
+        android:text="0"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:paddingLeft="5dp" />  
+    <Button
+        android:id="@+id/ShopCartRemoveItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove"
+        android:background="@drawable/danger_button"
+        android:textColor="#E30303"
+        android:contentDescription="Remove item from cart."
+        android:paddingLeft="5dp"/>
+</LinearLayout>   
