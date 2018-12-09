@@ -50,11 +50,12 @@ namespace ShopLens.Droid
         public CaptureListener mCaptureCallback;
         private CaptureRequest.Builder stillCaptureBuilder;
         private Context context;
+        Activity activity;
 
-
-        public Camera2Fragment(Context context)
+        public Camera2Fragment(Activity activity, Context context)
         {
             this.context = context;
+            this.activity = activity;
         }
 
         public void ShowToast(string text)
@@ -110,9 +111,9 @@ namespace ShopLens.Droid
             }
         }
 
-        public static Camera2Fragment NewInstance(Context context)
+        public static Camera2Fragment NewInstance(Activity activity, Context context)
         {
-            return new Camera2Fragment(context);
+            return new Camera2Fragment(activity, context);
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -138,7 +139,7 @@ namespace ShopLens.Droid
             base.OnActivityCreated(savedInstanceState);
             mFile = new File(Activity.GetExternalFilesDir(null), "pic.jpg");
             mCaptureCallback = new CaptureListener(this);
-            mOnImageAvailableListener = new ImageAvailableListener(context, this, mFile);
+            mOnImageAvailableListener = new ImageAvailableListener(activity, context, this);
         }
 
         public override void OnResume()
@@ -195,7 +196,7 @@ namespace ShopLens.Droid
                     // For still image captures, we use the largest available size.
                     Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
-                    mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
+                    mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/100);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
                     Point displaySize = new Point();

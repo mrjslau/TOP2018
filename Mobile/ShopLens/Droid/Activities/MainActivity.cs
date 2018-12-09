@@ -16,6 +16,7 @@ using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using System.Threading;
 
 public enum IntentIds
 {
@@ -84,19 +85,20 @@ namespace ShopLens.Droid
             }
 
             // Set our view from the "main" layout resource.
-            SetContentView(Resource.Layout.Main);
-
-            if (savedInstanceState == null)
-            {
-                FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance(this)).Commit();
-            }
+            SetContentView(Resource.Layout.Main);            
 
             // We need to request user permissions.
             if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
             {
                 RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
             }
-           
+
+            if (savedInstanceState == null)
+            {
+                new Thread(() => { FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance(this, this)).Commit(); }
+            ).Start();          
+            }
+
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
             toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
             navView = FindViewById<NavigationView>(Resource.Id.NavView);

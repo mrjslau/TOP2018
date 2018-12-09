@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Gms.Vision.Texts;
 using Android.Graphics;
@@ -12,25 +13,23 @@ namespace ShopLens.Droid.Listeners
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {
         Context context;
+        Activity activity;
 
-        public ImageAvailableListener(Context context, Camera2Fragment fragment, File file)
+        public ImageAvailableListener(Activity activity, Context context, Camera2Fragment fragment)
         {
+            this.activity = activity;
             this.context = context;
             if (fragment == null)
                 throw new System.ArgumentNullException("fragment");
-            if (file == null)
-                throw new System.ArgumentNullException("file");
 
             owner = fragment;
-            this.file = file;
         }
 
-        private readonly File file;
         private readonly Camera2Fragment owner;
 
         public void OnImageAvailable(ImageReader reader)
         {
-            owner.mBackgroundHandler.Post(new ImageSaver(context, owner, reader.AcquireNextImage(), file));
+            owner.mBackgroundHandler.Post(new ImageSaver(activity, context, owner, reader.AcquireNextImage()));
         }
 
         // Saves a JPEG {@link Image} into the specified {@link File}.
@@ -42,17 +41,15 @@ namespace ShopLens.Droid.Listeners
             private Image mImage;
             Camera2Fragment owner;
             ImageRecognizer imageRecognizer;
+            Activity activity;
 
-            // The file we save the image into.
-            private File mFile;
-
-            public ImageSaver(Context context, Camera2Fragment owner, Image image, File file)
+            public ImageSaver(Activity activity, Context context, Camera2Fragment owner, Image image)
             {
                 this.owner = owner;
                 this.context = context;
-                imageRecognizer = new ImageRecognizer(context);
+                this.activity = activity;
+                imageRecognizer = new ImageRecognizer(context, activity);
                 mImage = image ?? throw new System.ArgumentNullException("image");
-                mFile = file ?? throw new System.ArgumentNullException("file");
             }
 
             public void Run()
@@ -62,7 +59,7 @@ namespace ShopLens.Droid.Listeners
                 buffer.Get(bytes);
                 Bitmap bitmapImage = BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length, null);
                 textRecognizer = new TextRecognizer.Builder(context).Build();
-                imageRecognizer.RecogniseImage(bitmapImage, owner);
+                imageRecognizer.RecognizeImage(bitmapImage, activity, owner);
             }
         }
     }

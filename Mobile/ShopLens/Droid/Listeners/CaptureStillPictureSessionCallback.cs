@@ -13,7 +13,6 @@ namespace ShopLens.Droid.Listeners
 
         public override void OnCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)
         {
-            owner.ShowToast("Saved: " + owner.mFile);
             owner.UnlockFocus();
         }
     }
