@@ -150,7 +150,7 @@ namespace ShopLens.Droid
 
         protected override void OnStart()
         {
-            IsLaunchedFirstTime();
+            GenerateUserInfoOnFirstLaunch();
             base.OnStart();
         }
 
@@ -229,7 +229,7 @@ namespace ShopLens.Droid
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
-        private void IsLaunchedFirstTime()
+        private void GenerateUserInfoOnFirstLaunch()
         {
             var firstLaunchPrefKey = ConfigurationManager.AppSettings["FirstTimeLaunchPrefKey"];
             bool firstTime = prefs.GetBoolean(firstLaunchPrefKey, true);
