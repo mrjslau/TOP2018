@@ -430,6 +430,7 @@ namespace ShopLens.Droid
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("off");
             voiceIsOff = true;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
         }
 
         private void turnOnVoice()
@@ -437,8 +438,7 @@ namespace ShopLens.Droid
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("on");
             voiceIsOff = false;
-            var welcomeBackMsg = ConfigurationManager.AppSettings["MainOnVoiceOnMsg"];
-            shopLensTts.Speak(welcomeBackMsg, needUserAnswerId);
+            shopLensTts.Speak(ConfigurationManager.AppSettings["MainOnVoiceOnMsg"], needUserAnswerId);
         }
 
         void GestureLeft()
@@ -450,7 +450,6 @@ namespace ShopLens.Droid
                 if (shopLensTts.IsSpeaking)
                     shopLensTts.Stop();
                 turnOffVoice();
-                Toast.MakeText(this, "Voice controls disabled", ToastLength.Short).Show();
             }
             else
             {
