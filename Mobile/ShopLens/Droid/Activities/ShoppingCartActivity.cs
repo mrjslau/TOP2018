@@ -63,7 +63,7 @@ namespace ShopLens.Droid
 
             talkBackEnabled = IsTalkBackEnabled();
 
-            if (!talkBackEnabled && !voiceIsOff)
+            if (!talkBackEnabled)
             {
                 InitiateNoTalkBackMode();
             }
@@ -146,8 +146,11 @@ namespace ShopLens.Droid
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
-            shopLensTts.Speak(message, needUserAnswerId);
+            if (!voiceIsOff)
+            {
+                var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
+                shopLensTts.Speak(message, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -310,6 +313,8 @@ namespace ShopLens.Droid
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("on");
             voiceIsOff = false;
+            var welcomeBackMsg = ConfigurationManager.AppSettings["CartOnVoiceOnMsg"];
+            shopLensTts.Speak(welcomeBackMsg, needUserAnswerId);
         }
 
         private void GestureLeft()
@@ -321,6 +326,7 @@ namespace ShopLens.Droid
                 if (shopLensTts.IsSpeaking)
                     shopLensTts.Stop();
                 turnOffVoice();
+                Toast.MakeText(this, "Voice controls disabled", ToastLength.Short).Show();
             }
             else
             {

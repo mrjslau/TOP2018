@@ -34,8 +34,6 @@ namespace ShopLens.Droid
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme = "@style/ShopLensTheme")]
     public class MainActivity : AppCompatActivity
     {
-        readonly string VOICE_PREFS_NAME = "VOICE_ON_OFF";
-
         SupportToolbar toolbar;
         Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
@@ -115,7 +113,7 @@ namespace ShopLens.Droid
 
             talkBackEnabled = IsTalkBackEnabled();
 
-            if (!talkBackEnabled && !voiceIsOff)
+            if (!talkBackEnabled)
             {
                 InitiateNoTalkBackMode();
             }
@@ -326,8 +324,11 @@ namespace ShopLens.Droid
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-            shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            if (!voiceIsOff)
+            {
+                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+                shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -436,6 +437,8 @@ namespace ShopLens.Droid
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("on");
             voiceIsOff = false;
+            var welcomeBackMsg = ConfigurationManager.AppSettings["MainOnVoiceOnMsg"];
+            shopLensTts.Speak(welcomeBackMsg, needUserAnswerId);
         }
 
         void GestureLeft()
@@ -447,6 +450,7 @@ namespace ShopLens.Droid
                 if (shopLensTts.IsSpeaking)
                     shopLensTts.Stop();
                 turnOffVoice();
+                Toast.MakeText(this, "Voice controls disabled", ToastLength.Short).Show();
             }
             else
             {
