@@ -327,6 +327,7 @@
     <Compile Include="Activities\ShoppingListActivity.cs" />
     <Compile Include="Activities\AppPreferences.cs" />
     <Compile Include="Activities\ActionBarDrawerToggle.cs" />
+    <Compile Include="Activities\GestureListener.cs" />
     <Compile Include="Helpers\ShopLensRandomUserGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
