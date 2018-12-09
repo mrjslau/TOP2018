@@ -189,6 +189,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\PermissionActivity.cs" />
     <Compile Include="Fragments\Camera2Fragment.cs" />
     <Compile Include="Helpers\ImageRecognizer.cs" />
     <Compile Include="Helpers\ISpeechRecognizer.cs" />

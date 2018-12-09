@@ -28,7 +28,7 @@ public enum IntentIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
+    [Activity(Label = "ShopLens", Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
     {
@@ -52,15 +52,10 @@ namespace ShopLens.Droid
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
 
-        public readonly string[] ShopLensPermissions =
-        {
-            Manifest.Permission.RecordAudio,
-            Manifest.Permission.Camera,
-            Manifest.Permission.WriteExternalStorage
-        };
+    
 
 
-        static readonly int REQUEST_PERMISSION = (int) IntentIds.PermissionRequest;
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -87,11 +82,7 @@ namespace ShopLens.Droid
             // Set our view from the "main" layout resource.
             SetContentView(Resource.Layout.Main);            
 
-            // We need to request user permissions.
-            if ((int) Build.VERSION.SdkInt >= (int) BuildVersionCodes.M)
-            {
-                RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
-            }
+            
 
             if (savedInstanceState == null)
             {
@@ -272,19 +263,7 @@ namespace ShopLens.Droid
             return base.OnOptionsItemSelected(item);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            if (requestCode == REQUEST_PERMISSION)
-            {
-                for (int i = 0; i <= permissions.Length - 1; i++)
-                {
-                    if(grantResults[i] == Permission.Denied)
-                    {
-                        RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
-                    }
-                }
-            }
-        }
+        
     }
 }
 
