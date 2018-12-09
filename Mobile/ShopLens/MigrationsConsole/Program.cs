@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MigrationsConsole.Requirements;
 using ShopLensWeb;
 
 namespace MigrationsConsole
@@ -14,11 +15,13 @@ namespace MigrationsConsole
         {
             var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]); 
             var connectionString = ConfigurationManager.ConnectionStrings["DatabaseSource"].ConnectionString;
-            
+            ExecuteSqlRequirementQueries();
+
             using (var dbContext = new ShopLensContext(connectionString, useLocalDb))
             {
                 dbContext.Database.Migrate();
 
+                Console.WriteLine("Entity Framework queries:");
                 //DeleteAllUsers(dbContext);
                 //AddTestUsers(dbContext);
                 ListAllUsers(dbContext);
@@ -26,11 +29,29 @@ namespace MigrationsConsole
 
         }
 
+        private static void ExecuteSqlRequirementQueries()
+        {
+            Console.WriteLine("======= ADO.NET queries: =======");
+            var reqs = new SqlRequirements();
+            reqs.Delete();
+            reqs.Insert();
+            reqs.Update();
+            reqs.Select();
+            reqs.DataAdapterDataTableAndLinq();
+            Console.WriteLine("======= ADO.NET queries end. =======");
+            Console.WriteLine();
+        }
+
         public static void AddTestUsers(ShopLensContext dbContext)
         {
             Console.WriteLine("Adding users...");
 
-            var user1 = new User { Name = "Marijus" };
+            var user1 = new User { Name = "Marijus", 
+                ShoppingSessions = new List<ShoppingSession>
+                {
+                    new ShoppingSession {Date = DateTime.UtcNow.AddDays(-1)},
+                    new ShoppingSession {Date = DateTime.UtcNow}
+                }};
             var user2 = new User { Name = "Marijus" };
             var user3 = new User { Name = "Tomus" };
             var user4 = new User { Name = "Edus" };
