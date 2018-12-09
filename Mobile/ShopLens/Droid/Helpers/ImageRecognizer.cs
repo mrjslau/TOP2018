@@ -124,10 +124,10 @@ namespace ShopLens.Droid
 
         public ErrorDialogCreator GetShoppingCartAddItemDialog(RecognitionResult recognitionResult)
         {
-            return new ErrorDialogCreator(context, context.Resources.GetString(Resource.String.shoppingCart), //Hint: nezinau ar cia tas pats, bet turetu veikt.
-                context.Resources.GetString(Resource.String.shoppingCart),
-                context.Resources.GetString(Resource.String.shoppingCart),
-                context.Resources.GetString(Resource.String.shoppingCart),
+            return new ErrorDialogCreator(context, context.Resources.GetString(Resource.String.shoppingCart),
+                context.Resources.GetString(Resource.String.shoppingCartQuestion),
+                context.Resources.GetString(Resource.String.positiveMessage),
+                context.Resources.GetString(Resource.String.negativeMessage),
                 () => AddToShoppingCart(recognitionResult.BestPrediction), delegate { });
         }
  
