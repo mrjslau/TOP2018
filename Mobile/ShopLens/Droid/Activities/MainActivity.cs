@@ -19,6 +19,7 @@ using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using ShopLens.Droid.Source;
 
 public enum IntentIds
 {
@@ -33,6 +34,8 @@ namespace ShopLens.Droid
     [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme = "@style/ShopLensTheme")]
     public class MainActivity : AppCompatActivity
     {
+        readonly string VOICE_PREFS_NAME = "VOICE_ON_OFF";
+
         SupportToolbar toolbar;
         Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
@@ -48,6 +51,8 @@ namespace ShopLens.Droid
         ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
+        ActivityPreferences voicePrefs;
+        bool voiceIsOff;
 
         bool tutorialRequested = false;
         bool talkBackEnabled;
@@ -102,9 +107,15 @@ namespace ShopLens.Droid
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
+            voicePrefs = new ActivityPreferences(this, VOICE_PREFS_NAME);
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+
             talkBackEnabled = IsTalkBackEnabled();
 
-            if (!talkBackEnabled)
+            if (!talkBackEnabled && !voiceIsOff)
             {
                 InitiateNoTalkBackMode();
             }
@@ -188,7 +199,7 @@ namespace ShopLens.Droid
                 goingFromListToCart = false;
                 StartCartIntent();
             }
-            else if (!talkBackEnabled)
+            else if (!talkBackEnabled && !voiceIsOff)
             {
                 var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
                 shopLensTts.Speak(message, needUserAnswerId);
@@ -199,8 +210,11 @@ namespace ShopLens.Droid
 
         protected override void OnStop()
         {
-            // Stop Tts Speech.
-            shopLensTts.Stop();
+            if (!talkBackEnabled && !voiceIsOff)
+            {
+                // Stop Tts Speech.
+                shopLensTts.Stop();
+            }
 
             base.OnStop();
         }
@@ -410,9 +424,34 @@ namespace ShopLens.Droid
             }
         }
 
+        private void turnOffVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("off");
+            voiceIsOff = true;
+        }
+
+        private void turnOnVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("on");
+            voiceIsOff = false;
+        }
+
         void GestureLeft()
         {
-            Toast.MakeText(this, "Gesture Left", ToastLength.Short).Show();
+            if (!voiceIsOff)
+            {
+                if (voiceRecognizer.IsListening)
+                    voiceRecognizer.StopListening();
+                if (shopLensTts.IsSpeaking)
+                    shopLensTts.Stop();
+                turnOffVoice();
+            }
+            else
+            {
+                turnOnVoice();
+            }
         }
 
         public override bool DispatchTouchEvent(MotionEvent ev)
