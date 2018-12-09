@@ -2,7 +2,9 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Content.PM;
+
 using PCLAppConfig;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
@@ -10,15 +12,17 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using ShopLens.Droid.Helpers;
 using Android.Views;
+using Android.Speech.Tts;
+using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
-using System;
-using System.Threading;
 using System;
 using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System;
+using System.Threading;
 
 public enum IntentIds
 {
@@ -55,28 +59,13 @@ namespace ShopLens.Droid
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
 
-        string userGuidPrefKey;
-
-        string cmdOpenCamera;
-        string cmdOpenCart;
-        string cmdOpenList;
-        string cmdHelp;
-        string cmdRemind;
-        string cmdTutorialRequest;
-        string cmdTutorialLikeShopLens;
-
-        public static bool goingFromCartToList = false;
-        public static bool goingFromListToCart = false;
-        public static List<string> shoppingSessionItems;
-
-        readonly string[] ShopLensPermissions =
+        public readonly string[] ShopLensPermissions =
         {
             Manifest.Permission.RecordAudio,
             Manifest.Permission.Camera,
             Manifest.Permission.WriteExternalStorage
         };
 
-        readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
