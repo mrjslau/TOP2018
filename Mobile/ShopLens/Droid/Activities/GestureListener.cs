@@ -13,20 +13,14 @@ namespace ShopLens.Droid.Activities
 
         public bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-            try
-            {
-                if (Math.Abs(e1.GetY() - e2.GetY()) > SWIPE_MAX_OFF_PATH)
-                    return false;
-                // right to left swipe
-                if (e1.GetX() - e2.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY && LeftEvent != null)
-                    LeftEvent();//Toast.MakeText(view.Context, "Left Swipe", ToastLength.Short).Show();
-                else if (e2.GetX() - e1.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY && RightEvent != null)
-                    RightEvent();// Toast.MakeText(view.Context, "Right Swipe", ToastLength.Short).Show();
-            }
-            catch (Exception e)
-            {
-                // TODO
-            }
+            if (Math.Abs(e1.GetY() - e2.GetY()) > SWIPE_MAX_OFF_PATH)
+                return false;
+            // right to left swipe
+            if (e1.GetX() - e2.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY && LeftEvent != null)
+                LeftEvent();
+            else if (e2.GetX() - e1.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY && RightEvent != null)
+                RightEvent();
+
             return false;
         }
 
