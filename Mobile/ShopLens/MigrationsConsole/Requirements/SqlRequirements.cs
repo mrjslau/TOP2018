@@ -18,6 +18,11 @@ namespace MigrationsConsole.Requirements
             connection.ConnectionString = ConfigurationManager.ConnectionStrings["DatabaseSource"].ConnectionString;
             connection.Open();
         }
+        
+        ~SqlRequirements()
+        {
+            connection.Close();
+        }
 
         public void Delete()
         {
@@ -106,16 +111,20 @@ namespace MigrationsConsole.Requirements
             }
             
             // LINQ queries
+            // Aggregate
             var userNamesAggregated = users.Select(x => x.Name).Aggregate((x, y) => $"{x} and {y}");
             Console.WriteLine("(.Aggregate)User names aggregated: " + userNamesAggregated);
 
+            // Take
             var firstTwoUsers = users.Take(3).ToList();
             Console.WriteLine("User names .Take(3): " + string.Join(", ", firstTwoUsers.Select(x => x.Name)));
 
+            // GroupBy
             var userNamesGrouped = users.GroupBy(x => x);
             var mostCommonName = userNamesGrouped.First(x => x.Count() == userNamesGrouped.Max(y => y.Count())).Key;
             Console.WriteLine($"(.GroupBy) Most common username: {mostCommonName}");
 
+            // Join
             var usersAndShoppingSessions = sessions
                 .Join(users, x => x.UserId, x => x.UserId, (x, y) => new {x.ShoppingSessionId, x.UserId, y.Name})
                 .Select(x => $"Shopping session of {x.Name}({x.UserId}): \t {x.ShoppingSessionId}");
@@ -125,11 +134,6 @@ namespace MigrationsConsole.Requirements
             {
                 Console.WriteLine(userAndShoppingSession);
             }
-        }
-
-        ~SqlRequirements()
-        {
-            connection.Close();
         }
     }
 }
