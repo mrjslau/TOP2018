@@ -8,9 +8,6 @@ using PCLAppConfig;
 using System;
 using Android.Content;
 using ShopLens.Droid.Helpers;
-using Android.Runtime;
-using Android.Speech.Tts;
-using Java.Util;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -44,17 +41,27 @@ namespace ShopLens.Droid
         ArrayAdapter<string> listAdapter;
 
         ShopLensSpeechRecognizer voiceRecognizer;
+        ShopLensTextToSpeech shopLensTts;
 
-        TextToSpeech tts;
+        bool talkBackEnabled;
 
-        readonly string voiceCartCmd = ConfigurationManager.AppSettings["CmdVoiceCart"];
+        string needUserAnswerId;
+        string askUserToRepeat;
+        string afterActionAsk;
+        string cmdOpenMain;
+        string cmdOpenList;
+        string cmdVoiceCart; 
+        string cmdHelp;
+        string cmdRemind;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingCart);
 
-            if (!IsTalkBackEnabled())
+            talkBackEnabled = IsTalkBackEnabled();
+
+            if (!talkBackEnabled)
             {
                 InitiateNoTalkBackMode();
             }
@@ -65,6 +72,8 @@ namespace ShopLens.Droid
             listView = FindViewById<ListView>(Resource.Id.ShopCartList);
             addItemButton = FindViewById<Button>(Resource.Id.ShopCartAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
+            removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
+            removeAllItemsButton = FindViewById<Button>(Resource.Id.ShopCartDeleteAllButton);
 
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
@@ -116,6 +125,35 @@ namespace ShopLens.Droid
             StartActivity(intentList);
         }
 
+        protected override void OnRestart()
+        {
+            if (!talkBackEnabled)
+            {
+                var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
+                shopLensTts.Speak(message, needUserAnswerId);
+            }
+
+            base.OnRestart();
+        }
+
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                MainActivity.shoppingSessionItems = items;
+            }
+
+            base.OnPause();
+        }
+
+        protected override void OnStop()
+        {
+            // Stop Tts Speech.
+            shopLensTts.Stop();
+
+            base.OnStop();
+        }
+
         private bool IsTalkBackEnabled()
         {
             var talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
@@ -124,31 +162,47 @@ namespace ShopLens.Droid
 
         private void InitiateNoTalkBackMode()
         {
-            tts = new TextToSpeech(this, this);
+            needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
+            askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
+            afterActionAsk = ConfigurationManager.AppSettings["AfterActionMsg"];
+            cmdOpenMain = ConfigurationManager.AppSettings["CmdOpenMain"];
+            cmdOpenList = ConfigurationManager.AppSettings["CmdOpenList"];
+            cmdVoiceCart = ConfigurationManager.AppSettings["CmdVoiceCartList"];
+            cmdHelp = ConfigurationManager.AppSettings["CmdHelp"];
+            cmdRemind = ConfigurationManager.AppSettings["CmdRemind"];
 
+            shopLensTts = new ShopLensTextToSpeech(this, TtsSpeakAfterInit, TtsStoppedSpeaking);
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
-        public void OnInit([GeneratedEnum] OperationResult status)
+        private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            if (status == OperationResult.Error)
+            var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
+            shopLensTts.Speak(message, needUserAnswerId);
+        }
+
+        private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
+        {
+            if (e.UtteranceId == needUserAnswerId)
             {
-                tts.SetLanguage(Locale.Default);
+                voiceRecognizer.RecognizePhrase(this);
             }
-            else if (status == OperationResult.Success)
-            {
-                tts.SetLanguage(Locale.Us);
-            }
+        }
+
+        private void AskAfterAction()
+        {
+            shopLensTts.Speak(afterActionAsk, needUserAnswerId);
         }
 
         private void SpeakOut(string message, int checkDelay)
         {
             if (!string.IsNullOrEmpty(message))
             {
-                tts.Speak(message, QueueMode.Flush, null, null);
+                shopLensTts.Speak(message, null);
 
-                while (tts.IsSpeaking)
+                while (shopLensTts.IsSpeaking)
                 {
+                    // TODO: Tomas needs to fix this.
                     Thread.Sleep(checkDelay);
                 }
             }
@@ -169,19 +223,42 @@ namespace ShopLens.Droid
             listAdapter.NotifyDataSetChanged();
         }
 
+        void RemoveTextBoxProductFromList(object sender, EventArgs e)
+        {
+            RemoveStringFromList(addItemEditText.Text);
+        }
+
+        void RemoveStringFromList(string text)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                listAdapter.Remove(text);
+                prefs.RemoveString(text);
+            }
+            listAdapter.NotifyDataSetChanged();
+        }
+
+        void RemoveAllItems(object sender, EventArgs e)
+        {
+            prefs.DeleteAllPreferences();
+            listAdapter.Clear();
+            listAdapter.NotifyDataSetChanged();
+        }
+
         private void OnVoiceRecognitionResults(object sender, ShopLensSpeechRecognizedEventArgs e)
         {
-            var recognitionResults = e.Phrase;
-            if (!string.IsNullOrEmpty(recognitionResults))
+            var results = e.Phrase;
+
+            if (!string.IsNullOrEmpty(results))
             {
                 var cmdAddProduct = ConfigurationManager.AppSettings["CmdAddCartList"];
                 int sessionCheckDelay = int.Parse(ConfigurationManager.AppSettings["VoicerCheckDelay"]);
                 Regex addProductRegex = new Regex(@"^" + cmdAddProduct + @"(?:\s\w+)+");
 
-                if (recognitionResults == voiceCartCmd)
+                if (results == cmdVoiceCart)
                 {
                     int voicerAwaitTime = int.Parse(ConfigurationManager.AppSettings["VoicerPauseTime"]);
-                    string endMessage = "Voicing of shopping cart complete.";
+                    string endMessage = ConfigurationManager.AppSettings["CartVoicingCompleteMsg"];
 
                     Task.Run(() =>
                     {
@@ -199,13 +276,15 @@ namespace ShopLens.Droid
                         {
                             System.Diagnostics.Debug.WriteLine(t.Exception);
                         }
-                    });
+
+                        AskAfterAction();
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
-                else if (addProductRegex.IsMatch(recognitionResults))
+                else if (addProductRegex.IsMatch(results))
                 {
                     addItemButton.Enabled = false;
-                    string itemToAdd = recognitionResults.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
-                    string endMessage = itemToAdd + " was added to your shopping cart.";
+                    string itemToAdd = results.Substring(cmdAddProduct.Length + 1).FirstCharToUpper();
+                    string endMessage = itemToAdd + ConfigurationManager.AppSettings["AddedToCartMsg"];
 
                     AddStringToList(itemToAdd);
 
@@ -219,8 +298,33 @@ namespace ShopLens.Droid
                         {
                             System.Diagnostics.Debug.WriteLine(t.Exception);
                         }
+
                         addItemButton.Enabled = true;
+                        AskAfterAction();
                     }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                else if (results == cmdHelp)
+                {
+                    var message = ConfigurationManager.AppSettings["CartHelpMsg"];
+                    shopLensTts.Speak(message, needUserAnswerId);
+                }
+                else if (results == cmdRemind)
+                {
+                    var message = ConfigurationManager.AppSettings["CartRemindMsg"];
+                    shopLensTts.Speak(message, needUserAnswerId);
+                }
+                else if (results == cmdOpenMain)
+                {
+                    Finish();
+                }
+                else if (results == cmdOpenList)
+                {
+                    MainActivity.goingFromCartToList = true;
+                    Finish();
+                }
+                else
+                {
+                    shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
                 }
             }
         }

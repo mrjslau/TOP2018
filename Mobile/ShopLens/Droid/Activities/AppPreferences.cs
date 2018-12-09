@@ -32,5 +32,21 @@ namespace ShopLens.Droid.Source
             prefsEditor.PutString("item" + prefs.All.Count.ToString(), name);
             prefsEditor.Apply();
         }
+
+        public void RemoveString(string name)
+        {
+            foreach (KeyValuePair<string, object> entry in prefs.All)
+            {
+                if (entry.Value.ToString() == name)
+                {
+                    prefs.Edit().Remove(entry.Key).Commit();
+                }            
+            }
+        }
+
+        public void DeleteAllPreferences()
+        {
+            prefsEditor.Clear().Commit();
+        }
     }
 }

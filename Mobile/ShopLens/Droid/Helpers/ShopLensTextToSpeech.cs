@@ -9,6 +9,7 @@ namespace ShopLens.Droid.Helpers
     class ShopLensTextToSpeech : Java.Lang.Object, TextToSpeech.IOnInitListener
     {
         event EventHandler TtsInitialized;
+
         TextToSpeech tts;
         ShopLensUtteranceProgressListener uttListener;
 
@@ -22,6 +23,7 @@ namespace ShopLens.Droid.Helpers
         {
             tts = new TextToSpeech(context, this);
             uttListener = new ShopLensUtteranceProgressListener(ReactToEndOfSpeech);
+
             tts.SetOnUtteranceProgressListener(uttListener);
             TtsInitialized += (obj, eargs) => ReactToTtsInit(obj, eargs);
         }
@@ -37,6 +39,7 @@ namespace ShopLens.Droid.Helpers
             {
                 tts.SetLanguage(Locale.English);
             }
+
             TtsInitialized(this, new EventArgs());
         }
 

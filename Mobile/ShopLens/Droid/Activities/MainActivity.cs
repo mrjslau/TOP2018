@@ -2,7 +2,6 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Content.PM;
 using PCLAppConfig;
 using Android.Support.Design.Widget;
@@ -11,12 +10,15 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using ShopLens.Droid.Helpers;
 using Android.Views;
-using Android.Speech.Tts;
-using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
 using System.Threading;
+using System;
+using System.Linq;
+using ShopLensWeb;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 public enum IntentIds
 {
@@ -40,22 +42,41 @@ namespace ShopLens.Droid
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
-        TextToSpeech tts;
-        ShopLensUtteranceProgressListener ttsListener;
+        ShopLensTextToSpeech shopLensTts;
+
+        ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
 
-        bool tutorialNeeded;
+        bool tutorialRequested = false;
         bool talkBackEnabled;
 
         string needUserAnswerId;
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
 
-    
+        string userGuidPrefKey;
 
+        string cmdOpenCamera;
+        string cmdOpenCart;
+        string cmdOpenList;
+        string cmdHelp;
+        string cmdRemind;
+        string cmdTutorialRequest;
+        string cmdTutorialLikeShopLens;
 
-        
+        public static bool goingFromCartToList = false;
+        public static bool goingFromListToCart = false;
+        public static List<string> shoppingSessionItems;
+
+        readonly string[] ShopLensPermissions =
+        {
+            Manifest.Permission.RecordAudio,
+            Manifest.Permission.Camera,
+            Manifest.Permission.WriteExternalStorage
+        };
+
+        readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -64,18 +85,26 @@ namespace ShopLens.Droid
             ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             DependencyInjection.RegisterInterfaces();
 
+            cmdOpenCamera = ConfigurationManager.AppSettings["CmdOpenCamera"];
+            cmdOpenCart = ConfigurationManager.AppSettings["CmdOpenCart"];
+            cmdOpenList = ConfigurationManager.AppSettings["CmdOpenList"];
+            cmdHelp = ConfigurationManager.AppSettings["CmdHelp"];
+            cmdRemind = ConfigurationManager.AppSettings["CmdRemind"];
+            cmdTutorialRequest = ConfigurationManager.AppSettings["CmdTutorialRequest"];
+            cmdTutorialLikeShopLens = ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"];
+
+            userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            shopLensDbContext = ConnectToDatabase();
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
-            // Check if TalkBack is enabled.
-            if (IsTalkBackEnabled())
+            talkBackEnabled = IsTalkBackEnabled();
+
+            if (!talkBackEnabled)
             {
-                talkBackEnabled = true;
-            }
-            else
-            {
-                talkBackEnabled = false;
                 InitiateNoTalkBackMode();
             }
 
@@ -123,23 +152,68 @@ namespace ShopLens.Droid
 
         protected override void OnStart()
         {
+            GenerateUserInfoOnFirstLaunch();
             base.OnStart();
-            tutorialNeeded = IsTutorialNeeded();
+        }
+
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                var shopSession = GenerateShoppingSession();
+                shopLensDbContext.ShoppingSessions.Add(shopSession);
+                shopLensDbContext.SaveChanges();
+
+                CloseConnectionToDatabase(shopLensDbContext);
+            }
+
+            base.OnPause();
+        }
+
+        protected override void OnRestart()
+        {
+            if (goingFromCartToList)
+            {
+                goingFromCartToList = false;
+                StartListIntent();
+            }
+            else if (goingFromListToCart)
+            {
+                goingFromListToCart = false;
+                StartCartIntent();
+            }
+            else if (!talkBackEnabled)
+            {
+                var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
+                shopLensTts.Speak(message, needUserAnswerId);
+            }
+
+            base.OnRestart();
         }
 
         protected override void OnStop()
         {
-            // Get rid of TTS.
-            if (tts != null)
-            {
-                //TODO: possibly resume TTS in the OnResume method.
-                tts.Stop();
-                tts.Shutdown();
-            }
+            // Stop Tts Speech.
+            shopLensTts.Stop();
+
             base.OnStop();
         }
 
-        //TODO: make it so that once we return to the main menu, the voicer greets us and asks questions (OnResume method).
+        private ShopLensContext ConnectToDatabase()
+        {
+            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
+            var connectionString = ConfigurationManager.AppSettings["DatabaseSource"];
+
+            var dbContext = new ShopLensContext(connectionString, useLocalDb);
+            dbContext.Database.Migrate();
+
+            return dbContext;
+        }
+
+        private void CloseConnectionToDatabase(DbContext dbContext)
+        {
+            dbContext.Dispose();
+        }
 
         private bool IsTalkBackEnabled()
         {
@@ -152,60 +226,88 @@ namespace ShopLens.Droid
             needUserAnswerId = ConfigurationManager.AppSettings["AnswerUtteranceId"];
             askUserToRepeat = ConfigurationManager.AppSettings["AskToRepeat"];
 
-            ttsListener = new ShopLensUtteranceProgressListener(TtsStoppedSpeaking);
-
-            tts = new TextToSpeech(this, this);
-            tts.SetOnUtteranceProgressListener(ttsListener);
+            shopLensTts = new ShopLensTextToSpeech(this, TtsSpeakAfterInit, TtsStoppedSpeaking);
 
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
-        private bool IsTutorialNeeded()
+        private void GenerateUserInfoOnFirstLaunch()
         {
-            bool firstTime = prefs.GetBoolean("FirstTime", true);
+            var firstLaunchPrefKey = ConfigurationManager.AppSettings["FirstTimeLaunchPrefKey"];
+            bool firstTime = prefs.GetBoolean(firstLaunchPrefKey, true);
 
             if (firstTime)
             {
-                prefs.Edit().PutBoolean("FirstTime", false).Commit();
-                return true;
+                var newUser = GenerateNewUser();
+                shopLensDbContext.Users.Add(newUser);
+
+                prefs.Edit().PutBoolean(firstLaunchPrefKey, false).Commit();
             }
-            else return false;
+        }
+
+        private User GenerateNewUser()
+        {
+            var userGuid = Guid.NewGuid().ToString();
+            var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+            var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
+            var maxUserAge = int.Parse(ConfigurationManager.AppSettings["MaxUserAge"]);
+
+            prefs.Edit().PutString(guidPrefKey, userGuid);
+
+            return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
+        }
+
+        private ShoppingSession GenerateShoppingSession()
+        {
+            var productList = new List<Product>();
+            var userGuid = int.Parse(prefs.GetString(userGuidPrefKey, null));
+
+            if (shoppingSessionItems == null)
+            {
+                return null;
+            }
+            else
+            {
+                foreach (string item in shoppingSessionItems)
+                {
+                    var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
+
+                    if (itemInfo != null)
+                    {
+                        productList.Add(itemInfo);
+                    }
+                }
+
+                if (productList.Any())
+                {
+                    // TODO: change GUID to either be string or int in the DB model, but not both.
+                    return new ShoppingSession { Date = DateTime.Now, Products = productList, UserId = userGuid};  
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         private void RunUserTutorial()
         {
+            tutorialRequested = true;
             var message = ConfigurationManager.AppSettings["InitialTutorialMsg"];
-            tts.Speak(message, QueueMode.Flush, null, needUserAnswerId);
+            shopLensTts.Speak(message, needUserAnswerId);
         }
 
         private void ContinueUserTutorial()
         {
+            tutorialRequested = false;
             var message = ConfigurationManager.AppSettings["FollowUpTutorialMsg"];
-            tts.Speak(message, QueueMode.Flush, null, needUserAnswerId);
+            shopLensTts.Speak(message, needUserAnswerId);
         }
 
-        // TTS Engine method called when TTS is initialized.
-        public void OnInit([GeneratedEnum] OperationResult status)
+        private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            if (status == OperationResult.Error)
-            {
-                tts.SetLanguage(Locale.Default);
-            }
-            else if (status == OperationResult.Success)
-            {
-                tts.SetLanguage(Locale.Us);
-            }
-
-            //TODO: schedule a TTS init method to be run here instead of writing it to this method.
-            if (tutorialNeeded)
-            {
-                RunUserTutorial();
-            }
-            else
-            {
-                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-                tts.Speak(welcomeMsg, QueueMode.Flush, null, needUserAnswerId);
-            }
+            var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+            shopLensTts.Speak(welcomeMsg, needUserAnswerId);
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -220,26 +322,45 @@ namespace ShopLens.Droid
         {
             var results = e.Phrase;
 
-            if (results == ConfigurationManager.AppSettings["CmdOpenCart"])
+            if (!string.IsNullOrEmpty(results))
             {
-                StartCartIntent();
-            }
-            else if (results == ConfigurationManager.AppSettings["CmdOpenList"])
-            {
-                StartListIntent();
-            }
-            else if (results == ConfigurationManager.AppSettings["CmdHelp"])
-            {
-                var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
-                tts.Speak(helpMessage, QueueMode.Flush, null, needUserAnswerId);
-            }
-            else if (results == ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"] && tutorialNeeded)
-            {
-                ContinueUserTutorial();
-            }
-            else
-            {
-                tts.Speak(askUserToRepeat, QueueMode.Flush, null, needUserAnswerId);
+                if (!tutorialRequested)
+                {
+                    if (results == cmdOpenCamera)
+                    {
+                        StartCameraIntent();
+                    }
+                    else if (results == cmdOpenCart)
+                    {
+                        StartCartIntent();
+                    }
+                    else if (results == cmdOpenList)
+                    {
+                        StartListIntent();
+                    }
+                    else if (results == cmdHelp)
+                    {
+                        var helpMessage = ConfigurationManager.AppSettings["MainHelpMsg"];
+                        shopLensTts.Speak(helpMessage, needUserAnswerId);
+                    }
+                    else if (results == cmdRemind)
+                    {
+                        var helpMessage = ConfigurationManager.AppSettings["MainRemindMsg"];
+                        shopLensTts.Speak(helpMessage, needUserAnswerId);
+                    }
+                    else if (results == cmdTutorialRequest)
+                    {
+                        RunUserTutorial();
+                    }
+                }
+                else if (results == cmdTutorialLikeShopLens)
+                {
+                    ContinueUserTutorial();
+                }
+                else
+                {
+                    shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
+                }
             }
         }
 

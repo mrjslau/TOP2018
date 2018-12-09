@@ -31,11 +31,23 @@
 	android:padding="10dp"
 	tools:context=".ShoppingListActivity"
 	android:background="#B3B3B3">
+    
+    <Button
+        android:layout_margin="10dp"
+        android:id="@+id/ShopListDeleteAllButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete All Items"
+        android:background="@drawable/danger_button"
+        android:textColor="#E30303"
+        android:contentDescription="Voice commands."/>        
+       
 	<LinearLayout
 		android:id="@+id/ShopListLinearLayout"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_width="fill_parent">
+		android:layout_width="fill_parent"
+        android:layout_below="@id/ShopListDeleteAllButton">
 		<EditText
 			android:hint="Item's name"
 			android:id="@+id/ShopListAddItemEditText"
@@ -43,15 +55,29 @@
 			android:layout_weight="1"
 			android:layout_width="fill_parent"
 			android:contentDescription="Product to be added."/>
-		<Button
-			android:layout_margin="10dp"
-			android:id="@+id/ShopListAddItemButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Add"
-			android:background="@drawable/buttons"
-			android:textColor="#FFFFFF"
-			android:contentDescription="Add product to list."/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="wrap_content">
+    		<Button
+    			android:layout_margin="10dp"
+    			android:id="@+id/ShopListAddItemButton"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="Add"
+    			android:background="@drawable/buttons"
+    			android:textColor="#FFFFFF"
+    			android:contentDescription="Add product to list."/>
+            <Button
+                android:layout_margin="10dp"
+                android:id="@+id/ShopListRemoveItemButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:background="@drawable/danger_button"
+                android:textColor="#E30303"
+                android:contentDescription="Remove item from list." />
+        </LinearLayout>
 	</LinearLayout>
 	<ListView
 		android:id="@+id/ShopListListView"

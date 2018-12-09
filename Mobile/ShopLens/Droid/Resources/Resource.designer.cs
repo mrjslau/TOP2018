@@ -4068,26 +4068,26 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020082
-			public const int avd_hide_password_1 = 2130837634;
-			
 			// aapt resource value: 0x7f020083
-			public const int avd_hide_password_2 = 2130837635;
+			public const int avd_hide_password_1 = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int avd_hide_password_3 = 2130837636;
+			public const int avd_hide_password_2 = 2130837636;
+			
+			// aapt resource value: 0x7f020085
+			public const int avd_hide_password_3 = 2130837637;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020085
-			public const int avd_show_password_1 = 2130837637;
-			
 			// aapt resource value: 0x7f020086
-			public const int avd_show_password_2 = 2130837638;
+			public const int avd_show_password_1 = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int avd_show_password_3 = 2130837639;
+			public const int avd_show_password_2 = 2130837639;
+			
+			// aapt resource value: 0x7f020088
+			public const int avd_show_password_3 = 2130837640;
 			
 			// aapt resource value: 0x7f020055
 			public const int buttons = 2130837589;
@@ -4150,79 +4150,82 @@ namespace ShopLens.Droid
 			public const int common_google_signin_btn_text_light_normal_background = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int design_bottom_navigation_item_background = 2130837609;
+			public const int danger_button = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int design_fab_background = 2130837610;
+			public const int design_bottom_navigation_item_background = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int design_ic_visibility = 2130837611;
+			public const int design_fab_background = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int design_ic_visibility_off = 2130837612;
+			public const int design_ic_visibility = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int design_password_eye = 2130837613;
+			public const int design_ic_visibility_off = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int design_snackbar_background = 2130837614;
+			public const int design_password_eye = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int googleg_disabled_color_18 = 2130837615;
+			public const int design_snackbar_background = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int googleg_standard_color_18 = 2130837616;
+			public const int googleg_disabled_color_18 = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int main_button = 2130837617;
+			public const int googleg_standard_color_18 = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int nav_menu = 2130837618;
+			public const int main_button = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int navigation_empty_icon = 2130837619;
+			public const int nav_menu = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int notification_action_background = 2130837620;
+			public const int navigation_empty_icon = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int notification_bg = 2130837621;
+			public const int notification_action_background = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int notification_bg_low = 2130837622;
+			public const int notification_bg = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int notification_bg_low_normal = 2130837623;
+			public const int notification_bg_low = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int notification_bg_low_pressed = 2130837624;
+			public const int notification_bg_low_normal = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int notification_bg_normal = 2130837625;
+			public const int notification_bg_low_pressed = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int notification_bg_normal_pressed = 2130837626;
+			public const int notification_bg_normal = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int notification_icon_background = 2130837627;
-			
-			// aapt resource value: 0x7f020080
-			public const int notification_template_icon_bg = 2130837632;
-			
-			// aapt resource value: 0x7f020081
-			public const int notification_template_icon_low_bg = 2130837633;
+			public const int notification_bg_normal_pressed = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int notification_tile_bg = 2130837628;
+			public const int notification_icon_background = 2130837628;
+			
+			// aapt resource value: 0x7f020081
+			public const int notification_template_icon_bg = 2130837633;
+			
+			// aapt resource value: 0x7f020082
+			public const int notification_template_icon_low_bg = 2130837634;
 			
 			// aapt resource value: 0x7f02007d
-			public const int notify_panel_notification_icon_bg = 2130837629;
+			public const int notification_tile_bg = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int tooltip_frame_dark = 2130837630;
+			public const int notify_panel_notification_icon_bg = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int tooltip_frame_light = 2130837631;
+			public const int tooltip_frame_dark = 2130837631;
+			
+			// aapt resource value: 0x7f020080
+			public const int tooltip_frame_light = 2130837632;
 			
 			static Drawable()
 			{
@@ -4252,14 +4255,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c003d
 			public const int META = 2131492925;
 			
-			// aapt resource value: 0x7f0c00c6
-			public const int NavItemShoppingCart = 2131493062;
+			// aapt resource value: 0x7f0c00ca
+			public const int NavItemCamera = 2131493066;
 			
-			// aapt resource value: 0x7f0c00c7
-			public const int NavItemShoppingList = 2131493063;
+			// aapt resource value: 0x7f0c00cf
+			public const int NavItemShoppingCart = 2131493071;
 			
-			// aapt resource value: 0x7f0c00a5
-			public const int NavView = 2131493029;
+			// aapt resource value: 0x7f0c00d0
+			public const int NavItemShoppingList = 2131493072;
 			
 			// aapt resource value: 0x7f0c003e
 			public const int SHIFT = 2131492926;
@@ -4267,32 +4270,43 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c003f
 			public const int SYM = 2131492927;
 			
-			// aapt resource value: 0x7f0c00bc
-			public const int ShopCartAddItemButton = 2131493052;
-			
-			// aapt resource value: 0x7f0c00bb
-			public const int ShopCartAddItemEditText = 2131493051;
-			
-			// aapt resource value: 0x7f0c00ba
-			public const int ShopCartLinearLayout = 2131493050;
-			
-			// aapt resource value: 0x7f0c00bd
-			public const int ShopCartList = 2131493053;
-			
 			// aapt resource value: 0x7f0c00c1
-			public const int ShopListAddItemButton = 2131493057;
+			public const int ShopCartAddItemButton = 2131493057;
 			
 			// aapt resource value: 0x7f0c00c0
-			public const int ShopListAddItemEditText = 2131493056;
+			public const int ShopCartAddItemEditText = 2131493056;
+			
+			// aapt resource value: 0x7f0c00be
+			public const int ShopCartDeleteAllButton = 2131493054;
 			
 			// aapt resource value: 0x7f0c00bf
-			public const int ShopListLinearLayout = 2131493055;
+			public const int ShopCartLinearLayout = 2131493055;
+			
+			// aapt resource value: 0x7f0c00c3
+			public const int ShopCartList = 2131493059;
 			
 			// aapt resource value: 0x7f0c00c2
-			public const int ShopListListView = 2131493058;
+			public const int ShopCartRemoveItemButton = 2131493058;
+			
+			// aapt resource value: 0x7f0c00c8
+			public const int ShopListAddItemButton = 2131493064;
+			
+			// aapt resource value: 0x7f0c00c7
+			public const int ShopListAddItemEditText = 2131493063;
+			
+			// aapt resource value: 0x7f0c00c5
+			public const int ShopListDeleteAllButton = 2131493061;
+			
+			// aapt resource value: 0x7f0c00c6
+			public const int ShopListLinearLayout = 2131493062;
+			
+			// aapt resource value: 0x7f0c00ca
+			public const int ShopListListView = 2131493066;
 			
 			// aapt resource value: 0x7f0c00a3
 			public const int Toolbar = 2131493027;
+			// aapt resource value: 0x7f0c00c9
+			public const int ShopListRemoveItemButton = 2131493065;
 			
 			// aapt resource value: 0x7f0c00a9
 			public const int action0 = 2131493033;
@@ -4552,14 +4566,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c0068
 			public const int list_item = 2131492968;
 			
-			// aapt resource value: 0x7f0c00c5
-			public const int masked = 2131493061;
+			// aapt resource value: 0x7f0c00cd
+			public const int masked = 2131493069;
 			
 			// aapt resource value: 0x7f0c00ac
 			public const int media_actions = 2131493036;
 			
-			// aapt resource value: 0x7f0c00c3
-			public const int message = 2131493059;
+			// aapt resource value: 0x7f0c00cb
+			public const int message = 2131493067;
 			
 			// aapt resource value: 0x7f0c0039
 			public const int middle = 2131492921;
@@ -4627,8 +4641,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c00b9
 			public const int rlshcart = 2131493049;
 			
-			// aapt resource value: 0x7f0c00be
-			public const int rlshlist = 2131493054;
+			// aapt resource value: 0x7f0c00c4
+			public const int rlshlist = 2131493060;
 			
 			// aapt resource value: 0x7f0c00a2
 			public const int root_view = 2131493026;
@@ -4825,8 +4839,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c0016
 			public const int view_offset_helper = 2131492886;
 			
-			// aapt resource value: 0x7f0c00c4
-			public const int visible = 2131493060;
+			// aapt resource value: 0x7f0c00cc
+			public const int visible = 2131493068;
 			
 			// aapt resource value: 0x7f0c0022
 			public const int wide = 2131492898;
