@@ -372,6 +372,10 @@ namespace ShopLens.Droid
                     {
                         RunUserTutorial();
                     }
+                    else
+                    {
+                        shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
+                    }
                 }
                 else if (results == cmdTutorialLikeShopLens)
                 {
@@ -429,6 +433,7 @@ namespace ShopLens.Droid
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("off");
             voiceIsOff = true;
+            tutorialRequested = false;
             shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
         }
 
