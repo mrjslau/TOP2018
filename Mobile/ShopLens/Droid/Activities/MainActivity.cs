@@ -106,10 +106,7 @@ namespace ShopLens.Droid
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
             voicePrefs = new ActivityPreferences(this, ConfigurationManager.AppSettings["VoicePrefs"]);
-            if (!voicePrefs.IsEmpty)
-            {
-                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
-            }
+            CheckVoicePrefs();
 
             talkBackEnabled = IsTalkBackEnabled();
 
@@ -187,6 +184,8 @@ namespace ShopLens.Droid
 
         protected override void OnRestart()
         {
+            CheckVoicePrefs();
+
             if (goingFromCartToList)
             {
                 goingFromCartToList = false;
@@ -425,7 +424,7 @@ namespace ShopLens.Droid
             }
         }
 
-        private void turnOffVoice()
+        private void TurnOffVoice()
         {
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("off");
@@ -433,7 +432,7 @@ namespace ShopLens.Droid
             shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
         }
 
-        private void turnOnVoice()
+        private void TurnOnVoice()
         {
             voicePrefs.DeleteAllPreferences();
             voicePrefs.AddString("on");
@@ -449,11 +448,11 @@ namespace ShopLens.Droid
                     voiceRecognizer.StopListening();
                 if (shopLensTts.IsSpeaking)
                     shopLensTts.Stop();
-                turnOffVoice();
+                TurnOffVoice();
             }
             else
             {
-                turnOnVoice();
+                TurnOnVoice();
             }
         }
 
@@ -461,6 +460,18 @@ namespace ShopLens.Droid
         {
             gestureDetector.OnTouchEvent(ev);
             return base.DispatchTouchEvent(ev);
+        }
+
+        private void CheckVoicePrefs()
+        {
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+            else
+            {
+                voiceIsOff = false;
+            }
         }
     }
 }
