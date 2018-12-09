@@ -9,7 +9,7 @@ namespace ShopLens
     {
         static Random randomNumGenerator = new Random();
 
-        public static User GenerateRandomUser(string userGuid, int minimumAge, int maximumAge, bool onlyMale = false, bool onlyFemale = false)
+        public static User GenerateRandomUser(Guid userGuid, int minimumAge, int maximumAge, bool onlyMale = false, bool onlyFemale = false)
         {
             Gender userGender;
 
@@ -42,8 +42,6 @@ namespace ShopLens
             }
 
             var randomName = NameGenerator.GenerateFirstName(userGender);
-
-            // TODO: fix GUID type, so that it's really GUID in the database and not string.
 
             return new User { Birthday = randomBirthday, Name = randomName, UserId = userGuid };
         }

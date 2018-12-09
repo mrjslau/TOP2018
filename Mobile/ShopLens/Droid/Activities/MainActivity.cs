@@ -245,12 +245,12 @@ namespace ShopLens.Droid
 
         private User GenerateNewUser()
         {
-            var userGuid = Guid.NewGuid().ToString();
+            var userGuid = Guid.NewGuid();
             var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
             var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
             var maxUserAge = int.Parse(ConfigurationManager.AppSettings["MaxUserAge"]);
 
-            prefs.Edit().PutString(guidPrefKey, userGuid);
+            prefs.Edit().PutString(guidPrefKey, userGuid.ToString());
 
             return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
         }
@@ -258,7 +258,7 @@ namespace ShopLens.Droid
         private ShoppingSession GenerateShoppingSession()
         {
             var productList = new List<Product>();
-            var userGuid = int.Parse(prefs.GetString(userGuidPrefKey, null));
+            var userGuid = Guid.Parse(prefs.GetString(userGuidPrefKey, null));
 
             if (shoppingSessionItems == null)
             {
@@ -278,7 +278,6 @@ namespace ShopLens.Droid
 
                 if (productList.Any())
                 {
-                    // TODO: change GUID to either be string or int in the DB model, but not both.
                     return new ShoppingSession { Date = DateTime.Now, Products = productList, UserId = userGuid};  
                 }
                 else
