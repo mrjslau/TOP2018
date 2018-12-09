@@ -3,7 +3,7 @@ using ShopLensWeb;
 using System;
 using System.Security.Cryptography;
 
-namespace ShopLens.Droid.Helpers
+namespace ShopLens
 {
     public static class ShopLensRandomUserGenerator
     {

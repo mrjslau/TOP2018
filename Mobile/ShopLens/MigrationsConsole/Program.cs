@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ShopLens.Droid.Helpers;
+using ShopLens;
 using ShopLensWeb;
 
 namespace MigrationsConsole

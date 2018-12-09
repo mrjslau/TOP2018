@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Include="..\Droid\Helpers\ShopLensRandomUserGenerator.cs" Link="ShopLensRandomUserGenerator.cs" />
       <Compile Include="..\ShopLensWeb\Models\Product.cs">
         <Link>Models\Product.cs</Link>
       </Compile>
