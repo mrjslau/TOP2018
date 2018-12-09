@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using PCLAppConfig;
+using ShopLens.Droid.Activities;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
 using ShopLens.Extensions;
@@ -18,13 +20,18 @@ namespace ShopLens.Droid
     public class ShoppingListActivity : Activity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopListPrefs"];
+        readonly string VOICE_PREFS_NAME = ConfigurationManager.AppSettings["VoicePrefs"];
 
         EditText addItemEditText;
         Button addItemButton;
         ListView listView;
         ActivityPreferences prefs;
+        ActivityPreferences voicePrefs;
+        bool voiceIsOff;
         Button removeItemButton;
         Button removeAllItemsButton;
+        GestureDetector gestureDetector;
+        GestureListener gestureListener;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
@@ -48,9 +55,15 @@ namespace ShopLens.Droid
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingList);
 
+            voicePrefs = new ActivityPreferences(this, VOICE_PREFS_NAME);
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+
             talkBackEnabled = IsTalkBackEnabled();
 
-            if (!talkBackEnabled)
+            if (!talkBackEnabled && !voiceIsOff)
             {
                 InitiateNoTalkBackMode();
             }
@@ -64,6 +77,10 @@ namespace ShopLens.Droid
             prefs = new ActivityPreferences(this, PREFS_NAME);
             items = prefs.GetPreferencesToList();
 
+            gestureListener = new GestureListener();
+            gestureListener.LeftEvent += GestureLeft;
+            gestureDetector = new GestureDetector(this, gestureListener);
+
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
             listView.Adapter = listAdapter;
@@ -76,7 +93,7 @@ namespace ShopLens.Droid
 
         protected override void OnRestart()
         {
-            if (!talkBackEnabled)
+            if (!talkBackEnabled && !voiceIsOff)
             {
                 var message = ConfigurationManager.AppSettings["ListOnRestartMsg"];
                 shopLensTts.Speak(message, needUserAnswerId);
@@ -87,9 +104,11 @@ namespace ShopLens.Droid
 
         protected override void OnStop()
         {
-            // Stop Tts Speech.
-            shopLensTts.Stop();
-
+            if (!talkBackEnabled && !voiceIsOff)
+            {
+                // Stop Tts Speech.
+                shopLensTts.Stop();
+            }
             base.OnStop();
         }
 
@@ -266,6 +285,40 @@ namespace ShopLens.Droid
                     shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
                 }
             }
+        }
+
+
+        private void turnOffVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("off");
+            voiceIsOff = true;
+        }
+        private void turnOnVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("on");
+            voiceIsOff = false;
+        }
+        private void GestureLeft()
+        {
+            if (!voiceIsOff)
+            {
+                if (voiceRecognizer.IsListening)
+                    voiceRecognizer.StopListening();
+                if (shopLensTts.IsSpeaking)
+                    shopLensTts.Stop();
+                turnOffVoice();
+            }
+            else
+            {
+                turnOnVoice();
+            }
+        }
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            gestureDetector.OnTouchEvent(ev);
+            return base.DispatchTouchEvent(ev);
         }
     }
 }

@@ -107,7 +107,7 @@ namespace ShopLens.Droid
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
-            voicePrefs = new ActivityPreferences(this, VOICE_PREFS_NAME);
+            voicePrefs = new ActivityPreferences(this, ConfigurationManager.AppSettings["VoicePrefs"]);
             if (!voicePrefs.IsEmpty)
             {
                 voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
