@@ -6,8 +6,6 @@ using Android.OS;
 
 namespace ShopLens.Droid.Activities
 {
-    
-
     [Activity(Label = "PermissionActivity", MainLauncher = true)]
     public class PermissionActivity : Activity
     {

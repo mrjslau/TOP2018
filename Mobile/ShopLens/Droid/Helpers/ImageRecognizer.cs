@@ -18,6 +18,7 @@ using ShopLens.Extensions;
 using Unity;
 using PCLAppConfig;
 using Android.App;
+using ImageRecognitionMobile.OCR;
 
 namespace ShopLens.Droid
 {
@@ -33,7 +34,7 @@ namespace ShopLens.Droid
         Camera2Fragment owner;
         private readonly string prefsName = ConfigurationManager.AppSettings["ShopCartPrefs"];
 
-        public ImageRecognizer (Context context, Activity activity)
+        public ImageRecognizer(Context context, Activity activity)
         {
             this.activity = activity;
             this.context = context;
@@ -63,14 +64,49 @@ namespace ShopLens.Droid
         {
             int maxWebClassifierImageSize = int.Parse(ConfigurationManager.AppSettings["webClassifierImgSize"]);
             //progressBar.Visibility = ViewStates.Visible;
-
-            var image = GetResizedImageForClassification(bitmap);
-            var classifyImageTask = GetClassifyImageTask(image);
-            if (!textRecognizer.IsOperational)
+            Task.Run(async () =>
             {
-                System.Diagnostics.Debug.WriteLine("[Warning]: Text recognizer not operational.");
-                var Predictions = classifyImageTask.Result; };
-            }
+                var image = GetResizedImageForClassification(bitmap);
+                var classifyImageTask = GetClassifyImageTask(image);
+                if (!textRecognizer.IsOperational)
+                {
+                    System.Diagnostics.Debug.WriteLine("[Warning]: Text recognizer not operational.");
+                    return new RecognitionResult { Predictions = await classifyImageTask };
+                }
+                var recognizeTextTask = GetTextFromImageAsync(image);
+                await Task.WhenAll(classifyImageTask, recognizeTextTask);
+                var ocrResult = recognizeTextTask.Result;
+                var weightString = new RegexMetricWeightSubstringFinder().FindWeightSpecifier(ocrResult);
+                var recognitionResult = new RecognitionResult
+                {
+                    RawOcrResult = ocrResult,
+                    Predictions = classifyImageTask.Result,
+                    WeightSpecifier = weightString
+                };
+                return recognitionResult;
+            })
+                .ContinueWith(task =>
+                {
+                    //progressBar.Visibility = ViewStates.Gone;
+                    if (task.IsFaulted)
+                    {
+                        System.Diagnostics.Debug.WriteLine(task.Exception);
+                        return;
+                    }
+                    var recognitionResult = task.Result;
+                    var thingsToSay = new List<string>
+                        {$"This is {recognitionResult.BestPrediction}", recognitionResult.WeightSpecifier};
+                    tts.Speak(
+                        string.Join(". ", thingsToSay),
+                        QueueMode.Flush,
+                        null,
+                        null);
+                    var ocrResult = recognitionResult.RawOcrResult;
+                    //if (!string.IsNullOrEmpty(ocrResult))
+                        //new MessageBarCreator(rootView, $"OCR: {ocrResult}").Show();
+                    GetShoppingCartAddItemDialog(recognitionResult).Show();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
         private Bitmap GetResizedImageForClassification(Bitmap bitmap)
         {
