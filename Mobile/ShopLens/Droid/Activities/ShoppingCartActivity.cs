@@ -16,14 +16,18 @@ using Android.Support.V4.Widget;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using Android.Views;
+using Android.Speech.Tts;
 
 namespace ShopLens.Droid
 {
     // TODO: Make voice interaction in shopping cart fluent.
     [Activity(Label = "Shopping Cart", Theme = "@style/ShopLensTheme")]
-    public class ShoppingCartActivity : AppCompatActivity, TextToSpeech.IOnInitListener
+    public class ShoppingCartActivity : AppCompatActivity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
+
+        Button removeItemButton;
+        Button removeAllItemsButton;
 
         EditText addItemEditText;
         Button addItemButton;
@@ -42,8 +46,6 @@ namespace ShopLens.Droid
 
         ShopLensSpeechRecognizer voiceRecognizer;
         ShopLensTextToSpeech shopLensTts;
-
-        bool talkBackEnabled;
 
         string needUserAnswerId;
         string askUserToRepeat;

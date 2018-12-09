@@ -4256,13 +4256,13 @@ namespace ShopLens.Droid
 			public const int META = 2131492925;
 			
 			// aapt resource value: 0x7f0c00ca
-			public const int NavItemCamera = 2131493066;
+			public const int NavItemShoppingCart = 2131493066;
 			
-			// aapt resource value: 0x7f0c00cf
-			public const int NavItemShoppingCart = 2131493071;
+			// aapt resource value: 0x7f0c00cb
+			public const int NavItemShoppingList = 2131493067;
 			
-			// aapt resource value: 0x7f0c00d0
-			public const int NavItemShoppingList = 2131493072;
+			// aapt resource value: 0x7f0c00a5
+			public const int NavView = 2131493029;
 			
 			// aapt resource value: 0x7f0c003e
 			public const int SHIFT = 2131492926;
@@ -4270,43 +4270,44 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c003f
 			public const int SYM = 2131492927;
 			
-			// aapt resource value: 0x7f0c00c1
-			public const int ShopCartAddItemButton = 2131493057;
+			// aapt resource value: 0x7f0c00bd
+			public const int ShopCartAddItemButton = 2131493053;
 			
-			// aapt resource value: 0x7f0c00c0
-			public const int ShopCartAddItemEditText = 2131493056;
+			// aapt resource value: 0x7f0c00bc
+			public const int ShopCartAddItemEditText = 2131493052;
 			
-			// aapt resource value: 0x7f0c00be
-			public const int ShopCartDeleteAllButton = 2131493054;
+			// aapt resource value: 0x7f0c00ba
+			public const int ShopCartDeleteAllButton = 2131493050;
+			
+			// aapt resource value: 0x7f0c00bb
+			public const int ShopCartLinearLayout = 2131493051;
 			
 			// aapt resource value: 0x7f0c00bf
-			public const int ShopCartLinearLayout = 2131493055;
+			public const int ShopCartList = 2131493055;
+			
+			// aapt resource value: 0x7f0c00be
+			public const int ShopCartRemoveItemButton = 2131493054;
+			
+			// aapt resource value: 0x7f0c00c4
+			public const int ShopListAddItemButton = 2131493060;
 			
 			// aapt resource value: 0x7f0c00c3
-			public const int ShopCartList = 2131493059;
+			public const int ShopListAddItemEditText = 2131493059;
+			
+			// aapt resource value: 0x7f0c00c1
+			public const int ShopListDeleteAllButton = 2131493057;
 			
 			// aapt resource value: 0x7f0c00c2
-			public const int ShopCartRemoveItemButton = 2131493058;
-			
-			// aapt resource value: 0x7f0c00c8
-			public const int ShopListAddItemButton = 2131493064;
-			
-			// aapt resource value: 0x7f0c00c7
-			public const int ShopListAddItemEditText = 2131493063;
-			
-			// aapt resource value: 0x7f0c00c5
-			public const int ShopListDeleteAllButton = 2131493061;
+			public const int ShopListLinearLayout = 2131493058;
 			
 			// aapt resource value: 0x7f0c00c6
-			public const int ShopListLinearLayout = 2131493062;
+			public const int ShopListListView = 2131493062;
 			
-			// aapt resource value: 0x7f0c00ca
-			public const int ShopListListView = 2131493066;
+			// aapt resource value: 0x7f0c00c5
+			public const int ShopListRemoveItemButton = 2131493061;
 			
 			// aapt resource value: 0x7f0c00a3
 			public const int Toolbar = 2131493027;
-			// aapt resource value: 0x7f0c00c9
-			public const int ShopListRemoveItemButton = 2131493065;
 			
 			// aapt resource value: 0x7f0c00a9
 			public const int action0 = 2131493033;
@@ -4566,14 +4567,14 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c0068
 			public const int list_item = 2131492968;
 			
-			// aapt resource value: 0x7f0c00cd
-			public const int masked = 2131493069;
+			// aapt resource value: 0x7f0c00c9
+			public const int masked = 2131493065;
 			
 			// aapt resource value: 0x7f0c00ac
 			public const int media_actions = 2131493036;
 			
-			// aapt resource value: 0x7f0c00cb
-			public const int message = 2131493067;
+			// aapt resource value: 0x7f0c00c7
+			public const int message = 2131493063;
 			
 			// aapt resource value: 0x7f0c0039
 			public const int middle = 2131492921;
@@ -4641,8 +4642,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c00b9
 			public const int rlshcart = 2131493049;
 			
-			// aapt resource value: 0x7f0c00c4
-			public const int rlshlist = 2131493060;
+			// aapt resource value: 0x7f0c00c0
+			public const int rlshlist = 2131493056;
 			
 			// aapt resource value: 0x7f0c00a2
 			public const int root_view = 2131493026;
@@ -4839,8 +4840,8 @@ namespace ShopLens.Droid
 			// aapt resource value: 0x7f0c0016
 			public const int view_offset_helper = 2131492886;
 			
-			// aapt resource value: 0x7f0c00cc
-			public const int visible = 2131493068;
+			// aapt resource value: 0x7f0c00c8
+			public const int visible = 2131493064;
 			
 			// aapt resource value: 0x7f0c0022
 			public const int wide = 2131492898;

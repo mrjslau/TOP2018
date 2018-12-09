@@ -36,13 +36,21 @@ namespace ShopLens.Droid
 {
     [Activity(Label = "ShopLens", Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
         ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : AppCompatActivity, TextToSpeech.IOnInitListener
+    public class MainActivity : AppCompatActivity
     {
         SupportToolbar toolbar;
         ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
         CoordinatorLayout rootView;
+
+        string cmdOpenCamera;
+        string cmdOpenCart;
+        string cmdOpenList;
+        string cmdHelp;
+        string cmdRemind;
+        string cmdTutorialRequest;
+        string cmdTutorialLikeShopLens;
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
@@ -54,6 +62,12 @@ namespace ShopLens.Droid
 
         bool tutorialRequested = false;
         bool talkBackEnabled;
+
+        string userGuidPrefKey;
+
+        public static bool goingFromCartToList = false;
+        public static bool goingFromListToCart = false;
+        public static List<string> shoppingSessionItems;
 
         string needUserAnswerId;
         string askUserToRepeat;
@@ -315,11 +329,7 @@ namespace ShopLens.Droid
             {
                 if (!tutorialRequested)
                 {
-                    if (results == cmdOpenCamera)
-                    {
-                        StartCameraIntent();
-                    }
-                    else if (results == cmdOpenCart)
+                    if (results == cmdOpenCart)
                     {
                         StartCartIntent();
                     }

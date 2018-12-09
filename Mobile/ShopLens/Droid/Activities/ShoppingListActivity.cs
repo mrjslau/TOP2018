@@ -23,7 +23,7 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 namespace ShopLens.Droid
 {
     [Activity(Label = "Shopping List", Theme = "@style/ShopLensTheme")]
-    public class ShoppingListActivity : AppCompatActivity, TextToSpeech.IOnInitListener
+    public class ShoppingListActivity : AppCompatActivity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopListPrefs"];
 
@@ -67,8 +67,6 @@ namespace ShopLens.Droid
             {
                 InitiateNoTalkBackMode();
             }
-
-            talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
             listView = FindViewById<ListView>(Resource.Id.ShopListListView);
             addItemButton = FindViewById<Button>(Resource.Id.ShopListAddItemButton);
@@ -119,7 +117,6 @@ namespace ShopLens.Droid
         private void StartCartIntent()
         {
             var intentCart = new Intent(this, typeof(ShoppingCartActivity));
-            intentCart.PutExtra(talkBackEnabledIntentKey, talkBackEnabled);
             StartActivity(intentCart);
         }
 
