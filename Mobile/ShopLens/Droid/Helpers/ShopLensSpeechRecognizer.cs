@@ -6,7 +6,14 @@ namespace ShopLens.Droid.Helpers
 {
     public class ShopLensSpeechRecognizer : ISpeechRecognizer
     {
+        public bool IsListening
+        {
+            get { return voiceListener != null; }
+        }
+
         public event EventHandler<ShopLensSpeechRecognizedEventArgs> OnPhraseRecognized;
+
+        IDisposable voiceListener;
 
         public ShopLensSpeechRecognizer(Action<object, ShopLensSpeechRecognizedEventArgs> reactToSpeechInput)
         {
@@ -15,16 +22,20 @@ namespace ShopLens.Droid.Helpers
 
         public void RecognizePhrase(Activity activity)
         {
-            // According to Java, Voice Recognizer needs to be run on the Main Ui Thread.
             activity.RunOnUiThread(ListenForAPhrase);
         }
 
         public void ListenForAPhrase()
         {
-            CrossSpeechRecognition.Current.ListenUntilPause().Subscribe(phrase =>
+            voiceListener = CrossSpeechRecognition.Current.ListenUntilPause().Subscribe(phrase =>
             {
                 OnPhraseRecognized?.Invoke(this, new ShopLensSpeechRecognizedEventArgs(phrase));
             });
+        }
+
+        public void StopListening()
+        {
+            voiceListener.Dispose();
         }
     }
 

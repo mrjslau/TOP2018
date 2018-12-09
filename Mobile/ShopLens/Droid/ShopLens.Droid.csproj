@@ -131,6 +131,9 @@
     <Reference Include="Plugin.SpeechRecognition, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plugin.SpeechRecognition.1.0.0\lib\monoandroid80\Plugin.SpeechRecognition.dll</HintPath>
     </Reference>
+    <Reference Include="RandomNameGenerator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RandomNameGenerator.1.0.4\lib\RandomNameGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
       <Private>True</Private>
@@ -325,6 +328,7 @@
     <Compile Include="Activities\AppPreferences.cs" />
     <Compile Include="Activities\ActionBarDrawerToggle.cs" />
     <Compile Include="Activities\GestureListener.cs" />
+    <Compile Include="Helpers\ShopLensRandomUserGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
