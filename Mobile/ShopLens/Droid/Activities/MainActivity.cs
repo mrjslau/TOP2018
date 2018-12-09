@@ -13,6 +13,10 @@ using Android.Views;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using System.Linq;
+using ShopLensWeb;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 public enum IntentIds
 {
@@ -37,6 +41,8 @@ namespace ShopLens.Droid
 
         ShopLensTextToSpeech shopLensTts;
 
+        ShopLensContext shopLensDbContext;
+
         ISharedPreferences prefs;
 
         bool tutorialRequested = false;
@@ -45,6 +51,8 @@ namespace ShopLens.Droid
         string needUserAnswerId;
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
+
+        string userGuidPrefKey;
 
         string cmdOpenCamera;
         string cmdOpenCart;
@@ -56,6 +64,7 @@ namespace ShopLens.Droid
 
         public static bool goingFromCartToList = false;
         public static bool goingFromListToCart = false;
+        public static List<string> shoppingSessionItems;
 
         readonly string[] ShopLensPermissions =
         {
@@ -81,7 +90,11 @@ namespace ShopLens.Droid
             cmdTutorialRequest = ConfigurationManager.AppSettings["CmdTutorialRequest"];
             cmdTutorialLikeShopLens = ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"];
 
+            userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
+            shopLensDbContext = ConnectToDatabase();
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
@@ -137,7 +150,22 @@ namespace ShopLens.Droid
 
         protected override void OnStart()
         {
+            GenerateUserInfoOnFirstLaunch();
             base.OnStart();
+        }
+
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                var shopSession = GenerateShoppingSession();
+                shopLensDbContext.ShoppingSessions.Add(shopSession);
+                shopLensDbContext.SaveChanges();
+
+                CloseConnectionToDatabase(shopLensDbContext);
+            }
+
+            base.OnPause();
         }
 
         protected override void OnRestart()
@@ -169,6 +197,22 @@ namespace ShopLens.Droid
             base.OnStop();
         }
 
+        private ShopLensContext ConnectToDatabase()
+        {
+            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
+            var connectionString = ConfigurationManager.AppSettings["DatabaseSource"];
+
+            var dbContext = new ShopLensContext(connectionString, useLocalDb);
+            dbContext.Database.Migrate();
+
+            return dbContext;
+        }
+
+        private void CloseConnectionToDatabase(DbContext dbContext)
+        {
+            dbContext.Dispose();
+        }
+
         private bool IsTalkBackEnabled()
         {
             var accessManager = (AccessibilityManager)GetSystemService(AccessibilityService);
@@ -183,6 +227,65 @@ namespace ShopLens.Droid
             shopLensTts = new ShopLensTextToSpeech(this, TtsSpeakAfterInit, TtsStoppedSpeaking);
 
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
+        }
+
+        private void GenerateUserInfoOnFirstLaunch()
+        {
+            var firstLaunchPrefKey = ConfigurationManager.AppSettings["FirstTimeLaunchPrefKey"];
+            bool firstTime = prefs.GetBoolean(firstLaunchPrefKey, true);
+
+            if (firstTime)
+            {
+                var newUser = GenerateNewUser();
+                shopLensDbContext.Users.Add(newUser);
+
+                prefs.Edit().PutBoolean(firstLaunchPrefKey, false).Commit();
+            }
+        }
+
+        private User GenerateNewUser()
+        {
+            var userGuid = Guid.NewGuid().ToString();
+            var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+            var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
+            var maxUserAge = int.Parse(ConfigurationManager.AppSettings["MaxUserAge"]);
+
+            prefs.Edit().PutString(guidPrefKey, userGuid);
+
+            return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
+        }
+
+        private ShoppingSession GenerateShoppingSession()
+        {
+            var productList = new List<Product>();
+            var userGuid = int.Parse(prefs.GetString(userGuidPrefKey, null));
+
+            if (shoppingSessionItems == null)
+            {
+                return null;
+            }
+            else
+            {
+                foreach (string item in shoppingSessionItems)
+                {
+                    var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
+
+                    if (itemInfo != null)
+                    {
+                        productList.Add(itemInfo);
+                    }
+                }
+
+                if (productList.Any())
+                {
+                    // TODO: change GUID to either be string or int in the DB model, but not both.
+                    return new ShoppingSession { Date = DateTime.Now, Products = productList, UserId = userGuid};  
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         private void RunUserTutorial()

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using ShopLens;
 using MigrationsConsole.Requirements;
 using ShopLensWeb;
 
@@ -13,7 +13,7 @@ namespace MigrationsConsole
     {
         static void Main(string[] args)
         {
-            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]); 
+            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
             var connectionString = ConfigurationManager.ConnectionStrings["DatabaseSource"].ConnectionString;
             ExecuteSqlRequirementQueries();
 
@@ -89,6 +89,11 @@ namespace MigrationsConsole
             
             dbContext.Users.RemoveRange(users);
             dbContext.SaveChanges();
+        }
+        
+        public static void AddNewUser(ShopLensContext dbContext, User newUser)
+        {
+            dbContext.Users.Add(newUser);
         }
     }
 }
