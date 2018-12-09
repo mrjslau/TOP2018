@@ -85,6 +85,16 @@ namespace ShopLens.Droid
             base.OnRestart();
         }
 
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                MainActivity.shoppingSessionItems = items;
+            }
+
+            base.OnPause();
+        }
+
         protected override void OnStop()
         {
             // Stop Tts Speech.
