@@ -77,7 +77,7 @@ namespace MigrationsConsole
             
             foreach(var user in users)
             {
-                Console.WriteLine($"User {user.UserId}: Name - {user.Name}, BDay - {user.Birthday}") ;
+                Console.WriteLine($"User {user.UserId}: Name - {user.Name}, BDay - {user.Birthday}");
             }
         }
         
