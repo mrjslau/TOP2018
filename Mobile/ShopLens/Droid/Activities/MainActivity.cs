@@ -409,20 +409,6 @@ namespace ShopLens.Droid
             return base.OnOptionsItemSelected(item);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            if (requestCode == REQUEST_PERMISSION)
-            {
-                foreach (Permission appPermission in grantResults)
-                {
-                    if (appPermission == Permission.Denied)
-                    {
-                        RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
-                    }
-                }
-            }
-        }
-
         private void TurnOffVoice()
         {
             voicePrefs.DeleteAllPreferences();

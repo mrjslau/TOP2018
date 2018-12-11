@@ -17,6 +17,7 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using Android.Views;
 using ShopLens.Droid.Activities;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 
 namespace ShopLens.Droid
 {
@@ -53,6 +54,7 @@ namespace ShopLens.Droid
         ShopLensSpeechRecognizer voiceRecognizer;
         ShopLensTextToSpeech shopLensTts;
 
+        string talkBackEnabledIntentKey;
         string needUserAnswerId;
         string askUserToRepeat;
         string afterActionAsk;

@@ -17,6 +17,7 @@ using ShopLens.Droid.Activities;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
 using ShopLens.Extensions;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace ShopLens.Droid
@@ -31,7 +32,6 @@ namespace ShopLens.Droid
         ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
-
         EditText addItemEditText;
         Button addItemButton;
         ListView listView;
