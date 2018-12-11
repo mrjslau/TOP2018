@@ -42,6 +42,32 @@ namespace ShopLens.Droid.Helpers
             });
         }
 
+        public void RemoveCartItem(string name)
+        {
+            foreach (CartItem ci in items)
+            {
+                if (ci.Name == name)
+                {
+                    if(ci.Count == "1")
+                    {
+                        items.Remove(ci);
+                    }
+                    else
+                    { 
+                        CartItem newCartItem = new CartItem()
+                        {
+                            Name = name,
+                            Price = ci.Price,
+                            Count = (int.Parse(ci.Count) - 1).ToString()
+                        };
+                        items.Remove(ci);
+                        items.Add(newCartItem);
+                    }
+                    return;
+                }
+            }
+        }
+
         public override CartItem this[int position]
         {
             get
@@ -79,9 +105,9 @@ namespace ShopLens.Droid.Helpers
                 var name = view.FindViewById<TextView>(Resource.Id.cartItemNameTextView);
                 var price = view.FindViewById<TextView>(Resource.Id.cartItemPriceTextView);
                 var count = view.FindViewById<TextView>(Resource.Id.cartItemCountTextView);
-                var removeBtn = view.FindViewById<Button>(Resource.Id.cartItemRemoveItemButton);
+                // var removeBtn = view.FindViewById<Button>(Resource.Id.cartItemRemoveItemButton);
 
-                view.Tag = new CartViewHolder() { Name = name, Price = price, Count = count, RemoveButton = removeBtn};
+                view.Tag = new CartViewHolder() { Name = name, Price = price, Count = count }; //, RemoveButton = removeBtn};
             }
 
             var holder = (CartViewHolder)view.Tag;

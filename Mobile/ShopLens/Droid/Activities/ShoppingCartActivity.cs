@@ -72,7 +72,7 @@ namespace ShopLens.Droid
             listView = FindViewById<ListView>(Resource.Id.ShopCartList);
             addItemButton = FindViewById<Button>(Resource.Id.ShopCartAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
-            //removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
+            removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
             removeAllItemsButton = FindViewById<Button>(Resource.Id.ShopCartDeleteAllButton);
 
             gestureListener = new GestureListener();
@@ -84,7 +84,7 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
-            //removeItemButton.Click += RemoveTextBoxProductFromList;
+            removeItemButton.Click += RemoveTextBoxProductFromList;
             removeAllItemsButton.Click += RemoveAllItems;
         }
 
@@ -201,12 +201,12 @@ namespace ShopLens.Droid
 
         void RemoveStringFromList(string text)
         {
-            //if (!string.IsNullOrWhiteSpace(text))
-            //{
-            //    listAdapter.Remove(text);
-            //    prefs.RemoveString(text);
-            //}
-            //listAdapter.NotifyDataSetChanged();
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                cartItemsAdapter.RemoveCartItem(text);
+                prefs.RemoveCartItem(text);
+            }
+            cartItemsAdapter.NotifyDataSetChanged();
         }
 
         void RemoveAllItems(object sender, EventArgs e)

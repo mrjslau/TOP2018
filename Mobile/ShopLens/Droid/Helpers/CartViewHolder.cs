@@ -7,6 +7,6 @@ namespace ShopLens.Droid.Helpers
         public TextView Name { get; set; }
         public TextView Price { get; set; }
         public TextView Count { get; set; }
-        public Button RemoveButton { get; set; }
+        // public Button RemoveButton { get; set; }
     }
 }

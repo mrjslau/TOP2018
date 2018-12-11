@@ -83,9 +83,16 @@ namespace ShopLens.Droid.Source
         {
             foreach (KeyValuePair<string, object> entry in prefs.All)
             {
-                if (entry.Key == name)
+                if (entry.Key == name && entry.Value.ToString() == "1")
                 {
                     prefs.Edit().Remove(entry.Key).Commit();
+                }
+                else if(entry.Key == name)
+                {
+                    int newQuantity = int.Parse(entry.Value.ToString()) - 1;
+                    prefs.Edit().Remove(entry.Key).Commit();
+                    prefsEditor.PutInt(entry.Key, newQuantity);
+                    prefsEditor.Apply();
                 }
             }
         }

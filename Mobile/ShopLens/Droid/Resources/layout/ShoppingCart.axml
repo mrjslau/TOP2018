@@ -34,17 +34,26 @@
 			android:contentDescription="Product to be added." />
         <LinearLayout
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_width="100dp">
+            android:orientation="horizontal"
+            android:layout_width="170dp">
     		<Button
     			android:layout_margin="10dp"
     			android:id="@+id/ShopCartAddItemButton"
-    			android:layout_width="wrap_content"
+    			android:layout_width="70dp"
     			android:layout_height="wrap_content"
     			android:text="Add"
     			android:background="@drawable/buttons"
     			android:textColor="#FFFFFF"
     			android:contentDescription="Add item to cart." />
+            <Button
+                android:layout_margin="10dp"
+                android:id="@+id/ShopCartRemoveItemButton"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="Remove"
+                android:background="@drawable/danger_button"
+                android:textColor="#E30303"
+                android:contentDescription="Remove item from cart." />
         </LinearLayout>
 	</LinearLayout>
     
