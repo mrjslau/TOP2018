@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Android.Database;
 using Android.Views;
 using Android.Widget;
 using ShopLens.Droid.Models;
@@ -13,6 +14,32 @@ namespace ShopLens.Droid.Helpers
         public CartItemsAdapter(List<CartItem> items)
         {
             this.items = items;
+        }
+
+        public void AddCartItem(string name, string price = "0.00", string count = "1")
+        {
+            foreach (CartItem ci in items)
+            {
+                if (ci.Name == name)
+                {
+                    CartItem newCartItem = new CartItem()
+                    {
+                        Name = name,
+                        Price = price,
+                        Count = (int.Parse(ci.Count) + int.Parse(count)).ToString()
+                    };
+                    items.Remove(ci);
+                    items.Add(newCartItem);
+                    return;
+                }
+            }
+
+            items.Add(new CartItem()
+            {
+                Name = name,
+                Price = price,
+                Count = count
+            });
         }
 
         public override CartItem this[int position]
@@ -31,6 +58,11 @@ namespace ShopLens.Droid.Helpers
             }
         }
 
+        public void Clear()
+        {
+            items = new List<CartItem>();
+        }
+
         public override long GetItemId(int position)
         {
             return position;
@@ -47,8 +79,9 @@ namespace ShopLens.Droid.Helpers
                 var name = view.FindViewById<TextView>(Resource.Id.cartItemNameTextView);
                 var price = view.FindViewById<TextView>(Resource.Id.cartItemPriceTextView);
                 var count = view.FindViewById<TextView>(Resource.Id.cartItemCountTextView);
+                var removeBtn = view.FindViewById<Button>(Resource.Id.cartItemRemoveItemButton);
 
-                view.Tag = new CartViewHolder() { Name = name, Price = price, Count = count };
+                view.Tag = new CartViewHolder() { Name = name, Price = price, Count = count, RemoveButton = removeBtn};
             }
 
             var holder = (CartViewHolder)view.Tag;

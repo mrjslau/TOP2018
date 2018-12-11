@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.Views;
 using ShopLens.Droid.Activities;
+using ShopLens.Droid.Models;
 
 namespace ShopLens.Droid
 {
@@ -34,7 +35,7 @@ namespace ShopLens.Droid
         GestureListener gestureListener;
 
         List<string> items;
-        ArrayAdapter<string> listAdapter;
+        CartItemsAdapter cartItemsAdapter;
 
         ShopLensSpeechRecognizer voiceRecognizer;
         ShopLensTextToSpeech shopLensTts;
@@ -71,20 +72,19 @@ namespace ShopLens.Droid
             listView = FindViewById<ListView>(Resource.Id.ShopCartList);
             addItemButton = FindViewById<Button>(Resource.Id.ShopCartAddItemButton);
             addItemEditText = FindViewById<EditText>(Resource.Id.ShopCartAddItemEditText);
-            removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
+            //removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
             removeAllItemsButton = FindViewById<Button>(Resource.Id.ShopCartDeleteAllButton);
 
             gestureListener = new GestureListener();
             gestureListener.LeftEvent += GestureLeft;
             gestureDetector = new GestureDetector(this, gestureListener);
 
-            listAdapter =
-                new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
-            listView.Adapter = listAdapter;
+            cartItemsAdapter = new CartItemsAdapter(prefs.GetCartItemPreferencesToList());
+            listView.Adapter = cartItemsAdapter;
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
-            removeItemButton.Click += RemoveTextBoxProductFromList;
+            //removeItemButton.Click += RemoveTextBoxProductFromList;
             removeAllItemsButton.Click += RemoveAllItems;
         }
 
@@ -188,10 +188,10 @@ namespace ShopLens.Droid
         {
             if (!string.IsNullOrWhiteSpace(text))
             {
-                listAdapter.Add(text);
-                prefs.AddString(text);
+                cartItemsAdapter.AddCartItem(text);
+                prefs.AddCartItem(text);
             }
-            listAdapter.NotifyDataSetChanged();
+            cartItemsAdapter.NotifyDataSetChanged();
         }
 
         void RemoveTextBoxProductFromList(object sender, EventArgs e)
@@ -201,20 +201,20 @@ namespace ShopLens.Droid
 
         void RemoveStringFromList(string text)
         {
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                listAdapter.Remove(text);
-                prefs.RemoveString(text);
-            }
-            listAdapter.NotifyDataSetChanged();
+            //if (!string.IsNullOrWhiteSpace(text))
+            //{
+            //    listAdapter.Remove(text);
+            //    prefs.RemoveString(text);
+            //}
+            //listAdapter.NotifyDataSetChanged();
         }
 
         void RemoveAllItems(object sender, EventArgs e)
         {
             prefs.DeleteAllPreferences();
-            listAdapter.Clear();
-            listAdapter.NotifyDataSetChanged();
-        }
+            cartItemsAdapter.Clear();
+            cartItemsAdapter.NotifyDataSetChanged();
+        } 
 
         private void OnVoiceRecognitionResults(object sender, ShopLensSpeechRecognizedEventArgs e)
         {

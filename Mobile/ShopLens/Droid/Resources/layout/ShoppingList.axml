@@ -34,12 +34,12 @@
 			android:contentDescription="Product to be added."/>
         <LinearLayout
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_width="wrap_content">
+            android:orientation="horizontal"
+            android:layout_width="170dp">
     		<Button
     			android:layout_margin="10dp"
     			android:id="@+id/ShopListAddItemButton"
-    			android:layout_width="wrap_content"
+    			android:layout_width="70dp"
     			android:layout_height="wrap_content"
     			android:text="Add"
     			android:background="@drawable/buttons"
@@ -48,7 +48,7 @@
             <Button
                 android:layout_margin="10dp"
                 android:id="@+id/ShopListRemoveItemButton"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="Remove"
                 android:background="@drawable/danger_button"

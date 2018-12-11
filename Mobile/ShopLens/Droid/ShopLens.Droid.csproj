@@ -332,6 +332,7 @@
     <Compile Include="Helpers\CartViewHolder.cs" />
     <Compile Include="Activities\GestureListener.cs" />
     <Compile Include="Helpers\ShopLensRandomUserGenerator.cs" />
+    <Compile Include="Models\CartTestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\App.config">
