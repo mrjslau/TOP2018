@@ -17,12 +17,15 @@ using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using ShopLens.Droid.Activities;
+using Android.Widget;
 using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using System.Threading;
+using ShopLens.Droid.Source;
 
 public enum IntentIds
 {
@@ -39,10 +42,12 @@ namespace ShopLens.Droid
     public class MainActivity : AppCompatActivity
     {
         SupportToolbar toolbar;
-        ActionBarDrawerToggle drawerToggle;
+        Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
         CoordinatorLayout rootView;
+        GestureDetector gestureDetector;
+        GestureListener gestureListener;
 
         string cmdOpenCamera;
         string cmdOpenCart;
@@ -59,6 +64,8 @@ namespace ShopLens.Droid
         ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
+        ActivityPreferences voicePrefs;
+        bool voiceIsOff;
 
         bool tutorialRequested = false;
         bool talkBackEnabled;
@@ -104,6 +111,9 @@ namespace ShopLens.Droid
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
+            voicePrefs = new ActivityPreferences(this, ConfigurationManager.AppSettings["VoicePrefs"]);
+            CheckVoicePrefs();
+
             talkBackEnabled = IsTalkBackEnabled();
 
             if (!talkBackEnabled)
@@ -127,7 +137,7 @@ namespace ShopLens.Droid
             navView = FindViewById<NavigationView>(Resource.Id.NavView);
             rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
 
-            drawerToggle = new ActionBarDrawerToggle(
+            drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 Resource.String.openDrawer,
@@ -138,6 +148,10 @@ namespace ShopLens.Droid
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
             drawerToggle.SyncState();
+
+            gestureListener = new GestureListener();
+            gestureListener.LeftEvent += GestureLeft;
+            gestureDetector = new GestureDetector(this, gestureListener);
 
             navView.NavigationItemSelected += (sender, e) =>
             {
@@ -175,6 +189,8 @@ namespace ShopLens.Droid
 
         protected override void OnRestart()
         {
+            CheckVoicePrefs();
+
             if (goingFromCartToList)
             {
                 goingFromCartToList = false;
@@ -185,7 +201,7 @@ namespace ShopLens.Droid
                 goingFromListToCart = false;
                 StartCartIntent();
             }
-            else if (!talkBackEnabled)
+            else if (!talkBackEnabled && !voiceIsOff)
             {
                 var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
                 shopLensTts.Speak(message, needUserAnswerId);
@@ -196,8 +212,11 @@ namespace ShopLens.Droid
 
         protected override void OnStop()
         {
-            // Stop Tts Speech.
-            shopLensTts.Stop();
+            if (!talkBackEnabled && !voiceIsOff)
+            {
+                // Stop Tts Speech.
+                shopLensTts.Stop();
+            }
 
             base.OnStop();
         }
@@ -309,8 +328,11 @@ namespace ShopLens.Droid
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-            shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            if (!voiceIsOff)
+            {
+                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+                shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -351,6 +373,10 @@ namespace ShopLens.Droid
                     {
                         RunUserTutorial();
                     }
+                    else
+                    {
+                        shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
+                    }
                 }
                 else if (results == cmdTutorialLikeShopLens)
                 {
@@ -383,7 +409,70 @@ namespace ShopLens.Droid
             return base.OnOptionsItemSelected(item);
         }
 
-        
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            if (requestCode == REQUEST_PERMISSION)
+            {
+                foreach (Permission appPermission in grantResults)
+                {
+                    if (appPermission == Permission.Denied)
+                    {
+                        RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
+                    }
+                }
+            }
+        }
+
+        private void TurnOffVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("off");
+            voiceIsOff = true;
+            tutorialRequested = false;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
+        }
+
+        private void TurnOnVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("on");
+            voiceIsOff = false;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["MainOnVoiceOnMsg"], needUserAnswerId);
+        }
+
+        void GestureLeft()
+        {
+            if (!voiceIsOff)
+            {
+                if (voiceRecognizer.IsListening)
+                    voiceRecognizer.StopListening();
+                if (shopLensTts.IsSpeaking)
+                    shopLensTts.Stop();
+                TurnOffVoice();
+            }
+            else
+            {
+                TurnOnVoice();
+            }
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            gestureDetector.OnTouchEvent(ev);
+            return base.DispatchTouchEvent(ev);
+        }
+
+        private void CheckVoicePrefs()
+        {
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+            else
+            {
+                voiceIsOff = false;
+            }
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Android.Content;
 
 namespace ShopLens.Droid.Source
@@ -8,6 +9,11 @@ namespace ShopLens.Droid.Source
         ISharedPreferences prefs;
         ISharedPreferencesEditor prefsEditor;
         Context pContext;
+
+        public bool IsEmpty
+        {
+            get { return !GetPreferencesToList().Any(); }
+        }
 
         public ActivityPreferences(Context context, string name)
         {
