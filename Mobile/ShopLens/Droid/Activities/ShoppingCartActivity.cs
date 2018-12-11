@@ -98,6 +98,8 @@ namespace ShopLens.Droid
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
+            removeItemButton.Click += RemoveTextBoxProductFromList;
+            removeAllItemsButton.Click += RemoveAllItems;
 
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
             toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
