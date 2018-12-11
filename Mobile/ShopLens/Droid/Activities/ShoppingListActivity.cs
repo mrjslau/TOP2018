@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using PCLAppConfig;
@@ -13,15 +17,21 @@ using ShopLens.Droid.Activities;
 using ShopLens.Droid.Helpers;
 using ShopLens.Droid.Source;
 using ShopLens.Extensions;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingListActivity", Theme = "@style/ShopLensTheme")]
-    public class ShoppingListActivity : Activity
+    [Activity(Label = "Shopping List", Theme = "@style/ShopLensTheme")]
+    public class ShoppingListActivity : AppCompatActivity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopListPrefs"];
         readonly string VOICE_PREFS_NAME = ConfigurationManager.AppSettings["VoicePrefs"];
 
+        SupportToolbar toolbar;
+        ActionBarDrawerToggle drawerToggle;
+        DrawerLayout drawerLayout;
+        NavigationView navView;
         EditText addItemEditText;
         Button addItemButton;
         ListView listView;
@@ -52,6 +62,7 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Window.SetSoftInputMode(SoftInput.StateHidden);
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingList);
 
@@ -86,6 +97,41 @@ namespace ShopLens.Droid
             addItemButton.Click += AddTextBoxProductToList;
             removeItemButton.Click += RemoveTextBoxProductFromList;
             removeAllItemsButton.Click += RemoveAllItems;
+
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
+            toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
+            navView = FindViewById<NavigationView>(Resource.Id.NavView);
+
+            drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                Resource.String.openDrawer,
+                Resource.String.closeDrawer
+            );
+            drawerLayout.AddDrawerListener(drawerToggle);
+            SetSupportActionBar(toolbar);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            drawerToggle.SyncState();
+
+            navView.NavigationItemSelected += (sender, e) =>
+            {
+                switch (e.MenuItem.ItemId)
+                {
+                    case Resource.Id.NavItemShoppingCart:
+                        GoToShoppingCart();
+                        break;
+                    case Resource.Id.NavItemShoppingList:
+                        OnOptionsItemSelected(e.MenuItem);
+                        break;
+                }
+            };
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            drawerToggle.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnRestart()
@@ -181,6 +227,12 @@ namespace ShopLens.Droid
                 prefs.AddString(text);
             }
             listAdapter.NotifyDataSetChanged();
+        }
+
+        private void GoToShoppingCart()
+        {
+            MainActivity.goingFromListToCart = true;
+            Finish();
         }
 
         void RemoveTextBoxProductFromList(object sender, EventArgs e)
@@ -279,8 +331,7 @@ namespace ShopLens.Droid
                 }
                 else if (results == cmdOpenCart)
                 {
-                    MainActivity.goingFromListToCart = true;
-                    Finish();
+                    GoToShoppingCart();
                 }
                 else
                 {
@@ -288,7 +339,6 @@ namespace ShopLens.Droid
                 }
             }
         }
-
 
         private void TurnOffVoice()
         {

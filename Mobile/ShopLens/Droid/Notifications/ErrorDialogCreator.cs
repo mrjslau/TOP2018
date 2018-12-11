@@ -7,9 +7,9 @@ namespace ShopLens.Droid.Notifications
     public class ErrorDialogCreator
     {
         private AlertDialog.Builder alertDialog;
-        private Context context;
-        private string title;
-        private string message;
+        private readonly Context context;
+        private readonly string title;
+        private readonly string message;
 
         public ErrorDialogCreator (Context context, string title, string message, string neutralButton) : this(context, title, message)
         {

@@ -3,28 +3,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MigrationsConsole.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialWithGuids : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Shop",
+                name: "Shops",
                 columns: table => new
                 {
-                    ShopId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ShopId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shop", x => x.ShopId);
+                    table.PrimaryKey("PK_Shops", x => x.ShopId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: false)
                 },
@@ -34,81 +33,78 @@ namespace MigrationsConsole.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingSession",
+                name: "ShoppingSessions",
                 columns: table => new
                 {
-                    ShoppingSessionId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ShoppingSessionId = table.Column<Guid>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingSession", x => x.ShoppingSessionId);
+                    table.PrimaryKey("PK_ShoppingSessions", x => x.ShoppingSessionId);
                     table.ForeignKey(
-                        name: "FK_ShoppingSession_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_ShoppingSessions_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Discount = table.Column<int>(nullable: false),
                     FullPrice = table.Column<decimal>(nullable: false),
-                    ShopId = table.Column<int>(nullable: false),
-                    ShoppingSessionId = table.Column<int>(nullable: true)
+                    ShopId = table.Column<Guid>(nullable: false),
+                    ShoppingSessionId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Product_Shop_ShopId",
+                        name: "FK_Products_Shops_ShopId",
                         column: x => x.ShopId,
-                        principalTable: "Shop",
+                        principalTable: "Shops",
                         principalColumn: "ShopId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Product_ShoppingSession_ShoppingSessionId",
+                        name: "FK_Products_ShoppingSessions_ShoppingSessionId",
                         column: x => x.ShoppingSessionId,
-                        principalTable: "ShoppingSession",
+                        principalTable: "ShoppingSessions",
                         principalColumn: "ShoppingSessionId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ShopId",
-                table: "Product",
+                name: "IX_Products_ShopId",
+                table: "Products",
                 column: "ShopId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ShoppingSessionId",
-                table: "Product",
+                name: "IX_Products_ShoppingSessionId",
+                table: "Products",
                 column: "ShoppingSessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingSession_UserId1",
-                table: "ShoppingSession",
-                column: "UserId1");
+                name: "IX_ShoppingSessions_UserId",
+                table: "ShoppingSessions",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Shop");
+                name: "Shops");
 
             migrationBuilder.DropTable(
-                name: "ShoppingSession");
+                name: "ShoppingSessions");
 
             migrationBuilder.DropTable(
                 name: "Users");

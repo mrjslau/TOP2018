@@ -8,6 +8,16 @@ namespace ShopLensWeb
     {
         private bool UseLocalDb { get; }
         private string ConnectionString { get; set; }
+
+        /// <remarks>
+        /// This constructor is needed so that migrations can be made.
+        /// The migrations script looks for a constructor with no parameters.
+        /// </remarks>
+        public ShopLensContext()
+            : this("", true)
+        {
+            
+        }
         
         public ShopLensContext(string connectionString, bool useLocalDb)
         {

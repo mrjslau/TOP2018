@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:id="@+id/root_view">
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,22 +27,19 @@
         android:id="@+id/DrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-			<RelativeLayout
-				android:id="@+id/RelativeLayout01"
-				android:layout_width="fill_parent"
-				android:layout_height="0dp"
-				android:layout_weight="1"
-				android:minWidth="25px"
-				android:minHeight="25px">
-			</RelativeLayout>
-        
+  		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:id="@+id/container"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="#000"
+			tools:context="ShopLens.Droid.Camera2Activity" />
         <android.support.design.widget.NavigationView
             android:id="@+id/NavView"
             android:layout_height="match_parent"
             android:layout_width="200dp"
             android:layout_gravity="start"
             app:menu="@drawable/nav_menu" />
-        
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

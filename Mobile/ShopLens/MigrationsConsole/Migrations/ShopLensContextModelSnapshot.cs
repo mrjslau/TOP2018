@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopLensWeb;
 
@@ -14,11 +15,13 @@ namespace MigrationsConsole.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ShopLensWeb.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Discount");
@@ -27,9 +30,9 @@ namespace MigrationsConsole.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("ShopId");
+                    b.Property<Guid>("ShopId");
 
-                    b.Property<int?>("ShoppingSessionId");
+                    b.Property<Guid?>("ShoppingSessionId");
 
                     b.HasKey("ProductId");
 
@@ -37,42 +40,40 @@ namespace MigrationsConsole.Migrations
 
                     b.HasIndex("ShoppingSessionId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ShopLensWeb.Shop", b =>
                 {
-                    b.Property<int>("ShopId")
+                    b.Property<Guid>("ShopId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
                     b.HasKey("ShopId");
 
-                    b.ToTable("Shop");
+                    b.ToTable("Shops");
                 });
 
             modelBuilder.Entity("ShopLensWeb.ShoppingSession", b =>
                 {
-                    b.Property<int>("ShoppingSessionId")
+                    b.Property<Guid>("ShoppingSessionId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("UserId1");
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("ShoppingSessionId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingSession");
+                    b.ToTable("ShoppingSessions");
                 });
 
             modelBuilder.Entity("ShopLensWeb.User", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Birthday");
@@ -100,7 +101,8 @@ namespace MigrationsConsole.Migrations
                 {
                     b.HasOne("ShopLensWeb.User", "User")
                         .WithMany("ShoppingSessions")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

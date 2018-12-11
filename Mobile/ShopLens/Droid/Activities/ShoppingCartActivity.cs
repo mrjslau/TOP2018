@@ -11,14 +11,20 @@ using ShopLens.Droid.Helpers;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
+using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Support.V7.App;
 using Android.Views;
 using ShopLens.Droid.Activities;
 using ShopLens.Droid.Models;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShoppingCartActivity", Theme = "@style/ShopLensTheme")]
-    public class ShoppingCartActivity : Activity
+    // TODO: Make voice interaction in shopping cart fluent.
+    [Activity(Label = "Shopping Cart", Theme = "@style/ShopLensTheme")]
+    public class ShoppingCartActivity : AppCompatActivity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
         readonly string VOICE_PREFS_NAME = ConfigurationManager.AppSettings["VoicePrefs"];
@@ -27,10 +33,19 @@ namespace ShopLens.Droid
         Button addItemButton;
         ListView listView;
         ActivityPreferences prefs;
-        ActivityPreferences voicePrefs;
+        SupportToolbar toolbar;
+        ActionBarDrawerToggle drawerToggle;
+        DrawerLayout drawerLayout;
+        NavigationView navView;
+        
+        bool talkBackEnabled;
         bool voiceIsOff;
+        
+        ActivityPreferences voicePrefs;
+       
         Button removeItemButton;
         Button removeAllItemsButton;
+        
         GestureDetector gestureDetector;
         GestureListener gestureListener;
 
@@ -40,8 +55,7 @@ namespace ShopLens.Droid
         ShopLensSpeechRecognizer voiceRecognizer;
         ShopLensTextToSpeech shopLensTts;
 
-        bool talkBackEnabled;
-
+        string talkBackEnabledIntentKey;
         string needUserAnswerId;
         string askUserToRepeat;
         string afterActionAsk;
@@ -53,6 +67,7 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Window.SetSoftInputMode(SoftInput.StateHidden);
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingCart);
 
@@ -86,6 +101,41 @@ namespace ShopLens.Droid
             addItemButton.Click += AddTextBoxProductToList;
             removeItemButton.Click += RemoveTextBoxProductFromList;
             removeAllItemsButton.Click += RemoveAllItems;
+
+            drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
+            toolbar = FindViewById<SupportToolbar>(Resource.Id.Toolbar);
+            navView = FindViewById<NavigationView>(Resource.Id.NavView);
+
+            drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                Resource.String.openDrawer,
+                Resource.String.closeDrawer
+            );
+            drawerLayout.AddDrawerListener(drawerToggle);
+            SetSupportActionBar(toolbar);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetHomeButtonEnabled(true);
+            drawerToggle.SyncState();
+
+            navView.NavigationItemSelected += (sender, e) =>
+            {
+                switch (e.MenuItem.ItemId)
+                {
+                    case Resource.Id.NavItemShoppingCart:
+                        OnOptionsItemSelected(e.MenuItem);
+                        break;
+                    case Resource.Id.NavItemShoppingList:
+                        GoToShoppingList();
+                        break;
+                }
+            };
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            drawerToggle.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnRestart()
@@ -194,6 +244,12 @@ namespace ShopLens.Droid
             cartItemsAdapter.NotifyDataSetChanged();
         }
 
+        private void GoToShoppingList()
+        {
+            MainActivity.goingFromCartToList = true;
+            Finish();
+        }
+
         void RemoveTextBoxProductFromList(object sender, EventArgs e)
         {
             RemoveStringFromList(addItemEditText.Text);
@@ -290,8 +346,7 @@ namespace ShopLens.Droid
                 }
                 else if (results == cmdOpenList)
                 {
-                    MainActivity.goingFromCartToList = true;
-                    Finish();
+                    GoToShoppingList();
                 }
                 else
                 {

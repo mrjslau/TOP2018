@@ -2,7 +2,9 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Content.PM;
+
 using PCLAppConfig;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
@@ -10,6 +12,8 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using ShopLens.Droid.Helpers;
 using Android.Views;
+using Android.Speech.Tts;
+using Java.Util;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
@@ -19,6 +23,8 @@ using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System;
+using System.Threading;
 using ShopLens.Droid.Source;
 
 public enum IntentIds
@@ -31,7 +37,8 @@ public enum IntentIds
 
 namespace ShopLens.Droid
 {
-    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme = "@style/ShopLensTheme")]
+    [Activity(Label = "ShopLens", Icon = "@mipmap/icon", Theme ="@style/ShopLensTheme", 
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
         SupportToolbar toolbar;
@@ -41,6 +48,14 @@ namespace ShopLens.Droid
         CoordinatorLayout rootView;
         GestureDetector gestureDetector;
         GestureListener gestureListener;
+
+        string cmdOpenCamera;
+        string cmdOpenCart;
+        string cmdOpenList;
+        string cmdHelp;
+        string cmdRemind;
+        string cmdTutorialRequest;
+        string cmdTutorialLikeShopLens;
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
@@ -55,32 +70,23 @@ namespace ShopLens.Droid
         bool tutorialRequested = false;
         bool talkBackEnabled;
 
-        string needUserAnswerId;
-        string askUserToRepeat;
-        string talkBackEnabledIntentKey;
-
         string userGuidPrefKey;
-
-        string cmdOpenCamera;
-        string cmdOpenCart;
-        string cmdOpenList;
-        string cmdHelp;
-        string cmdRemind;
-        string cmdTutorialRequest;
-        string cmdTutorialLikeShopLens;
 
         public static bool goingFromCartToList = false;
         public static bool goingFromListToCart = false;
         public static List<string> shoppingSessionItems;
 
-        readonly string[] ShopLensPermissions =
+        string needUserAnswerId;
+        string askUserToRepeat;
+        string talkBackEnabledIntentKey;
+
+        public readonly string[] ShopLensPermissions =
         {
             Manifest.Permission.RecordAudio,
             Manifest.Permission.Camera,
             Manifest.Permission.WriteExternalStorage
         };
 
-        readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -116,12 +122,14 @@ namespace ShopLens.Droid
             }
 
             // Set our view from the "main" layout resource.
-            SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);            
 
-            // We need to request user permissions.
-            if ((int)Build.VERSION.SdkInt >= (int)BuildVersionCodes.M)
+            
+
+            if (savedInstanceState == null)
             {
-                RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
+                new Thread(() => { FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance(this, this)).Commit(); }
+            ).Start();          
             }
 
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.DrawerLayout);
@@ -149,9 +157,6 @@ namespace ShopLens.Droid
             {
                 switch (e.MenuItem.ItemId)
                 {
-                    case Resource.Id.NavItemCamera:
-                        StartCameraIntent();
-                        break;
                     case Resource.Id.NavItemShoppingCart:
                         StartCartIntent();
                         break;
@@ -264,12 +269,12 @@ namespace ShopLens.Droid
 
         private User GenerateNewUser()
         {
-            var userGuid = Guid.NewGuid().ToString();
+            var userGuid = Guid.NewGuid();
             var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
             var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
             var maxUserAge = int.Parse(ConfigurationManager.AppSettings["MaxUserAge"]);
 
-            prefs.Edit().PutString(guidPrefKey, userGuid);
+            prefs.Edit().PutString(guidPrefKey, userGuid.ToString());
 
             return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
         }
@@ -277,7 +282,7 @@ namespace ShopLens.Droid
         private ShoppingSession GenerateShoppingSession()
         {
             var productList = new List<Product>();
-            var userGuid = int.Parse(prefs.GetString(userGuidPrefKey, null));
+            var userGuid = Guid.Parse(prefs.GetString(userGuidPrefKey, null));
 
             if (shoppingSessionItems == null)
             {
@@ -297,7 +302,6 @@ namespace ShopLens.Droid
 
                 if (productList.Any())
                 {
-                    // TODO: change GUID to either be string or int in the DB model, but not both.
                     return new ShoppingSession { Date = DateTime.Now, Products = productList, UserId = userGuid};  
                 }
                 else
@@ -346,11 +350,7 @@ namespace ShopLens.Droid
             {
                 if (!tutorialRequested)
                 {
-                    if (results == cmdOpenCamera)
-                    {
-                        StartCameraIntent();
-                    }
-                    else if (results == cmdOpenCart)
+                    if (results == cmdOpenCart)
                     {
                         StartCartIntent();
                     }
@@ -388,12 +388,6 @@ namespace ShopLens.Droid
             }
         }
 
-        private void StartCameraIntent()
-        {
-            var intentCam = new Intent(this, typeof(CameraActivity));
-            StartActivity(intentCam);
-        }
-
         private void StartCartIntent()
         {
             var intentCart = new Intent(this, typeof(ShoppingCartActivity));
@@ -412,20 +406,6 @@ namespace ShopLens.Droid
         {
             drawerToggle.OnOptionsItemSelected(item);
             return base.OnOptionsItemSelected(item);
-        }
-
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            if (requestCode == REQUEST_PERMISSION)
-            {
-                foreach (Permission appPermission in grantResults)
-                {
-                    if (appPermission == Permission.Denied)
-                    {
-                        RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
-                    }
-                }
-            }
         }
 
         private void TurnOffVoice()
