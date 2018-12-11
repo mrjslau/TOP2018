@@ -13,6 +13,13 @@ using Android.Views;
 using Android.Preferences;
 using Android.Views.Accessibility;
 using System;
+using ShopLens.Droid.Activities;
+using Android.Widget;
+using System.Linq;
+using ShopLensWeb;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using ShopLens.Droid.Source;
 
 public enum IntentIds
 {
@@ -28,16 +35,22 @@ namespace ShopLens.Droid
     public class MainActivity : AppCompatActivity
     {
         SupportToolbar toolbar;
-        ActionBarDrawerToggle drawerToggle;
+        Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         DrawerLayout drawerLayout;
         NavigationView navView;
         CoordinatorLayout rootView;
+        GestureDetector gestureDetector;
+        GestureListener gestureListener;
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
         ShopLensTextToSpeech shopLensTts;
 
+        ShopLensContext shopLensDbContext;
+
         ISharedPreferences prefs;
+        ActivityPreferences voicePrefs;
+        bool voiceIsOff;
 
         bool tutorialRequested = false;
         bool talkBackEnabled;
@@ -45,6 +58,8 @@ namespace ShopLens.Droid
         string needUserAnswerId;
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
+
+        string userGuidPrefKey;
 
         string cmdOpenCamera;
         string cmdOpenCart;
@@ -56,6 +71,7 @@ namespace ShopLens.Droid
 
         public static bool goingFromCartToList = false;
         public static bool goingFromListToCart = false;
+        public static List<string> shoppingSessionItems;
 
         readonly string[] ShopLensPermissions =
         {
@@ -81,9 +97,16 @@ namespace ShopLens.Droid
             cmdTutorialRequest = ConfigurationManager.AppSettings["CmdTutorialRequest"];
             cmdTutorialLikeShopLens = ConfigurationManager.AppSettings["CmdTutorialLikeShopLens"];
 
+            userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
+            shopLensDbContext = ConnectToDatabase();
+
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
+
+            voicePrefs = new ActivityPreferences(this, ConfigurationManager.AppSettings["VoicePrefs"]);
+            CheckVoicePrefs();
 
             talkBackEnabled = IsTalkBackEnabled();
 
@@ -106,7 +129,7 @@ namespace ShopLens.Droid
             navView = FindViewById<NavigationView>(Resource.Id.NavView);
             rootView = FindViewById<CoordinatorLayout>(Resource.Id.root_view);
 
-            drawerToggle = new ActionBarDrawerToggle(
+            drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 Resource.String.openDrawer,
@@ -117,6 +140,10 @@ namespace ShopLens.Droid
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetHomeButtonEnabled(true);
             drawerToggle.SyncState();
+
+            gestureListener = new GestureListener();
+            gestureListener.LeftEvent += GestureLeft;
+            gestureDetector = new GestureDetector(this, gestureListener);
 
             navView.NavigationItemSelected += (sender, e) =>
             {
@@ -137,11 +164,28 @@ namespace ShopLens.Droid
 
         protected override void OnStart()
         {
+            GenerateUserInfoOnFirstLaunch();
             base.OnStart();
+        }
+
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                var shopSession = GenerateShoppingSession();
+                shopLensDbContext.ShoppingSessions.Add(shopSession);
+                shopLensDbContext.SaveChanges();
+
+                CloseConnectionToDatabase(shopLensDbContext);
+            }
+
+            base.OnPause();
         }
 
         protected override void OnRestart()
         {
+            CheckVoicePrefs();
+
             if (goingFromCartToList)
             {
                 goingFromCartToList = false;
@@ -152,7 +196,7 @@ namespace ShopLens.Droid
                 goingFromListToCart = false;
                 StartCartIntent();
             }
-            else if (!talkBackEnabled)
+            else if (!talkBackEnabled && !voiceIsOff)
             {
                 var message = ConfigurationManager.AppSettings["MainOnRestartMsg"];
                 shopLensTts.Speak(message, needUserAnswerId);
@@ -163,10 +207,29 @@ namespace ShopLens.Droid
 
         protected override void OnStop()
         {
-            // Stop Tts Speech.
-            shopLensTts.Stop();
+            if (!talkBackEnabled && !voiceIsOff)
+            {
+                // Stop Tts Speech.
+                shopLensTts.Stop();
+            }
 
             base.OnStop();
+        }
+
+        private ShopLensContext ConnectToDatabase()
+        {
+            var useLocalDb = Convert.ToBoolean(ConfigurationManager.AppSettings["UseLocalDb"]);
+            var connectionString = ConfigurationManager.AppSettings["DatabaseSource"];
+
+            var dbContext = new ShopLensContext(connectionString, useLocalDb);
+            dbContext.Database.Migrate();
+
+            return dbContext;
+        }
+
+        private void CloseConnectionToDatabase(DbContext dbContext)
+        {
+            dbContext.Dispose();
         }
 
         private bool IsTalkBackEnabled()
@@ -185,6 +248,65 @@ namespace ShopLens.Droid
             voiceRecognizer = new ShopLensSpeechRecognizer(OnVoiceRecognitionResults);
         }
 
+        private void GenerateUserInfoOnFirstLaunch()
+        {
+            var firstLaunchPrefKey = ConfigurationManager.AppSettings["FirstTimeLaunchPrefKey"];
+            bool firstTime = prefs.GetBoolean(firstLaunchPrefKey, true);
+
+            if (firstTime)
+            {
+                var newUser = GenerateNewUser();
+                shopLensDbContext.Users.Add(newUser);
+
+                prefs.Edit().PutBoolean(firstLaunchPrefKey, false).Commit();
+            }
+        }
+
+        private User GenerateNewUser()
+        {
+            var userGuid = Guid.NewGuid().ToString();
+            var guidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
+            var minUserAge = int.Parse(ConfigurationManager.AppSettings["MinUserAge"]);
+            var maxUserAge = int.Parse(ConfigurationManager.AppSettings["MaxUserAge"]);
+
+            prefs.Edit().PutString(guidPrefKey, userGuid);
+
+            return ShopLensRandomUserGenerator.GenerateRandomUser(userGuid, minUserAge, maxUserAge);
+        }
+
+        private ShoppingSession GenerateShoppingSession()
+        {
+            var productList = new List<Product>();
+            var userGuid = int.Parse(prefs.GetString(userGuidPrefKey, null));
+
+            if (shoppingSessionItems == null)
+            {
+                return null;
+            }
+            else
+            {
+                foreach (string item in shoppingSessionItems)
+                {
+                    var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
+
+                    if (itemInfo != null)
+                    {
+                        productList.Add(itemInfo);
+                    }
+                }
+
+                if (productList.Any())
+                {
+                    // TODO: change GUID to either be string or int in the DB model, but not both.
+                    return new ShoppingSession { Date = DateTime.Now, Products = productList, UserId = userGuid};  
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         private void RunUserTutorial()
         {
             tutorialRequested = true;
@@ -201,8 +323,11 @@ namespace ShopLens.Droid
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
-            shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            if (!voiceIsOff)
+            {
+                var welcomeMsg = ConfigurationManager.AppSettings["WelcomeBackMsg"];
+                shopLensTts.Speak(welcomeMsg, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -246,6 +371,10 @@ namespace ShopLens.Droid
                     else if (results == cmdTutorialRequest)
                     {
                         RunUserTutorial();
+                    }
+                    else
+                    {
+                        shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
                     }
                 }
                 else if (results == cmdTutorialLikeShopLens)
@@ -296,6 +425,57 @@ namespace ShopLens.Droid
                         RequestPermissions(ShopLensPermissions, REQUEST_PERMISSION);
                     }
                 }
+            }
+        }
+
+        private void TurnOffVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("off");
+            voiceIsOff = true;
+            tutorialRequested = false;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
+        }
+
+        private void TurnOnVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("on");
+            voiceIsOff = false;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["MainOnVoiceOnMsg"], needUserAnswerId);
+        }
+
+        void GestureLeft()
+        {
+            if (!voiceIsOff)
+            {
+                if (voiceRecognizer.IsListening)
+                    voiceRecognizer.StopListening();
+                if (shopLensTts.IsSpeaking)
+                    shopLensTts.Stop();
+                TurnOffVoice();
+            }
+            else
+            {
+                TurnOnVoice();
+            }
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            gestureDetector.OnTouchEvent(ev);
+            return base.DispatchTouchEvent(ev);
+        }
+
+        private void CheckVoicePrefs()
+        {
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+            else
+            {
+                voiceIsOff = false;
             }
         }
     }

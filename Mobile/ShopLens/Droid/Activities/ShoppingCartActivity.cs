@@ -11,6 +11,8 @@ using ShopLens.Droid.Helpers;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Android.Views;
+using ShopLens.Droid.Activities;
 
 namespace ShopLens.Droid
 {
@@ -18,13 +20,18 @@ namespace ShopLens.Droid
     public class ShoppingCartActivity : Activity
     {
         readonly string PREFS_NAME = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        readonly string VOICE_PREFS_NAME = ConfigurationManager.AppSettings["VoicePrefs"];
 
         EditText addItemEditText;
         Button addItemButton;
         ListView listView;
         ActivityPreferences prefs;
+        ActivityPreferences voicePrefs;
+        bool voiceIsOff;
         Button removeItemButton;
         Button removeAllItemsButton;
+        GestureDetector gestureDetector;
+        GestureListener gestureListener;
 
         List<string> items;
         ArrayAdapter<string> listAdapter;
@@ -48,6 +55,9 @@ namespace ShopLens.Droid
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingCart);
 
+            voicePrefs = new ActivityPreferences(this, VOICE_PREFS_NAME);
+            CheckVoicePrefs();
+
             talkBackEnabled = IsTalkBackEnabled();
 
             if (!talkBackEnabled)
@@ -64,6 +74,10 @@ namespace ShopLens.Droid
             removeItemButton = FindViewById<Button>(Resource.Id.ShopCartRemoveItemButton);
             removeAllItemsButton = FindViewById<Button>(Resource.Id.ShopCartDeleteAllButton);
 
+            gestureListener = new GestureListener();
+            gestureListener.LeftEvent += GestureLeft;
+            gestureDetector = new GestureDetector(this, gestureListener);
+
             listAdapter =
                 new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
             listView.Adapter = listAdapter;
@@ -76,7 +90,9 @@ namespace ShopLens.Droid
 
         protected override void OnRestart()
         {
-            if (!talkBackEnabled)
+            CheckVoicePrefs();
+
+            if (!talkBackEnabled && !voiceIsOff)
             {
                 var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
                 shopLensTts.Speak(message, needUserAnswerId);
@@ -85,10 +101,23 @@ namespace ShopLens.Droid
             base.OnRestart();
         }
 
+        protected override void OnPause()
+        {
+            if (IsFinishing)
+            {
+                MainActivity.shoppingSessionItems = items;
+            }
+
+            base.OnPause();
+        }
+
         protected override void OnStop()
         {
-            // Stop Tts Speech.
-            shopLensTts.Stop();
+            if (!talkBackEnabled && !voiceIsOff)
+            {
+                // Stop Tts Speech.
+                shopLensTts.Stop();
+            }
 
             base.OnStop();
         }
@@ -116,8 +145,11 @@ namespace ShopLens.Droid
 
         private void TtsSpeakAfterInit(object sender, EventArgs e)
         {
-            var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
-            shopLensTts.Speak(message, needUserAnswerId);
+            if (!voiceIsOff)
+            {
+                var message = ConfigurationManager.AppSettings["CartOnRestartMsg"];
+                shopLensTts.Speak(message, needUserAnswerId);
+            }
         }
 
         private void TtsStoppedSpeaking(object sender, UtteranceIdArgs e)
@@ -265,6 +297,55 @@ namespace ShopLens.Droid
                 {
                     shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
                 }
+            }
+        }
+
+        private void TurnOffVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("off");
+            voiceIsOff = true;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["DisableVoiceControlsMsg"], null);
+        }
+
+        private void TurnOnVoice()
+        {
+            voicePrefs.DeleteAllPreferences();
+            voicePrefs.AddString("on");
+            voiceIsOff = false;
+            shopLensTts.Speak(ConfigurationManager.AppSettings["CartOnVoiceOnMsg"], needUserAnswerId);
+        }
+
+        private void GestureLeft()
+        {
+            if (!voiceIsOff)
+            {
+                if (voiceRecognizer.IsListening)
+                    voiceRecognizer.StopListening();
+                if (shopLensTts.IsSpeaking)
+                    shopLensTts.Stop();
+                TurnOffVoice();
+            }
+            else
+            {
+                TurnOnVoice();
+            }
+        }
+        public override bool DispatchTouchEvent(MotionEvent ev)
+        {
+            gestureDetector.OnTouchEvent(ev);
+            return base.DispatchTouchEvent(ev);
+        }
+
+        private void CheckVoicePrefs()
+        {
+            if (!voicePrefs.IsEmpty)
+            {
+                voiceIsOff = voicePrefs.GetPreferencesToList()[0] == "off";
+            }
+            else
+            {
+                voiceIsOff = false;
             }
         }
     }
