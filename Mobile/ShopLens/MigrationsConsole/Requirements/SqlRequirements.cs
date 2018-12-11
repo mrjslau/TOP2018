@@ -19,11 +19,6 @@ namespace MigrationsConsole.Requirements
             connection.Open();
         }
         
-        ~SqlRequirements()
-        {
-            connection.Close();
-        }
-
         public void Delete()
         {
             var commandText = $"DELETE FROM [Users] WHERE UserId = '{testUserId}'";
