@@ -62,6 +62,7 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Window.SetSoftInputMode(SoftInput.StateHidden);
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingList);
 
@@ -118,19 +119,13 @@ namespace ShopLens.Droid
                 switch (e.MenuItem.ItemId)
                 {
                     case Resource.Id.NavItemShoppingCart:
-                        StartCartIntent();
+                        GoToShoppingCart();
                         break;
                     case Resource.Id.NavItemShoppingList:
                         OnOptionsItemSelected(e.MenuItem);
                         break;
                 }
             };
-        }
-
-        private void StartCartIntent()
-        {
-            var intentCart = new Intent(this, typeof(ShoppingCartActivity));
-            StartActivity(intentCart);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -234,6 +229,12 @@ namespace ShopLens.Droid
             listAdapter.NotifyDataSetChanged();
         }
 
+        private void GoToShoppingCart()
+        {
+            MainActivity.goingFromListToCart = true;
+            Finish();
+        }
+
         void RemoveTextBoxProductFromList(object sender, EventArgs e)
         {
             RemoveStringFromList(addItemEditText.Text);
@@ -330,8 +331,7 @@ namespace ShopLens.Droid
                 }
                 else if (results == cmdOpenCart)
                 {
-                    MainActivity.goingFromListToCart = true;
-                    Finish();
+                    GoToShoppingCart();
                 }
                 else
                 {
@@ -339,7 +339,6 @@ namespace ShopLens.Droid
                 }
             }
         }
-
 
         private void TurnOffVoice()
         {

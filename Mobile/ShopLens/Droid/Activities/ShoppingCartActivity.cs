@@ -66,6 +66,7 @@ namespace ShopLens.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Window.SetSoftInputMode(SoftInput.StateHidden);
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ShoppingCart);
 
@@ -125,7 +126,7 @@ namespace ShopLens.Droid
                         OnOptionsItemSelected(e.MenuItem);
                         break;
                     case Resource.Id.NavItemShoppingList:
-                        StartListIntent();
+                        GoToShoppingList();
                         break;
                 }
             };
@@ -135,13 +136,6 @@ namespace ShopLens.Droid
         {
             drawerToggle.OnOptionsItemSelected(item);
             return base.OnOptionsItemSelected(item);
-        }
-
-        private void StartListIntent()
-        {
-            var intentList = new Intent(this, typeof(ShoppingListActivity));
-            intentList.PutExtra(talkBackEnabledIntentKey, talkBackEnabled);
-            StartActivity(intentList);
         }
 
         protected override void OnRestart()
@@ -250,6 +244,12 @@ namespace ShopLens.Droid
             listAdapter.NotifyDataSetChanged();
         }
 
+        private void GoToShoppingList()
+        {
+            MainActivity.goingFromCartToList = true;
+            Finish();
+        }
+
         void RemoveTextBoxProductFromList(object sender, EventArgs e)
         {
             RemoveStringFromList(addItemEditText.Text);
@@ -346,8 +346,7 @@ namespace ShopLens.Droid
                 }
                 else if (results == cmdOpenList)
                 {
-                    MainActivity.goingFromCartToList = true;
-                    Finish();
+                    GoToShoppingList();
                 }
                 else
                 {
