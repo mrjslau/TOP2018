@@ -62,9 +62,10 @@ namespace ShopLens.Droid.Source
             {
                 if (entry.Key == name)
                 {
-                    int newQuantity = int.Parse(entry.Value.ToString()) + 1;
+                    var values = entry.Value.ToString().Split(' ');
+                    int newQuantity = int.Parse(values[1]) + 1;
                     prefs.Edit().Remove(entry.Key).Commit();
-                    prefsEditor.PutInt(entry.Key, newQuantity);
+                    prefsEditor.PutString(entry.Key, values[0] + " " + newQuantity.ToString());
                     prefsEditor.Apply();
                     return;
                 }
@@ -75,7 +76,7 @@ namespace ShopLens.Droid.Source
             //icollection.Add(quantity);
             //prefsEditor.PutStringSet(name, icollection);
 
-            prefsEditor.PutInt(name, quantity);
+            prefsEditor.PutString(name, price + " " + quantity.ToString());
             prefsEditor.Apply();
         }
 
@@ -83,15 +84,16 @@ namespace ShopLens.Droid.Source
         {
             foreach (KeyValuePair<string, object> entry in prefs.All)
             {
-                if (entry.Key == name && entry.Value.ToString() == "1")
+                var values = entry.Value.ToString().Split(' ');
+                if (entry.Key == name && values[1] == "1")
                 {
                     prefs.Edit().Remove(entry.Key).Commit();
                 }
-                else if(entry.Key == name)
+                else if (entry.Key == name)
                 {
-                    int newQuantity = int.Parse(entry.Value.ToString()) - 1;
+                    int newQuantity = int.Parse(values[1]) - 1;
                     prefs.Edit().Remove(entry.Key).Commit();
-                    prefsEditor.PutInt(entry.Key, newQuantity);
+                    prefsEditor.PutString(entry.Key, values[0] + " " + newQuantity.ToString());
                     prefsEditor.Apply();
                 }
             }
@@ -103,11 +105,12 @@ namespace ShopLens.Droid.Source
             List<CartItem> items = new List<CartItem> { };
             foreach (KeyValuePair<string, object> entry in prefs.All)
             {
+                var values = entry.Value.ToString().Split(' ');
                 items.Add(new CartItem()
                 {
                     Name = entry.Key,
-                    Price = "0.00",
-                    Count = entry.Value.ToString()
+                    Price = values[0],
+                    Count = values[1]
                 });
             }
             return items;
