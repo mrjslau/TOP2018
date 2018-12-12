@@ -23,7 +23,6 @@ using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System;
 using System.Threading;
 using ShopLens.Droid.Source;
 
