@@ -102,7 +102,7 @@
             android:text="€"  
             android:textColor="#6f6f6f"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="40dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:layout_toRightOf="@id/nameTextView"/>
@@ -111,7 +111,7 @@
             android:text="Qty"  
             android:textColor="#6f6f6f"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="40dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:layout_toRightOf="@id/priceTextView" />
