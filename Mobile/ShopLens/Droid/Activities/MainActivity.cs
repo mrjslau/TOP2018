@@ -60,7 +60,7 @@ namespace ShopLens.Droid
 
         ShopLensTextToSpeech shopLensTts;
 
-        ShopLensContext shopLensDbContext;
+        public static ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
         ActivityPreferences voicePrefs;
@@ -104,9 +104,9 @@ namespace ShopLens.Droid
 
             userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
 
-            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-
             shopLensDbContext = ConnectToDatabase();
+
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
@@ -292,7 +292,7 @@ namespace ShopLens.Droid
                 foreach (string item in shoppingSessionItems)
                 {
                     var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
-
+                    
                     if (itemInfo != null)
                     {
                         productList.Add(itemInfo);

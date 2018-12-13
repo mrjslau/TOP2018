@@ -19,6 +19,7 @@ using Unity;
 using PCLAppConfig;
 using Android.App;
 using ImageRecognitionMobile.OCR;
+using System.Linq;
 
 namespace ShopLens.Droid
 {
@@ -28,11 +29,13 @@ namespace ShopLens.Droid
         bool isTtsInitialized = false;
         ShopLensTextToSpeech sltts;
         TextRecognizer textRecognizer;
+        ActivityPreferences prefs;
         Context context;
         Activity activity;
         Bitmap bitmap;
         Camera2Fragment owner;
         private readonly string prefsName = ConfigurationManager.AppSettings["ShopCartPrefs"];
+        readonly string shopName = ConfigurationManager.AppSettings["ShopName"];
 
         public ImageRecognizer(Context context, Activity activity)
         {
@@ -94,17 +97,30 @@ namespace ShopLens.Droid
                         return;
                     }
                     var recognitionResult = task.Result;
+                    string productName = recognitionResult.BestPrediction;
+
                     var thingsToSay = new List<string>
-                        {$"This is {recognitionResult.BestPrediction}", recognitionResult.WeightSpecifier};
+                        {$"This is {productName}", recognitionResult.WeightSpecifier};
                     tts.Speak(
                         string.Join(". ", thingsToSay),
                         QueueMode.Flush,
                         null,
                         null);
                     var ocrResult = recognitionResult.RawOcrResult;
+                    decimal price = 0;
+
+                    var product =
+                            MainActivity.shopLensDbContext.Products
+                                .FirstOrDefault(p => p.Name == productName && p.Shop.Name == shopName);
+
+                    if (product != null)
+                    {
+                        price = product.FullPrice;
+                    }
+
                     //if (!string.IsNullOrEmpty(ocrResult))
                         //new MessageBarCreator(rootView, $"OCR: {ocrResult}").Show();
-                    GetShoppingCartAddItemDialog(recognitionResult).Show();
+                    GetShoppingCartAddItemDialog(recognitionResult, price).Show();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -115,20 +131,20 @@ namespace ShopLens.Droid
             return bitmap;
         }
 
-        private void AddToShoppingCart(string guess)
+        private void AddToShoppingCart(string guess, decimal price, int quantity = 1)
         {
             var preferences = new ActivityPreferences(context, prefsName);
-            preferences.AddString(guess.FirstCharToUpper());
+            preferences.AddCartItem(guess, price.ToString(), quantity);
             //shoppingCartItemAddedMessageBar.Show();
         }
 
-        public ErrorDialogCreator GetShoppingCartAddItemDialog(RecognitionResult recognitionResult)
+        public ErrorDialogCreator GetShoppingCartAddItemDialog(RecognitionResult recognitionResult, decimal price)
         {
             return new ErrorDialogCreator(context, context.Resources.GetString(Resource.String.shoppingCart),
                 context.Resources.GetString(Resource.String.shoppingCartQuestion),
                 context.Resources.GetString(Resource.String.positiveMessage),
                 context.Resources.GetString(Resource.String.negativeMessage),
-                () => AddToShoppingCart(recognitionResult.BestPrediction), delegate { });
+                () => AddToShoppingCart(recognitionResult.BestPrediction, price), delegate { });
         }
  
         private async Task<string> GetTextFromImageAsync(Bitmap image)
