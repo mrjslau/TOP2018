@@ -21,6 +21,7 @@ using Android.App;
 using ImageRecognitionMobile.OCR;
 using System.Linq;
 using System.Threading;
+using Java.Util;
 
 namespace ShopLens.Droid
 {
@@ -148,6 +149,7 @@ namespace ShopLens.Droid
                     }
 
                     var thingsToSay = "This is " + productName + ". It costs " + price + " euros.";
+                    tts.SetSpeechRate((float)0.8);
                     tts.Speak(
                         thingsToSay,
                         QueueMode.Flush,
@@ -205,6 +207,7 @@ namespace ShopLens.Droid
                 {
                     var item = (TextBlock)items.ValueAt(i);
                     ocrResultBuilder.Append(item.Value);
+                    ocrResultBuilder.Append(" ");
                 }
                 var ocrResult = ocrResultBuilder.ToString();
                 return ocrResult;

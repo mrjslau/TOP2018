@@ -293,8 +293,15 @@ namespace ShopLens.Droid
                         foreach (CartItem item in cartItemsAdapter.items)//prefs.GetPreferencesToList())
                         {
                             //SpeakOut(item, sessionCheckDelay);
-                            SpeakOut(item.Count + " of " + item.Name + " costs " + item.Price + " euros." , sessionCheckDelay);
-                            priceSum += double.Parse(item.Price); 
+                            if (int.Parse(item.Count) > 1)
+                            {
+                                SpeakOut(item.Count + " of " + item.Name + " cost " + item.Price + " euros each.", sessionCheckDelay);
+                            }
+                            else
+                            {
+                                SpeakOut(item.Count + " of " + item.Name + " costs " + item.Price + " euros.", sessionCheckDelay);
+                            }
+                            priceSum += double.Parse(item.Price) * int.Parse(item.Count); 
                             Thread.Sleep(voicerAwaitTime);
                         }
                         SpeakOut("Total Cost of items in cart is " + priceSum + " euros", sessionCheckDelay);

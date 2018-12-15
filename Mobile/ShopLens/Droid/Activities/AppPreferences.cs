@@ -48,7 +48,7 @@ namespace ShopLens.Droid.Source
                 if (entry.Value.ToString() == name)
                 {
                     prefs.Edit().Remove(entry.Key).Commit();
-                }            
+                }
             }
         }
 
@@ -108,24 +108,12 @@ namespace ShopLens.Droid.Source
             {
                 var values = entry.Value.ToString().Split(' ');
 
-                if (!firstLaunch)
+                items.Add(new CartItem()
                 {
-                    items.Add(new CartItem()
-                    {
-                        Name = entry.Key,
-                        Price = values[0],
-                        Count = values[1]
-                    });
-                }
-                else
-                {
-                    items.Add(new CartItem()
-                    {
-                        Name = entry.Key,
-                        Price = "0",
-                        Count = "1"
-                    });
-                }
+                    Name = entry.Key,
+                    Price = values[0],
+                    Count = values[1]
+                });
             }
 
             firstLaunch = false;
