@@ -10,6 +10,7 @@ namespace ShopLens.Droid.Source
         ISharedPreferences prefs;
         ISharedPreferencesEditor prefsEditor;
         Context pContext;
+        bool firstLaunch = true;
 
         public bool IsEmpty
         {
@@ -106,13 +107,28 @@ namespace ShopLens.Droid.Source
             foreach (KeyValuePair<string, object> entry in prefs.All)
             {
                 var values = entry.Value.ToString().Split(' ');
-                items.Add(new CartItem()
+
+                if (!firstLaunch)
                 {
-                    Name = entry.Key,
-                    Price = values[0],
-                    Count = values[1]
-                });
+                    items.Add(new CartItem()
+                    {
+                        Name = entry.Key,
+                        Price = values[0],
+                        Count = values[1]
+                    });
+                }
+                else
+                {
+                    items.Add(new CartItem()
+                    {
+                        Name = entry.Key,
+                        Price = "0",
+                        Count = "1"
+                    });
+                }
             }
+
+            firstLaunch = false;
             return items;
         }
     }

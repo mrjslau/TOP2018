@@ -289,12 +289,15 @@ namespace ShopLens.Droid
 
                     Task.Run(() =>
                     {
-                        foreach (string item in prefs.GetPreferencesToList())
+                        double priceSum = 0;
+                        foreach (CartItem item in cartItemsAdapter.items)//prefs.GetPreferencesToList())
                         {
-                            SpeakOut(item, sessionCheckDelay);
+                            //SpeakOut(item, sessionCheckDelay);
+                            SpeakOut(item.Count + " of " + item.Name + " costs " + item.Price + " euros." , sessionCheckDelay);
+                            priceSum += double.Parse(item.Price); 
                             Thread.Sleep(voicerAwaitTime);
                         }
-
+                        SpeakOut("Total Cost of items in cart is " + priceSum + " euros", sessionCheckDelay);
                         SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>

@@ -9,7 +9,7 @@ namespace ShopLens.Droid.Helpers
 {
     public class CartItemsAdapter : BaseAdapter<CartItem>
     {
-        List<CartItem> items;
+        public List<CartItem> items;
 
         public CartItemsAdapter(List<CartItem> items)
         {
