@@ -22,8 +22,8 @@ namespace ShopLensForms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            IntroForm _introForm = new IntroForm();
-            ShopLens _shopLens = new ShopLens();
+            var _introForm = new IntroForm();
+            var _shopLens = new ShopLens();
 
             var mainController = new MainController(_textVoicer, _voiceRecognizer, _imageClassificator
                 , _introForm, _shopLens);

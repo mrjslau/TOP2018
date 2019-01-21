@@ -14,15 +14,15 @@ namespace ShopLensApp.IO
         /// <inheritdoc cref="IReader.DeserializeToList(string)"/>
         public List<ShoppingItem> DeserializeToList(string filePath)
         {
-            string jsonString = ReadText(filePath);
-            List<ShoppingItem> list = JsonConvert.DeserializeObject<List<ShoppingItem>>(jsonString);
+            var jsonString = ReadText(filePath);
+            var list = JsonConvert.DeserializeObject<List<ShoppingItem>>(jsonString);
             return list ?? new List<ShoppingItem>();
         }
 
         /// <inheritdoc cref="IReader.ReadText(string)"/>
         public string ReadText(string filePath)
         {
-            string text = "";
+            var text = "";
             if (File.Exists(filePath))
             {
                 text = File.ReadAllText(filePath);

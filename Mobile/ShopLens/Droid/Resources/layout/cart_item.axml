@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:minWidth="25px"  
+    android:minHeight="10px"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    <TextView  
+        android:id="@+id/cartItemNameTextView"  
+        android:text="Item Name"    
+        android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"/>
+    <TextView  
+        android:id="@+id/cartItemPriceTextView"   
+        android:text="0.00€"  
+        android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@id/cartItemNameTextView"/>
+    <TextView  
+        android:id="@+id/cartItemCountTextView"   
+        android:text="0"  
+        android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="70dp" 
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@id/cartItemPriceTextView" /> 
+</RelativeLayout>   

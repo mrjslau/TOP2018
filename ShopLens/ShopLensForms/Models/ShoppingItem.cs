@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShopLensApp.IO
 {
+    /// <summary>
+    ///  This class represents an "Item" that can be put in a shopping list.
+    /// </summary>
     public class ShoppingItem
     {
         public string itemName;

@@ -150,7 +150,7 @@
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MyListForm</value>
+    <value>ShoppingListForm</value>
   </data>
   <data name="MyList_listBox.Items" xml:space="preserve">
     <value>Tomato</value>
@@ -277,7 +277,7 @@
     <value>6, 6, 6, 6</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>MyListForm</value>
+    <value>ShoppingListForm</value>
   </data>
   <data name="MyList_listBox.ItemHeight" type="System.Int32, mscorlib">
     <value>25</value>

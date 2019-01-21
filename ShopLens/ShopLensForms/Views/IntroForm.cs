@@ -8,7 +8,7 @@ namespace ShopLensForms
     {
         public MainController MainController { get; set; }
 
-        private string HelloMessage = ShopLensApp.GlobalStrings.HelloMessage;
+        private readonly string _helloMessage = ShopLensApp.GlobalStrings.HelloMessage;
 
         public IntroForm()
         {
@@ -17,7 +17,7 @@ namespace ShopLensForms
 
         private void IntroForm_Shown(object sender, EventArgs e)
         {
-            MainController.TextVoicerVoiceMessage(HelloMessage);
+            MainController.TextVoicerVoiceMessage(_helloMessage);
         }
 
         public void Enter_btn_Click(object sender, EventArgs e)

@@ -41,10 +41,10 @@ namespace ShopLensForms.Controllers
         public ShopLens _shopLens;
 
         /// <inheritdoc cref="_introForm"/>
-        public MyListForm _myList;
+        public ShoppingListForm ShoppingList;
 
         /// <inheritdoc cref="_introForm"/>
-        public MyCartForm _myCart;
+        public CartForm Cart;
 
         private string helloCmd = ConfigurationManager.AppSettings.Get("helloCmd");
         private string whatIsThisCmd = ConfigurationManager.AppSettings.Get("whatIsThisCmd");
@@ -64,8 +64,8 @@ namespace ShopLensForms.Controllers
             _imageClassifying = imageClassificator;
             _introForm = introForm;
             _shopLens = shopLens;
-            _myList = new MyListForm(this);
-            _myCart = new MyCartForm(this);
+            ShoppingList = new ShoppingListForm(this);
+            Cart = new CartForm(this);
 
             _introForm.MainController = this;
             _shopLens.MainController = this;
@@ -77,7 +77,7 @@ namespace ShopLensForms.Controllers
         public void StartApp()
         {
             StartVoiceRecognizer();
-            LoadList(_myList.MyList_listBox);
+            LoadList(ShoppingList.MyList_listBox);
             Application.Run(_introForm);
         }
 
@@ -155,19 +155,19 @@ namespace ShopLensForms.Controllers
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_AddToShoppingList(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_myList, _myList.Add_btn_Click, sender, e);
+            InvokeOnGUIThread(ShoppingList, ShoppingList.Add_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_CloseShoppingList(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_myList, _myList.Close_btn_Click, sender, e);
+            InvokeOnGUIThread(ShoppingList, ShoppingList.Close_btn_Click, sender, e);
         }
 
         /// <inheritdoc cref="CommandRecognized_Hello(object, EventArgs)"/>
         private void CommandRecognized_CloseShoppingCart(object sender, EventArgs e)
         {
-            InvokeOnGUIThread(_myCart, _myCart.Close_btn_Click, sender, e);
+            InvokeOnGUIThread(Cart, Cart.Close_btn_Click, sender, e);
         }
 
         /// <summary>
@@ -275,12 +275,12 @@ namespace ShopLensForms.Controllers
         /// </summary>
         public void AddItem()
         {
-            string itemName = _myList.ItemToAdd_textBox.Text;
-            ShoppingItem itemToAdd = new ShoppingItem(itemName);
+            var itemName = ShoppingList.ItemToAdd_textBox.Text;
+            var itemToAdd = new ShoppingItem(itemName);
             shoppingList.Add(itemToAdd);
 
-            _myList.MyList_listBox.Items.Clear();
-            _myList.MyList_listBox.Items.AddRange(shoppingList.ToArray());
+            ShoppingList.MyList_listBox.Items.Clear();
+            ShoppingList.MyList_listBox.Items.AddRange(shoppingList.ToArray());
 
             IWriter write = new JsonWriter();
             write.SerializeFromList(filePath, shoppingList);  

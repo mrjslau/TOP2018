@@ -7,7 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using ImageRecognition.Classificators;
 using ImageRecognition.OCR;
-using TensorFlow;
+//using TensorFlow;
 
 namespace ImageRecognition
 {
@@ -72,8 +72,8 @@ namespace ImageRecognition
             }
 
             // Classify
-            var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
-
+            //var classificationResults = new TensorFlowClassificator().ClassifyImage(image);
+            var classificationResults = new WebClassificator().ClassifyImage(image);
             // OCR
             var text = TesseractOcr.ParseText();
             

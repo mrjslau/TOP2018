@@ -1,4 +1,3 @@
-using System;
 using System.Text.RegularExpressions;
 
 namespace ImageRecognition.OCR
@@ -17,12 +16,13 @@ namespace ImageRecognition.OCR
         string FindWeightSpecifier(string input);
     }
     
+    /// <inheritdoc />
     /// <summary>
     /// A class that realises the weight substring search using Regular Expressions.
     /// </summary>
     public class RegexMetricWeightSubstringFinder : IMetricWeightSubstringFinder
     {
-        private readonly Regex _rx = new Regex(@"(?<weight>\d+\.?\d+?\s*?[a-z]+)");
+        private readonly Regex _rx = new Regex(@"(?<weight>(\d+\s?\.?\s?\d*?\s*?[g,l]|\d+\s?\.?\s?\d*?\s*?[m,k,c][g,l]?)(\s|$))");
         
         /// <inheritdoc cref="IMetricWeightSubstringFinder.FindWeightSpecifier"/>
         public string FindWeightSpecifier(string input)
