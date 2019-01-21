@@ -23,7 +23,6 @@ using System.Linq;
 using ShopLensWeb;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System;
 using System.Threading;
 using ShopLens.Droid.Source;
 
@@ -56,12 +55,15 @@ namespace ShopLens.Droid
         string cmdRemind;
         string cmdTutorialRequest;
         string cmdTutorialLikeShopLens;
+        string cmdTakePhoto;
 
         ShopLensSpeechRecognizer voiceRecognizer;
 
         ShopLensTextToSpeech shopLensTts;
 
-        ShopLensContext shopLensDbContext;
+        Camera2Fragment camera2Frag;
+
+        public static ShopLensContext shopLensDbContext;
 
         ISharedPreferences prefs;
         ActivityPreferences voicePrefs;
@@ -77,6 +79,7 @@ namespace ShopLens.Droid
         public static List<string> shoppingSessionItems;
 
         string needUserAnswerId;
+        string needAddToCartAnswerId = "ADD_TO_CART";
         string askUserToRepeat;
         string talkBackEnabledIntentKey;
 
@@ -96,6 +99,7 @@ namespace ShopLens.Droid
             DependencyInjection.RegisterInterfaces();
 
             cmdOpenCamera = ConfigurationManager.AppSettings["CmdOpenCamera"];
+            cmdTakePhoto = ConfigurationManager.AppSettings["CmdTakePhoto"];
             cmdOpenCart = ConfigurationManager.AppSettings["CmdOpenCart"];
             cmdOpenList = ConfigurationManager.AppSettings["CmdOpenList"];
             cmdHelp = ConfigurationManager.AppSettings["CmdHelp"];
@@ -105,9 +109,9 @@ namespace ShopLens.Droid
 
             userGuidPrefKey = ConfigurationManager.AppSettings["UserGuidPrefKey"];
 
-            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-
             shopLensDbContext = ConnectToDatabase();
+
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
             talkBackEnabledIntentKey = ConfigurationManager.AppSettings["TalkBackKey"];
 
@@ -122,13 +126,12 @@ namespace ShopLens.Droid
             }
 
             // Set our view from the "main" layout resource.
-            SetContentView(Resource.Layout.Main);            
-
-            
+            SetContentView(Resource.Layout.Main);
+            camera2Frag = Camera2Fragment.NewInstance(this, this);
 
             if (savedInstanceState == null)
             {
-                new Thread(() => { FragmentManager.BeginTransaction().Replace(Resource.Id.container, Camera2Fragment.NewInstance(this, this)).Commit(); }
+                new Thread(() => { FragmentManager.BeginTransaction().Replace(Resource.Id.container, camera2Frag).Commit(); }
             ).Start();          
             }
 
@@ -282,7 +285,7 @@ namespace ShopLens.Droid
         private ShoppingSession GenerateShoppingSession()
         {
             var productList = new List<Product>();
-            var userGuid = Guid.Parse(prefs.GetString(userGuidPrefKey, null));
+            var userGuid = Guid.Parse(prefs.GetString(userGuidPrefKey, ""));
 
             if (shoppingSessionItems == null)
             {
@@ -293,7 +296,7 @@ namespace ShopLens.Droid
                 foreach (string item in shoppingSessionItems)
                 {
                     var itemInfo = shopLensDbContext.Products.FirstOrDefault(p => p.Name == item);
-
+                    
                     if (itemInfo != null)
                     {
                         productList.Add(itemInfo);
@@ -372,6 +375,12 @@ namespace ShopLens.Droid
                     {
                         RunUserTutorial();
                     }
+                    else if (results == cmdTakePhoto)
+                    {
+                        ImageRecognizer.areVoiceCommandsOn = true;
+                        ImageRecognizer.mainMenu = this;
+                        camera2Frag.LockFocus();
+                    }
                     else
                     {
                         shopLensTts.Speak(askUserToRepeat, needUserAnswerId);
@@ -406,6 +415,14 @@ namespace ShopLens.Droid
         {
             drawerToggle.OnOptionsItemSelected(item);
             return base.OnOptionsItemSelected(item);
+        }
+
+        public void WhatWouldUHaveMeDo()
+        {
+            ImageRecognizer.areVoiceCommandsOn = false;
+
+            var whatDoNextMsg = ConfigurationManager.AppSettings["WhatDoNextMsg"];
+            shopLensTts.Speak(whatDoNextMsg, needUserAnswerId);
         }
 
         private void TurnOffVoice()

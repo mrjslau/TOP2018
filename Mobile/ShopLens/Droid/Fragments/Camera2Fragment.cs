@@ -196,7 +196,7 @@ namespace ShopLens.Droid
                     // For still image captures, we use the largest available size.
                     Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
-                    mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/10);
+                    mImageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/20);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
                     Point displaySize = new Point();
@@ -376,7 +376,7 @@ namespace ShopLens.Droid
         }
 
         // Lock the focus as the first step for a still image capture.
-        private void LockFocus()
+        public void LockFocus()
         {
             try
             {
@@ -384,8 +384,9 @@ namespace ShopLens.Droid
                 mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Start);
                 // Tell #mCaptureCallback to wait for the lock.
                 mState = STATE_WAITING_LOCK;
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
-                        mBackgroundHandler);
+                //mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
+                        //mBackgroundHandler);
+                CaptureStillPicture();
             }
             catch (CameraAccessException e)
             {

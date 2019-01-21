@@ -6,7 +6,8 @@ using Android.OS;
 
 namespace ShopLens.Droid.Activities
 {
-    [Activity(Label = "PermissionActivity", MainLauncher = true)]
+    [Activity(Label = "ShopLens", MainLauncher = true, Icon = "@mipmap/icon", Theme = "@style/ShopLensTheme",
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class PermissionActivity : Activity
     {
         static readonly int REQUEST_PERMISSION = (int)IntentIds.PermissionRequest;

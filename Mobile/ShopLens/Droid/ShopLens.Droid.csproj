@@ -55,9 +55,8 @@
     <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.2.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.Sqlite, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Sqlite.Core.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Sqlite.dll</HintPath>
@@ -327,12 +326,16 @@
     <Compile Include="IO\ShopLensPictureDirectoryCreator.cs" />
     <Compile Include="Helpers\BitmapHelper.cs" />
     <Compile Include="Activities\MainActivity.cs" />
-    <Compile Include="Activities\ShoppingCartActivity.cs" />
     <Compile Include="Activities\ShoppingListActivity.cs" />
     <Compile Include="Activities\AppPreferences.cs" />
     <Compile Include="Activities\ActionBarDrawerToggle.cs" />
+    <Compile Include="Activities\ShoppingCartActivity.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Helpers\CartItemsAdapter.cs" />
+    <Compile Include="Helpers\CartViewHolder.cs" />
     <Compile Include="Activities\GestureListener.cs" />
     <Compile Include="Helpers\ShopLensRandomUserGenerator.cs" />
+    <Compile Include="Models\CartTestData.cs" />
     <Compile Include="Notifications\ToastCreator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +364,7 @@
     <AndroidResource Include="Resources\drawable\nav_menu.xml" />
     <AndroidResource Include="Resources\drawable\buttons.xml" />
     <AndroidResource Include="Resources\drawable\danger_button.xml" />
+    <AndroidResource Include="Resources\layout\cart_item.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\provider_paths.xml" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Android.Content;
+using ShopLens.Droid.Models;
 
 namespace ShopLens.Droid.Source
 {
@@ -9,6 +10,7 @@ namespace ShopLens.Droid.Source
         ISharedPreferences prefs;
         ISharedPreferencesEditor prefsEditor;
         Context pContext;
+        bool firstLaunch = true;
 
         public bool IsEmpty
         {
@@ -46,13 +48,76 @@ namespace ShopLens.Droid.Source
                 if (entry.Value.ToString() == name)
                 {
                     prefs.Edit().Remove(entry.Key).Commit();
-                }            
+                }
             }
         }
 
         public void DeleteAllPreferences()
         {
             prefsEditor.Clear().Commit();
+        }
+
+        public void AddCartItem(string name, string price = "0.00", int quantity = 1)
+        {
+            foreach (KeyValuePair<string, object> entry in prefs.All)
+            {
+                if (entry.Key == name)
+                {
+                    var values = entry.Value.ToString().Split(' ');
+                    int newQuantity = int.Parse(values[1]) + 1;
+                    prefs.Edit().Remove(entry.Key).Commit();
+                    prefsEditor.PutString(entry.Key, values[0] + " " + newQuantity.ToString());
+                    prefsEditor.Apply();
+                    return;
+                }
+            }
+
+            //List<string> icollection = new List<string>();
+            //icollection.Add(price);
+            //icollection.Add(quantity);
+            //prefsEditor.PutStringSet(name, icollection);
+
+            prefsEditor.PutString(name, price + " " + quantity.ToString());
+            prefsEditor.Apply();
+        }
+
+        public void RemoveCartItem(string name)
+        {
+            foreach (KeyValuePair<string, object> entry in prefs.All)
+            {
+                var values = entry.Value.ToString().Split(' ');
+                if (entry.Key == name && values[1] == "1")
+                {
+                    prefs.Edit().Remove(entry.Key).Commit();
+                }
+                else if (entry.Key == name)
+                {
+                    int newQuantity = int.Parse(values[1]) - 1;
+                    prefs.Edit().Remove(entry.Key).Commit();
+                    prefsEditor.PutString(entry.Key, values[0] + " " + newQuantity.ToString());
+                    prefsEditor.Apply();
+                }
+            }
+        }
+
+        public List<CartItem> GetCartItemPreferencesToList()
+        {
+            // TODO: change to LINQ
+            List<CartItem> items = new List<CartItem> { };
+            foreach (KeyValuePair<string, object> entry in prefs.All)
+            {
+                var values = entry.Value.ToString().Split(' ');
+
+                items.Add(new CartItem()
+                {
+                    Name = entry.Key,
+                    Price = values[0],
+                    Count = values[1]
+                });
+            }
+
+            firstLaunch = false;
+            return items;
         }
     }
 }

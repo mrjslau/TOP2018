@@ -17,6 +17,7 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V7.App;
 using Android.Views;
 using ShopLens.Droid.Activities;
+using ShopLens.Droid.Models;
 using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 
 namespace ShopLens.Droid
@@ -49,7 +50,7 @@ namespace ShopLens.Droid
         GestureListener gestureListener;
 
         List<string> items;
-        ArrayAdapter<string> listAdapter;
+        CartItemsAdapter cartItemsAdapter;
 
         ShopLensSpeechRecognizer voiceRecognizer;
         ShopLensTextToSpeech shopLensTts;
@@ -93,9 +94,8 @@ namespace ShopLens.Droid
             gestureListener.LeftEvent += GestureLeft;
             gestureDetector = new GestureDetector(this, gestureListener);
 
-            listAdapter =
-                new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItemChecked, items);
-            listView.Adapter = listAdapter;
+            cartItemsAdapter = new CartItemsAdapter(prefs.GetCartItemPreferencesToList());
+            listView.Adapter = cartItemsAdapter;
             listView.ChoiceMode = ChoiceMode.Multiple;
 
             addItemButton.Click += AddTextBoxProductToList;
@@ -238,10 +238,10 @@ namespace ShopLens.Droid
         {
             if (!string.IsNullOrWhiteSpace(text))
             {
-                listAdapter.Add(text);
-                prefs.AddString(text);
+                cartItemsAdapter.AddCartItem(text);
+                prefs.AddCartItem(text);
             }
-            listAdapter.NotifyDataSetChanged();
+            cartItemsAdapter.NotifyDataSetChanged();
         }
 
         private void GoToShoppingList()
@@ -259,18 +259,18 @@ namespace ShopLens.Droid
         {
             if (!string.IsNullOrWhiteSpace(text))
             {
-                listAdapter.Remove(text);
-                prefs.RemoveString(text);
+                cartItemsAdapter.RemoveCartItem(text);
+                prefs.RemoveCartItem(text);
             }
-            listAdapter.NotifyDataSetChanged();
+            cartItemsAdapter.NotifyDataSetChanged();
         }
 
         void RemoveAllItems(object sender, EventArgs e)
         {
             prefs.DeleteAllPreferences();
-            listAdapter.Clear();
-            listAdapter.NotifyDataSetChanged();
-        }
+            cartItemsAdapter.Clear();
+            cartItemsAdapter.NotifyDataSetChanged();
+        } 
 
         private void OnVoiceRecognitionResults(object sender, ShopLensSpeechRecognizedEventArgs e)
         {
@@ -289,12 +289,22 @@ namespace ShopLens.Droid
 
                     Task.Run(() =>
                     {
-                        foreach (string item in prefs.GetPreferencesToList())
+                        double priceSum = 0;
+                        foreach (CartItem item in cartItemsAdapter.items)//prefs.GetPreferencesToList())
                         {
-                            SpeakOut(item, sessionCheckDelay);
+                            //SpeakOut(item, sessionCheckDelay);
+                            if (int.Parse(item.Count) > 1)
+                            {
+                                SpeakOut(item.Count + " of " + item.Name + " cost " + item.Price + " euros each.", sessionCheckDelay);
+                            }
+                            else
+                            {
+                                SpeakOut(item.Count + " of " + item.Name + " costs " + item.Price + " euros.", sessionCheckDelay);
+                            }
+                            priceSum += double.Parse(item.Price) * int.Parse(item.Count); 
                             Thread.Sleep(voicerAwaitTime);
                         }
-
+                        SpeakOut("Total Cost of items in cart is " + priceSum + " euros", sessionCheckDelay);
                         SpeakOut(endMessage, sessionCheckDelay);
 
                     }).ContinueWith((t) =>
